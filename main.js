@@ -47,14 +47,13 @@ client.on('message', (receivedMessage) => {
 			let result = die.roll(10);
 			console.log(result);
 			results.push(result);
-			// if(result >= 8)	success.push(result);
+			if(result >= 8)	success.push(result);
 			console.log(results);
 			if(result == 10) {
-				console.log('explding 10');
 				let result = die.roll(10);
 				console.log(result);
 				results.push(result);
-				// if(result >= 8)	success.push(result);
+				if(result >= 8)	success.push(result);
 				console.log(results);
 			}
 		}
@@ -62,11 +61,17 @@ client.on('message', (receivedMessage) => {
 		let response = receivedMessage.author.toString() + ', you rolled: '
 
 		for (var i = results.length - 1; i >= 0; i--) {
-			if(i > 0) {
-				response += results[i] + ', ';
-			}else{
-				response += results[i];
-			}
+				let result_print = ''
+				if (results[i] >= 8) {
+					result_print = '**' + results[i] + '**';
+				} else {
+					result_print = results[i];
+				}
+				if(i > 0) { 
+					response += result_print + ', ';
+				} else {
+					response += result_print;
+				}
 		}
 		console.log(response);
 		receivedMessage.channel.send(response);
