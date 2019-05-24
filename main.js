@@ -59,7 +59,7 @@ client.on('message', (receivedMessage) => {
 			}
 		}
 
-		let response = 'You rolled: '
+		let response = receivedMessage.author.toString() + ', you rolled: '
 
 		for (var i = results.length - 1; i >= 0; i--) {
 			if(i > 0) {
