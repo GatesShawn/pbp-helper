@@ -1,0 +1,495 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"btn-",
+				"btn-group"
+			],
+			[
+				"border",
+				"border-radius\tproperty"
+			],
+			[
+				"bac",
+				"background-color\tproperty"
+			],
+			[
+				"ex",
+				"exec_string"
+			],
+			[
+				"target",
+				"targetPlatform"
+			],
+			[
+				"Ret",
+				"ReturnTypes"
+			],
+			[
+				"out",
+				"output"
+			],
+			[
+				"Book",
+				"BookInfo"
+			],
+			[
+				"cons",
+				"constructor\t@constructor"
+			],
+			[
+				"targe",
+				"targetFile"
+			],
+			[
+				"ta",
+				"targetDir"
+			],
+			[
+				"files",
+				"files"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"tar",
+				"targetDir"
+			],
+			[
+				"type",
+				"typeof"
+			],
+			[
+				"targ",
+				"targetFormat"
+			],
+			[
+				"size",
+				"size"
+			],
+			[
+				"Retu",
+				"return"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"comics",
+				"comics_dir"
+			],
+			[
+				"pro",
+				"process_list"
+			],
+			[
+				"Mic",
+				"MicrosoftEdge"
+			],
+			[
+				"file",
+				"file_ext"
+			],
+			[
+				"ret",
+				"returns\t@returns"
+			],
+			[
+				"ca",
+				"callImageMagick"
+			],
+			[
+				"fetch",
+				"fetchDTC"
+			],
+			[
+				"fetc",
+				"fetchReports"
+			],
+			[
+				"l",
+				"li\tTag"
+			],
+			[
+				"SITE",
+				"SITE"
+			],
+			[
+				"si",
+				"SITE_REDUCED"
+			],
+			[
+				"pap",
+				"paper-toast\tpaper-toast"
+			],
+			[
+				"paper",
+				"paper-input\tpaper-input"
+			],
+			[
+				"p",
+				"paper-input\tpaper-input"
+			],
+			[
+				"pa",
+				"paper-button\tpaper-button"
+			],
+			[
+				"ma",
+				"max-width"
+			],
+			[
+				"backgroun",
+				"background-color"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"Micr",
+				"MicrosoftEdge_8wekyb3d8bbwe"
+			],
+			[
+				"st",
+				"style\tTag"
+			],
+			[
+				"h",
+				"html\thtml"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "const Discord = require('discord.js')\nconst client = new Discord.Client()\n\nclient.on('ready', () => {\n    console.log(\"Connected as \" + client.user.tag)\n})\n\n// Get your bot's secret token from:\n// https://discordapp.com/developers/applications/\n// Click on your application -> Bot -> Token -> \"Click to Reveal Token\"\nbot_secret_token = \"XXXXXXXXXXX\"\n\nclient.login(bot_secret_token)",
+			"settings":
+			{
+				"buffer_size": 381,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 784.0,
+		"last_filter": "insta",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Table Editor: Show demo film in new scratch view"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"pacl",
+				"Package Control: Remove Package"
+			],
+			[
+				"dif",
+				"Diffy Compare"
+			],
+			[
+				"di",
+				"Diffy Compare"
+			],
+			[
+				"ftp",
+				"FTPSync: Setup FTPSync in this folder"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 1096.0
+	},
+	"console":
+	{
+		"height": 120.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Shawn/Downloads/Bunny_Contract.txt",
+		"/C/Users/Shawn/Documents/Development/CEPServer/accessability.js",
+		"/C/Users/Shawn/Documents/Development/CEPServer/node_modules/bootstrap/dist/css/bootstrap-grid.css",
+		"/C/Users/Shawn/Documents/Development/CEPServer/views/index.ejs",
+		"/C/Users/Shawn/Documents/Development/CEPServer/package.json",
+		"/C/Users/Shawn/Documents/Development/CEPServer/Testing/lib/Formatting.js",
+		"/C/Users/Shawn/Downloads/Keyboard-Locker/Keyboard Locker/KeyboardLocker.ahk",
+		"/C/Users/Shawn/My Documents/Development/CEPServer/Testing/spec/support/jasmine.json",
+		"/C/Users/Shawn/My Documents/Development/CEPServer/Testing/lib/jasmine_examples/Player.js",
+		"/C/Users/Shawn/Desktop/autobing.sh",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/Git/Git.sublime-settings",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/DocBlockr/README.md",
+		"/C/Users/Shawn/Documents/dar.md",
+		"/C/Users/Shawn/Documents/markdownExtest.md",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/User/Markdown Extended.sublime-settings",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/User/Markdown.sublime-settings",
+		"/C/Users/Shawn/header.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/bower_components/paper-image/index.html",
+		"/C/Users/Shawn/Downloads/Kiada_116673701/SaveGameInfo",
+		"/C/Users/Shawn/Documents/Development/test/src/my-app.html",
+		"/C/Users/Shawn/Documents/Development/test/src/my-view1.html",
+		"/C/Users/Shawn/Documents/Development/test/index.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/src/shared-styles.html",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/Diffy/Diffy.sublime-settings",
+		"/C/Users/Shawn/Documents/Development/portfolio/src/my-icons.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/src/my-view1.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/src/my-app.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/src/my-icons.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/.gitignore",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/src/my-app.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/bower.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/index.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/home.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/portfolio/src/my-app.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/manifest.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/polymer.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/sw-precache-config.js",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/service-worker.js",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/polymer.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/README.md",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/sw-precache-config.js",
+		"/C/Users/Shawn/Documents/Development/test/sw-precache-config.js",
+		"/C/Users/Shawn/Documents/Development/test/service-worker.js",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/service-worker.js",
+		"/C/Users/Shawn/Documents/Development/test/polymer.json",
+		"/C/Users/Shawn/Documents/Development/test/package.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/package.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/manifest.json",
+		"/C/Users/Shawn/Documents/Development/test/manifest.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/bower.json",
+		"/C/Users/Shawn/Documents/Development/test/bower.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/portfolio/bower_components/paper-card/paper-card.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/portfolio/src/my-view1.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/.gitattributes",
+		"/C/Users/Shawn/Documents/Development/test/README.md",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/coming_soon.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/public_html/portfolio/index_.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/portfolio/src/my-app.html",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/portfolio/bower.json",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/ftpsync.settings",
+		"/C/Users/Shawn/Documents/Development/MaterialPortfolio/portfolio/src/ftpsync.settings",
+		"/C/Users/Shawn/Documents/cep_css.css",
+		"/C/Users/Shawn/Documents/Development/portfolio/bower_components/app-layout/app-toolbar/app-toolbar.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/bower_components/app-layout/app-header/app-header.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/index.html",
+		"/C/Users/Shawn/Documents/Development/MySheets/Chronicles of Darkness Official/sheet.json",
+		"/C/Users/Shawn/Documents/Development/portfolio/src/test.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/bower_components/iron-icons/iron-icons.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/bower_components/app-layout/app-drawer/app-drawer.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/index_.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/bower_components/paper-menu-button/index.html",
+		"/C/Users/Shawn/Documents/Development/portfolio/polymer-first-elements/README.md",
+		"/C/Users/Shawn/Documents/Development/portfolio/polymer-first-elements/icon-toggle.html"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 176.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 381,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								381,
+								381
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.clone": -1,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 87.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.exec":
+	{
+		"height": 31.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.markdown":
+	{
+		"height": 60.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "pbp-helper.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 50.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
