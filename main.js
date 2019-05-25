@@ -59,6 +59,7 @@ client.on('message', (receivedMessage) => {
     }
 
 	let cmd = receivedMessage.content.slice(0, 5);
+	console.log(cmd);
 
 	if (cmd == '/cod ') {
 		
@@ -87,5 +88,6 @@ client.on('message', (receivedMessage) => {
 		receivedMessage.channel.send(response);
 	}
 });
+
 let bot_secret_token = secret_token.bot_secret_token;
 client.login(bot_secret_token);
