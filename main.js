@@ -28,6 +28,28 @@ client.on('ready', () => {
 
 });
 
+let results = [];
+let success = [];
+
+function cod(options) {
+	if (!options) {
+		console.log('Options is required!');
+		return;
+	}
+
+	let result = die.roll(10);
+	console.log(result);
+	results.push(result);
+	if(result >= 8)	success.push(result);
+	console.log(results);
+	console.log(success);
+
+	if(result == 10) {
+		cod({});		
+	}
+
+}	
+
 client.on('message', (receivedMessage) => {
     // Prevent bot from responding to its own messages
     if (receivedMessage.author == client.user) {
@@ -35,27 +57,11 @@ client.on('message', (receivedMessage) => {
     }
 
 	let cmd = receivedMessage.content.slice(0, 5);
-
-	if(cmd == '/cod ') {
 		
 		let die_count = receivedMessage.content.slice(5, 6);
-		let results = [];
-		let success = [];
 
 		for (var i = die_count-1; i >= 0; i--) {
-			//TODO: Count success and return
-			let result = die.roll(10);
-			console.log(result);
-			results.push(result);
-			if(result >= 8)	success.push(result);
-			console.log(results);
-			if(result == 10) {
-				let result = die.roll(10);
-				console.log(result);
-				results.push(result);
-				if(result >= 8)	success.push(result);
-				console.log(results);
-			}
+			cod({});
 		}
 
 		let response = receivedMessage.author.toString() + ', you rolled: '
@@ -75,9 +81,6 @@ client.on('message', (receivedMessage) => {
 		}
 		console.log(response);
 		receivedMessage.channel.send(response);
-	}
-
-
 });
 
 
