@@ -59,6 +59,8 @@ client.on('message', (receivedMessage) => {
     }
 
 	let cmd = receivedMessage.content.slice(0, 5);
+
+	if (cmd == '/cod ') {
 		
 		let die_count = receivedMessage.content.slice(5, 6);
 
@@ -83,6 +85,7 @@ client.on('message', (receivedMessage) => {
 		}
 		console.log(response);
 		receivedMessage.channel.send(response);
+	}
 });
 let bot_secret_token = secret_token.bot_secret_token;
 client.login(bot_secret_token);
