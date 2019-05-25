@@ -86,6 +86,8 @@ client.on('message', (receivedMessage) => {
 		}
 		console.log(response);
 		receivedMessage.channel.send(response);
+
+		results = [];
 	}
 });
 
