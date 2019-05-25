@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const secret_token = require('./secret_token.js');
+
 const client = new Discord.Client();
 
 let die = {
@@ -82,11 +84,5 @@ client.on('message', (receivedMessage) => {
 		console.log(response);
 		receivedMessage.channel.send(response);
 });
-
-
-// Get your bot's secret token from:
-// https://discordapp.com/developers/applications/
-// Click on your application -> Bot -> Token -> "Click to Reveal Token"
-bot_secret_token = "NTgxMzE2MjM3NDA1OTc4NjI0.XOdfYQ.2ZozcxkWx28xn5IE4F9Ev6nRQH8";
-
+let bot_secret_token = secret_token.bot_secret_token;
 client.login(bot_secret_token);
