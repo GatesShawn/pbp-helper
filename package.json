@@ -1,6 +1,6 @@
 {
   "name": "pbp-helper",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Discord bot to aid in Play-by-Post gaming (dice roller, initiative tracker, etc.)",
   "main": "main.js",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ElvesofZion/pbp-helper#readme",
   "dependencies": {
-    "discord": "^0.8.2"
+    "discord": "^1.8.2",
+    "discord.js": "^11.5.0"
   }
 }
