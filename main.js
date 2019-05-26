@@ -57,9 +57,9 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-    //  if (receivedMessage.guild != 'pbp-helper-test') {
-    //     return;
-    // }
+     if (receivedMessage.guild != 'pbp-helper-test') {
+        return;
+    }
 
 	let cmd = receivedMessage.content.slice(0, 5);
 
@@ -67,7 +67,11 @@ client.on('message', (receivedMessage) => {
 
 	if (cmd == '/cod ') {
 		let chance_die = false;
-		let die_count = receivedMessage.content.slice(5, 6);
+		let re_die = /[0-9]+/
+		let die_match = receivedMessage.content.match(re_die);
+		console.log(die_match);
+
+		let die_count = die_match[0];
 
 		if(die_count == 0) {
 			die_count = 1;
