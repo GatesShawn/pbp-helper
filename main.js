@@ -46,7 +46,7 @@ function cod(options) {
 	console.log(results);
 	console.log(success);
 
-	if(result == 10) {
+	if(result == 10 && !options.chance_die) {
 		cod({});		
 	}
 
@@ -62,14 +62,22 @@ client.on('message', (receivedMessage) => {
     // }
 
 	let cmd = receivedMessage.content.slice(0, 5);
+
 	console.log(cmd);
 
 	if (cmd == '/cod ') {
-		
+		let chance_die = false;
 		let die_count = receivedMessage.content.slice(5, 6);
 
+		if(die_count == 0) {
+			die_count = 1;
+			chance_die = true;
+		}
+
 		for (var i = die_count-1; i >= 0; i--) {
-			cod({});
+			cod({
+				chance_die: chance_die,
+			});
 		}
 
 		let response = receivedMessage.author.toString() + ', you rolled: '
@@ -77,10 +85,19 @@ client.on('message', (receivedMessage) => {
 		for (var i = results.length - 1; i >= 0; i--) {
 				let result_print = ''
 				if (results[i] >= 8) {
-					result_print = '**' + results[i] + '**';
+					if (chance_die) {
+						if (results[i] != 10) {
+							result_print = results[i];
+						} else {
+							result_print = '**' + results[i] + '**';
+						}
+					} else {
+						result_print = '**' + results[i] + '**';
+					}
 				} else {
 					result_print = results[i];
 				}
+				//add a comma between results
 				if(i > 0) { 
 					response += result_print + ', ';
 				} else {
@@ -92,16 +109,29 @@ client.on('message', (receivedMessage) => {
 
 		let success_response = '';
 
-		// success counting
-		if(success.length == 0) {
-			// failure
-			success_response = "You rolled no successes. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
-		} else if (success.length >= 5) {
-			//exceptional success
-			success_response = "You rolled " + success.length + " successes. That's an Exceptional Success!";
+		if (chance_die) {
+			if(success[0] == 10) {
+				success_response = "Success! You rolled a 10 on a chance die!";
+			} else if(success[0] == 1) {
+				success_response = "You got a Dramatic Failure!";
+			} else {
+				success_response = "You didn't roll a success. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
+			}
+
 		} else {
-			//regular success
-			success_response = "You rolled " + success.length + " successes.";
+
+			// success counting
+			if(success.length == 0) {
+				// failure
+				success_response = "You rolled no successes. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
+			} else if (success.length >= 5) {
+				//exceptional success
+				success_response = "You rolled " + success.length + " successes. That's an Exceptional Success!";
+			} else {
+				//regular success
+				success_response = "You rolled " + success.length + " successes.";
+			}
+
 		}
 
 		console.log(success_response);
