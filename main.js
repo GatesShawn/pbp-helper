@@ -33,6 +33,13 @@ client.on('ready', () => {
 let results = [];
 let success = [];
 
+/**
+ * Calls die rolling for Chronicles of Darkness
+ * @param  Object options Parameter object
+ * @param Boolean options.chance_die Sets whether the roll being made is a chance die
+ * @param Number options.again value to use for rolling again
+ * @return {[type]}         [description]
+ */
 function cod(options) {
 	if (!options) {
 		console.log('Options is required!');
@@ -46,7 +53,7 @@ function cod(options) {
 	console.log(results);
 	console.log(success);
 
-	if(result == 10 && !options.chance_die) {
+	if(result == options.again && !options.chance_die) {
 		cod({});		
 	}
 
@@ -57,9 +64,9 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-     if (receivedMessage.guild != 'pbp-helper-test') {
-        return;
-    }
+    //  if (receivedMessage.guild != 'pbp-helper-test') {
+    //     return;
+    // }
 
 	let cmd = receivedMessage.content.slice(0, 5);
 
@@ -67,7 +74,9 @@ client.on('message', (receivedMessage) => {
 
 	if (cmd == '/cod ') {
 		let chance_die = false;
-		let re_die = /[0-9]+/
+		let again = 10;
+		let re_die = /[0-9]+/;
+		let re_again = /8|9-again/;
 		let die_match = receivedMessage.content.match(re_die);
 		console.log(die_match);
 
@@ -81,6 +90,7 @@ client.on('message', (receivedMessage) => {
 		for (var i = die_count-1; i >= 0; i--) {
 			cod({
 				chance_die: chance_die,
+				again: again,
 			});
 		}
 
