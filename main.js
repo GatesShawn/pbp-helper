@@ -57,6 +57,9 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
+    //  if (receivedMessage.guild != 'pbp-helper-test') {
+    //     return;
+    // }
 
 	let cmd = receivedMessage.content.slice(0, 5);
 	console.log(cmd);
@@ -87,7 +90,25 @@ client.on('message', (receivedMessage) => {
 		console.log(response);
 		receivedMessage.channel.send(response);
 
+		let success_response = '';
+
+		// success counting
+		if(success.length == 0) {
+			// failure
+			success_response = "You rolled no successes. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
+		} else if (success.length >= 5) {
+			//exceptional success
+			success_response = "You rolled " + success.length + " successes. That's an Exceptional Success!";
+		} else {
+			//regular success
+			success_response = "You rolled " + success.length + " successes.";
+		}
+
+		console.log(success_response);
+		receivedMessage.channel.send(success_response);
+
 		results = [];
+		success = [];
 	}
 });
 
