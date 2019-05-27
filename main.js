@@ -57,9 +57,9 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-     if (receivedMessage.guild != 'pbp-helper-test') {
-        return;
-    }
+    // if (receivedMessage.guild != 'pbp-helper-test') {
+    //     return;
+    // }
 
 	let cmd = receivedMessage.content.slice(0, 5);
 
@@ -71,6 +71,11 @@ client.on('message', (receivedMessage) => {
 		let die_match = receivedMessage.content.match(re_die);
 		console.log(die_match);
 
+		// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
+		if (die_match > 100) {
+			receivedMessage.channel.send(receivedMessage.author.toString() + ', your roll was rejected because it was too large. Please roll again with a smaller dice pool.');
+			return;
+		}
 		let die_count = die_match[0];
 
 		if(die_count == 0) {
