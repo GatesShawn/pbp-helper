@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const secret_token = require('./secret_token.js');
+const log = require('./log.js');
+// const cod = require('./cod.js');
 
 const client = new Discord.Client();
 
@@ -64,15 +66,15 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-    // if (receivedMessage.guild != 'pbp-helper-test') {
-    //     return;
-    // }
+    if (receivedMessage.guild != 'pbp-helper-test') {
+        return;
+    }
 
-	let cmd = receivedMessage.content.slice(0, 5);
+	let cmd = receivedMessage.content.slice(0, 4);
 
 	console.log(cmd);
 
-	if (cmd == '/cod ') {
+	if (cmd == '/cod') {
 		let chance_die = false;
 		let again = 10;
 		let re_die = /[0-9]+/;
@@ -158,6 +160,10 @@ client.on('message', (receivedMessage) => {
 
 		results = [];
 		success = [];
+	} else if (cmd == '/log') {
+		console.log('Starting log command');
+
+		log.log(receivedMessage);
 	}
 });
 
