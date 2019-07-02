@@ -162,7 +162,7 @@ client.on('message', (receivedMessage) => {
 		success = [];
 	} else if (cmd == '/log') {
 		console.log('Starting log command');
-
+		//todo: add support for naming the log file
 		log.log(receivedMessage);
 	}
 });

@@ -11,25 +11,16 @@ function log(message) {
 }
 
 function write(message, msgs) {
-
 	for (let eachMsg of msgs) {
-
-		msgArray = eachMsg.toString().match(/[0-9]*,(.*)/);
-		let msg = msgArray[1] + '\n';
 		
-		//change snowflake to user name
-		let members = message.channel.members;
+		let line = eachMsg[1].author.username + ': ' + eachMsg[1].content + '\n';
 
-		for ( let member of members) {
-			console.log('snowflake: ' + member[0] + ', member: ' + member[1]);
-		}
-		
-		fs.appendFile('log.txt', msg , function (err) {
+		fs.appendFile('log.txt', line, function (err) {
 			if (err) throw err;
 		});
 	}
 
-	message.channel.send(message.author.toString() + ' here is your log: ', {
+	message.channel.send(message.author + ' here is your log: ', {
   		files: [{
     		attachment: './log.txt',
     		name: 'log.txt'
