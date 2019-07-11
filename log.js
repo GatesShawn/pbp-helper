@@ -26,6 +26,15 @@ function write(message, msgs) {
 		
 		//TODO: subistitute snowflakes for names in each line
 
+		let users = eachMsg[1].mentions.users;
+
+		for (let user of users) {
+			console.log(user[1].username);
+			message.guild.fetchMember(user[1]).then(member => console.log(member.displayName));
+		}
+
+		console.log();
+
 		let line = eachMsg[1].author.username + ': ' + eachMsg[1].content + '\n';	
 		
 		stream.write(line);
