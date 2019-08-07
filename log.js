@@ -1,7 +1,27 @@
+/*	
+//	Copyright 2019 Shawn Gates
+//
+//	Licensed under the Apache License, Version 2.0 (the "License");
+//	you may not use this file except in compliance with the License.
+//	You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//	Unless required by applicable law or agreed to in writing, software
+// 	distributed under the License is distributed on an "AS IS" BASIS,
+//	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// 	See the License for the specific language governing permissions and
+// 	limitations under the License.
+*/
+
 const fs = require('fs');
+const asyncMutex = require('./utils/mutex.js');
+
+const mutex = new asyncMutex.Mutex();
 
 let stream = null;
 let fileName = '';
+let line_src = '';
 
 function log(message) {
 
@@ -11,10 +31,22 @@ function log(message) {
 	fileName = message.channel.guild + '_' + message.channel.name + ".txt";
 	stream = fs.createWriteStream(fileName, {flags:'a'});
 
-	let msg = message.channel.fetchMessages({ limit: 100, before: message.id }).then(messages => write(message, messages));
+	let msg = message.channel.fetchMessages({ limit: 100, before: message.id })
+	.then(messages => write(message, messages));
 	
-	//TODO: MAke sure this fetches ALL the logs (each call is 100 max...)(havent found how to tell there is more to fetch and how to not re-fetch the same ones)
+	//TODO: Make sure this fetches ALL the logs (each call is 100 max...)(havent found how to tell there is more to fetch and how to not re-fetch the same ones)
 
+}
+
+function replaceName(member, msg, line) {
+
+	let regex_string = '<@!*'  + member.id + '>';
+	let regex = new RegExp(regex_string);
+
+	line = line.replace(regex, member.displayName);
+
+	stream.write(line);
+    console.log(line);
 }
 
 function write(message, msgs) {
@@ -24,24 +56,21 @@ function write(message, msgs) {
 
 	for (let eachMsg of msgs) {
 		
-		//TODO: subistitute snowflakes for names in each line
+		line_src = eachMsg[1].author.username + ': ' + eachMsg[1].content + '\n';	
 
 		let users = eachMsg[1].mentions.users;
-
-		for (let user of users) {
-			console.log(user[1].username);
-			message.guild.fetchMember(user[1]).then(member => console.log(member.displayName));
-		}
-
-		console.log();
-
-		let line = eachMsg[1].author.username + ': ' + eachMsg[1].content + '\n';	
 		
-		stream.write(line);
-
+		for (let user of users) {
+			message.guild.fetchMember(user[1]).then(member => mutex
+				.acquire()
+				.then(function(release) {
+					console.log(member.displayName);
+					console.log(line_src);
+        			replaceName(member, eachMsg[1], line_src);
+    				release();
+    			}));
+		}
 	}
-
-	stream.end();
 
 	message.channel.send(message.author + ' here is your log: ', {
   		files: [{
@@ -49,8 +78,14 @@ function write(message, msgs) {
     		name: fileName
   		}]
 	})
-	.then(removeFile)
+	.then(clean)
  	.catch(console.error);
+}
+
+function clean() {
+
+	stream.end();
+	removeFile();
 }
 
 
