@@ -1,9 +1,35 @@
 const Discord = require('discord.js');
-const die = require('./utils/die.js');
-const cod = require('./modules/cod.js');
+const fs = require('fs');
 const secret_token = require('./secret_token.js');
 
 const client = new Discord.Client();
+
+let message = {};
+let callbacks = {};
+
+function add(_case, fn) {
+   callbacks[_case] = callbacks[_case] || [];
+   callbacks[_case].push(fn);
+}
+
+function pseudoSwitch(value) {
+   if (callbacks[value]) {
+      callbacks[value].forEach(function(fn) {
+          fn();
+      });
+   }
+}
+
+fs.readdir('./modules', function callback(err, files) {
+	if(err) console.log (err);
+	console.log('Loading System Modules: ' + files);
+	for (let i = files.length - 1; i >= 0; i--) {	
+		let sysModule = require('./modules/' + files[i]);
+		add(sysModule.call, function() {
+		   sysModule.responseBuilder(message);
+		});
+	}
+});
 
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
@@ -33,9 +59,9 @@ client.on('message', (receivedMessage) => {
 
 	console.log('Command Recieveied: ' + cmd);
 
-	if (cmd == '/cod') {
-		cod.responseBuilder(receivedMessage);
-	}
+	message = receivedMessage;
+	pseudoSwitch(cmd);
+
 });
 
 let bot_secret_token = secret_token.bot_secret_token;

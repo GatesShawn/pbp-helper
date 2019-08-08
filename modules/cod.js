@@ -134,6 +134,5 @@ function responseBuilder(receivedMessage) {
 		success = [];
 }
 
-exports.call = 'cod';
-exports.cod = cod;
+exports.call = '/cod';
 exports.responseBuilder = responseBuilder;
