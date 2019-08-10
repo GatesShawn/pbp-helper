@@ -87,7 +87,7 @@ client.on('message', (receivedMessage) => {
     //     return;
     // }
 
-	let cmd = receivedMessage.content.match(/\/[a-z]+\s/)[0];
+	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
 	console.log('Command Recieveied: ' + cmd);
 
