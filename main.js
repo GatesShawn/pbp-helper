@@ -98,24 +98,34 @@ client.on('message', (receivedMessage) => {
 
 /**
  * Function to set up the server as a PbP server
- * @param  {[String]} system What system the PbP is using. Determines things like which name the GM role gets (i.e. DM, Storyteller, StoryGuide)
  */
-function _init(system) {
+function _init() {
 	console.log('Starting init funciton')
+
+	let system = message.content.match(/\s([a-z0-9]*)\s/i);
+
+	if(system) system=system[1];
+
+	let gameName = message.content.match(/\s\'([a-z0-9]*)\'/i);
+
+	if(gameName) gameName=gameName[1];
 
 	message.channel.send('Setting up the server for Play by Post play');
 	
-	//TODO: Make this do...anything
-	let gmType = 'GM'
+	let gmType = 'GM';
+	console.log(system === 'StoryPath');
+	
 	switch (system) {
 		case 'StoryPath':
 			gmType = 'StoryGuide';
+			break;
 		default:
 			gmType = 'GM';
 	}
+	console.log(gmType);
 
 	// Create roles on server
-	message.channel.send('Creating Roles: Bots, ' + gmType + ', Players'); 
+	let roleString = 'Creating Roles: ';
 	
 	if(!message.guild.roles.find(val => val.name === 'Bots')) {
 		// Create a Bots role for itself
@@ -127,6 +137,8 @@ function _init(system) {
 		})
 		  .then(role => addRole(role))
 		  .catch(console.error);
+
+		 roleString += 'Bots, ';
 	}
 
 	if(!message.guild.roles.find(val => val.name === gmType)) {
@@ -139,6 +151,7 @@ function _init(system) {
 		})
 		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
 		  .catch(console.error);
+		roleString += gmType = ', ';
 	}
 
   	if(!message.guild.roles.find(val => val.name === 'Players')) {
@@ -150,7 +163,48 @@ function _init(system) {
 		})
 		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
 		  .catch(console.error);
+		roleString += 'Players';
 	}
+
+	message.channel.send(roleString); 
+
+	gameName = gameName ? gameName : 'New PbP Game'
+
+	message.channel.send('Creating channels:' );
+	
+	if(!message.guild.channels.find(val => val.name === gameName)) {
+		console.log('Creating channels for game: ' + gameName);
+
+		let category = null;
+
+		// Create channel categrory for game on server
+		message.channel.send('Creating channel category named: ' + gameName); 
+
+		message.guild.createChannel(gameName, { type: 'category' })
+		  .then(parent => setParent(parent))
+		  .catch(console.error);
+	}
+}
+
+function setParent(channelCategory) {
+	category = channelCategory;
+	makeChannels();
+}
+
+function makeChannels() {
+	// Create channels on server
+	let channelString = 'Creating channels: ';
+
+	message.guild.createChannel('ooc', { type: 'text', topic: 'General out of character chat', parent: category })
+	  .then(channelString += 'ooc, ')
+	  .catch(console.error);
+
+
+	message.guild.createChannel('character_sheets', { type: 'text', topic: 'Contains a sheet for each character in the game', parent: category })
+	  .then(channelString += 'character_sheets, ')
+	  .catch(console.error);
+
+	message.channel.send(channelString);
 }
 
 function addRole(role) {
