@@ -96,6 +96,71 @@ client.on('message', (receivedMessage) => {
 
 });
 
+/**
+ * Function to set up the server as a PbP server
+ * @param  {[String]} system What system the PbP is using. Determines things like which name the GM role gets (i.e. DM, Storyteller, StoryGuide)
+ */
+function _init(system) {
+	console.log('Starting init funciton')
+
+	message.channel.send('Setting up the server for Play by Post play');
+	
+	//TODO: Make this do...anything
+	let gmType = 'GM'
+	switch (system) {
+		case 'StoryPath':
+			gmType = 'StoryGuide';
+		default:
+			gmType = 'GM';
+	}
+
+	// Create roles on server
+	message.channel.send('Creating Roles: Bots, ' + gmType + ', Players'); 
+	
+	if(!message.guild.roles.find(val => val.name === 'Bots')) {
+		// Create a Bots role for itself
+		console.log('Creating a Bots role');
+		message.guild.createRole({
+		  name: 'Bots',
+		  color: 'GREY',
+		  permissions: Discord.Permissions.ADMINISTRATOR
+		})
+		  .then(role => addRole(role))
+		  .catch(console.error);
+	}
+
+	if(!message.guild.roles.find(val => val.name === gmType)) {
+		// Create a GM Role
+		console.log('Creating a GM role');
+		message.guild.createRole({
+		  name: gmType,
+		  color: 'RED',
+		  permissions: Discord.Permissions.ADMINISTRATOR
+		})
+		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
+		  .catch(console.error);
+	}
+
+  	if(!message.guild.roles.find(val => val.name === 'Players')) {
+	  	// Create a Player Role
+		console.log('Creating a Players role');
+		message.guild.createRole({
+		  name: 'Players',
+		  color: 'BLUE',
+		})
+		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
+		  .catch(console.error);
+	}
+}
+
+function addRole(role) {
+	console.log(`Created new role with name ${role.name} and color ${role.color}`);
+	message.guild.member(client.user).addRole(role);
+}
+
+add('/init', function() {
+	_init();
+});
 
 // log in to the bot with the secret token
 let bot_secret_token = secret_token.bot_secret_token;
