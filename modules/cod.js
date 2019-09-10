@@ -16,8 +16,12 @@
 
 const die = require('../utils/die.js');
 
+let cod_die = 10;
+let cod_tn = 8;
 let results = [];
+let results_explosion = [];
 let success = [];
+let success_explosion = [];
 
 /**
  * Calls die rolling for Chronicles of Darkness
@@ -26,21 +30,30 @@ let success = [];
  * @param Number options.again value to use for rolling again
  * @return {[type]}         [description]
  */
-function cod(options) {
+function roll(options) {
 	if (!options) {
 		console.log('Options is required!');
 		return;
 	}
 
-	let result = die.die.roll(10);
-	// console.log(result);
-	results.push(result);
-	if(result >= 8)	success.push(result);
-	// console.log(results);
+	let result = die.die.roll(cod_die);
+	console.log('Roll Result: ' + result);
+	if(!options.explosion) {
+		results.push(result);
+	} else {
+		results_explosion.push(result);
+	}
+	if(result >= cod_tn) {success.push(result);}
+
+	console.log(results);
+	console.log(results_explosion);
 	// console.log(success);
 
-	if(result == options.again && !options.chance_die) {
-		cod({});		
+	if(result >= options.again && !options.chance_die) {
+		console.log('Roll was ' + result + ', which meets or beats the "again" threshold of ' + options.again);
+		roll({
+			explosion: true
+		});		
 	}
 
 }
@@ -49,10 +62,25 @@ function responseBuilder(receivedMessage) {
 	let chance_die = false;
 		let again = 10;
 		let re_die = /[0-9]+/;
-		let re_again = /8|9-again/;
+		let re_again = /8|9-again|no-again/;
 		let die_match = receivedMessage.content.match(re_die);
 		if (die_match===null) {die_match = [0];}
 		console.log('Number of dice to be rolled: ' + die_match);
+		let again_match = receivedMessage.content.match(re_again);
+		console.log(again_match);
+		switch (again_match[0]) {
+			case '9-again':
+				again = 9;
+				break;
+			case '8-again':
+				again = 8;
+				break;
+			case 'no-again':
+				again = 11;
+				break;
+			default:
+		}
+		console.log('Again type: ' + again);
 
 		// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 		if (die_match > 100) {
@@ -67,7 +95,7 @@ function responseBuilder(receivedMessage) {
 		}
 
 		for (var i = die_count-1; i >= 0; i--) {
-			cod({
+			roll({
 				chance_die: chance_die,
 				again: again,
 			});
@@ -75,7 +103,7 @@ function responseBuilder(receivedMessage) {
 
 		let response = receivedMessage.author.toString() + ', you rolled: '
 
-		for (let i = results.length - 1; i >= 0; i--) {
+		for (let i = results.length-1; i >= 0; i--) {
 				let result_print = ''
 				if (results[i] >= 8) {
 					if (chance_die) {
@@ -89,6 +117,30 @@ function responseBuilder(receivedMessage) {
 					}
 				} else {
 					result_print = results[i];
+				}
+				//add a comma between results
+				if(i > 0) { 
+					response += result_print + ', ';
+				} else if(i === 0 && results_explosion.length != 0) {
+					response += result_print + ', ';
+				} else {
+					response += result_print;
+				}
+		}
+		for (let i = results_explosion.length-1; i >= 0; i--) {
+			let result_print = ''
+				if (results_explosion[i] >= 8) {
+					if (chance_die) {
+						if (results_explosion[i] != 10) {
+							result_print = results_explosion[i];
+						} else {
+							result_print = '**' + results_explosion[i] + '**';
+						}
+					} else {
+						result_print = '**' + results_explosion[i] + '**';
+					}
+				} else {
+					result_print = results_explosion[i];
 				}
 				//add a comma between results
 				if(i > 0) { 
