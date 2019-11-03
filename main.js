@@ -83,9 +83,9 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-    // if (receivedMessage.guild != 'pbp-helper-test') {
-    //     return;
-    // }
+    // if (receivedMessage.guild === 'pbp-helper-test') {
+    //    return;
+    //  }
 
 	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
