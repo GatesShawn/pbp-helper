@@ -76,7 +76,7 @@ function responseBuilder(receivedMessage) {
 	let rote = false;
 	let chance_die = false;
 	let again = 10;
-	let re_die = /[0-9]+\s/;
+	let re_die = /[0-9]+(\s|$)/;
 	let re_again = /8-again|9-again|no-again/;
 	let re_rote = /rote/;
 
