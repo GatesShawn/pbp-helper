@@ -1,20 +1,67 @@
+/*	
+//	Copyright 2019 Shawn Gates
+//
+//	Licensed under the Apache License, Version 2.0 (the "License");
+//	you may not use this file except in compliance with the License.
+//	You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//	Unless required by applicable law or agreed to in writing, software
+// 	distributed under the License is distributed on an "AS IS" BASIS,
+//	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// 	See the License for the specific language governing permissions and
+// 	limitations under the License.
+*/
+
+// setup libs
 const Discord = require('discord.js');
+const fs = require('fs');
 const secret_token = require('./secret_token.js');
 
+// global constants
 const client = new Discord.Client();
 
-let die = {
-  sides: 6,
-  roll: function (sides) {
-  	
-  	if(sides) this.sides = sides;
+// global variables
+let message = {};
+let callbacks = {};
 
-    var randomNumber = Math.floor(Math.random() * this.sides) + 1;
-    
-    return randomNumber;
-  }
+/**
+ * Adds items to the psuedoSwitch functions callback list
+ * @param {String}   _case Value to use for the 'switch case'
+ * @param {Function} fn    Function to call when _case match is made
+ */
+function add(_case, fn) {
+   callbacks[_case] = callbacks[_case] || [];
+   callbacks[_case].push(fn);
 }
 
+/**
+ * Function that works like a switch case but allows for 'cases' to be added dynamiclly
+ * @param  {String} value String to check against the callback list
+ */
+function pseudoSwitch(value) {
+   if (callbacks[value]) {
+      callbacks[value].forEach(function(fn) {
+          fn();
+      });
+   }
+}
+
+// check the module folder for modules and add them to the switch for loading
+fs.readdir('./modules', function callback(err, files) {
+	if(err) console.log (err);
+	console.log('Loading System Modules: ' + files);
+	for (let i = files.length - 1; i >= 0; i--) {	
+		let sysModule = require('./modules/' + files[i]);
+		add(sysModule.call, function() {
+		   sysModule.responseBuilder(message);
+		});
+	}
+});
+
+
+// list connected servers and channels when we connect to the Discord service
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
     // List servers the bot is connected to
@@ -27,139 +74,148 @@ client.on('ready', () => {
             console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`);
         });
     });
+});	
 
-});
 
-let results = [];
-let success = [];
-
-/**
- * Calls die rolling for Chronicles of Darkness
- * @param  Object options Parameter object
- * @param Boolean options.chance_die Sets whether the roll being made is a chance die
- * @param Number options.again value to use for rolling again
- * @return {[type]}         [description]
- */
-function cod(options) {
-	if (!options) {
-		console.log('Options is required!');
-		return;
-	}
-
-	let result = die.roll(10);
-	console.log(result);
-	results.push(result);
-	if(result >= 8)	success.push(result);
-	console.log(results);
-	console.log(success);
-
-	if(result == options.again && !options.chance_die) {
-		cod({});		
-	}
-
-}	
-
+// listen for messages from the bot
 client.on('message', (receivedMessage) => {
     // Prevent bot from responding to its own messages
     if (receivedMessage.author == client.user) {
         return;
     }
-    // if (receivedMessage.guild != 'pbp-helper-test') {
-    //     return;
-    // }
+    // if (receivedMessage.guild === 'pbp-helper-test') {
+    //    return;
+    //  }
 
-	let cmd = receivedMessage.content.slice(0, 5);
+	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
-	console.log(cmd);
+	console.log('Command Recieveied: ' + cmd);
 
-	if (cmd == '/cod ') {
-		let chance_die = false;
-		let again = 10;
-		let re_die = /[0-9]+/;
-		let re_again = /8|9-again/;
-		let die_match = receivedMessage.content.match(re_die);
-		console.log(die_match);
+	message = receivedMessage;
+	pseudoSwitch(cmd);
 
-		// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
-		if (die_match > 100) {
-			receivedMessage.channel.send(receivedMessage.author.toString() + ', your roll was rejected because it was too large. Please roll again with a smaller dice pool.');
-			return;
-		}
-		let die_count = die_match[0];
-
-		if(die_count == 0) {
-			die_count = 1;
-			chance_die = true;
-		}
-
-		for (var i = die_count-1; i >= 0; i--) {
-			cod({
-				chance_die: chance_die,
-				again: again,
-			});
-		}
-
-		let response = receivedMessage.author.toString() + ', you rolled: '
-
-		for (var i = results.length - 1; i >= 0; i--) {
-				let result_print = ''
-				if (results[i] >= 8) {
-					if (chance_die) {
-						if (results[i] != 10) {
-							result_print = results[i];
-						} else {
-							result_print = '**' + results[i] + '**';
-						}
-					} else {
-						result_print = '**' + results[i] + '**';
-					}
-				} else {
-					result_print = results[i];
-				}
-				//add a comma between results
-				if(i > 0) { 
-					response += result_print + ', ';
-				} else {
-					response += result_print;
-				}
-		}
-		console.log(response);
-		receivedMessage.channel.send(response);
-
-		let success_response = '';
-
-		if (chance_die) {
-			if(success[0] == 10) {
-				success_response = "Success! You rolled a 10 on a chance die!";
-			} else if(success[0] == 1) {
-				success_response = "You got a Dramatic Failure!";
-			} else {
-				success_response = "You didn't roll a success. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
-			}
-
-		} else {
-
-			// success counting
-			if(success.length == 0) {
-				// failure
-				success_response = "You rolled no successes. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
-			} else if (success.length >= 5) {
-				//exceptional success
-				success_response = "You rolled " + success.length + " successes. That's an Exceptional Success!";
-			} else {
-				//regular success
-				success_response = "You rolled " + success.length + " successes.";
-			}
-
-		}
-
-		console.log(success_response);
-		receivedMessage.channel.send(success_response);
-
-		results = [];
-		success = [];
-	}
 });
 
+/**
+ * Function to set up the server as a PbP server
+ */
+function _init() {
+	console.log('Starting init funciton')
+
+	let system = message.content.match(/\s([a-z0-9]*)\s/i);
+
+	if(system) system=system[1];
+
+	let gameName = message.content.match(/\s\'([a-z0-9]*)\'/i);
+
+	if(gameName) gameName=gameName[1];
+
+	message.channel.send('Setting up the server for Play by Post play');
+	
+	let gmType = 'GM';
+	console.log(system === 'StoryPath');
+	
+	switch (system) {
+		case 'StoryPath':
+			gmType = 'StoryGuide';
+			break;
+		default:
+			gmType = 'GM';
+	}
+	console.log(gmType);
+
+	// Create roles on server
+	let roleString = 'Creating Roles: ';
+	
+	if(!message.guild.roles.find(val => val.name === 'Bots')) {
+		// Create a Bots role for itself
+		console.log('Creating a Bots role');
+		message.guild.createRole({
+		  name: 'Bots',
+		  color: 'GREY',
+		  permissions: Discord.Permissions.ADMINISTRATOR
+		})
+		  .then(role => addRole(role))
+		  .catch(console.error);
+
+		 roleString += 'Bots, ';
+	}
+
+	if(!message.guild.roles.find(val => val.name === gmType)) {
+		// Create a GM Role
+		console.log('Creating a GM role');
+		message.guild.createRole({
+		  name: gmType,
+		  color: 'RED',
+		  permissions: Discord.Permissions.ADMINISTRATOR
+		})
+		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
+		  .catch(console.error);
+		roleString += gmType = ', ';
+	}
+
+  	if(!message.guild.roles.find(val => val.name === 'Players')) {
+	  	// Create a Player Role
+		console.log('Creating a Players role');
+		message.guild.createRole({
+		  name: 'Players',
+		  color: 'BLUE',
+		})
+		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
+		  .catch(console.error);
+		roleString += 'Players';
+	}
+
+	message.channel.send(roleString); 
+
+	gameName = gameName ? gameName : 'New PbP Game'
+
+	message.channel.send('Creating channels:' );
+	
+	if(!message.guild.channels.find(val => val.name === gameName)) {
+		console.log('Creating channels for game: ' + gameName);
+
+		let category = null;
+
+		// Create channel categrory for game on server
+		message.channel.send('Creating channel category named: ' + gameName); 
+
+		message.guild.createChannel(gameName, { type: 'category' })
+		  .then(parent => setParent(parent))
+		  .catch(console.error);
+	}
+}
+
+function setParent(channelCategory) {
+	category = channelCategory;
+	makeChannels();
+}
+
+function makeChannels() {
+	// Create channels on server
+	let channelString = 'Creating channels: ';
+
+	message.guild.createChannel('ooc', { type: 'text', topic: 'General out of character chat', parent: category })
+	  .then(channelString += 'ooc, ')
+	  .catch(console.error);
+
+
+	message.guild.createChannel('character_sheets', { type: 'text', topic: 'Contains a sheet for each character in the game', parent: category })
+	  .then(channelString += 'character_sheets, ')
+	  .catch(console.error);
+
+	message.channel.send(channelString);
+}
+
+function addRole(role) {
+	console.log(`Created new role with name ${role.name} and color ${role.color}`);
+	message.guild.member(client.user).addRole(role);
+}
+
+add('/init', function() {
+	_init();
+});
+
+// log in to the bot with the secret token
 let bot_secret_token = secret_token.bot_secret_token;
 client.login(bot_secret_token);
