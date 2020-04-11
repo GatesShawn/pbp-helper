@@ -98,18 +98,20 @@ client.on('message', (receivedMessage) => {
  * Function to set up the server as a PbP server
  */
 function _init() {
-	console.log('Starting init funciton')
+	console.log('Starting init function');
 
-	let system = message.content.match(/\s([a-z0-9]*)\s/i);
-
+	let system = message.content.match(/\s([a-z0-9]*)(\s|$)/i);
 	if(system) system = system[1];
 
-	let gameName = message.content.match(/\s\'([a-z0-9]*)\'/i);
+	let gameName = message.content.match(/\s\"([a-z0-9]*)\"(\s|$)/i);
 
 	if(gameName) gameName = gameName[1];
 
-	message.channel.send('Setting up the server for Play by Post play');
+	message.channel.send('Setting up the server for play by post play');
 	
+	console.log('Game system:' + system);
+	console.log('Name of the new game:' + gameName);
+
 	let gmType = 'GM';
 	
 	switch (system) {
@@ -117,6 +119,7 @@ function _init() {
 			gmType = 'StoryGuide';
 			break;
 		case 'CofD':
+		case 'CoD':
 		case 'WoD':
 		case 'nWoD':
 		case 'oWoD':
@@ -126,7 +129,6 @@ function _init() {
 		default:
 			gmType = 'GM';
 	}
-	console.log(gmType);
 
 	// Create roles on server
 	let roleString = 'Creating Roles: ';
