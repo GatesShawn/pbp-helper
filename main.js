@@ -60,7 +60,6 @@ fs.readdir('./modules', function callback(err, files) {
 	}
 });
 
-
 // list connected servers and channels when we connect to the Discord service
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
@@ -75,7 +74,6 @@ client.on('ready', () => {
         });
     });
 });	
-
 
 // listen for messages from the bot
 client.on('message', (receivedMessage) => {
@@ -100,29 +98,37 @@ client.on('message', (receivedMessage) => {
  * Function to set up the server as a PbP server
  */
 function _init() {
-	console.log('Starting init funciton')
+	console.log('Starting init function');
 
-	let system = message.content.match(/\s([a-z0-9]*)\s/i);
+	let system = message.content.match(/\s([a-z0-9]*)(\s|$)/i);
+	if(system) system = system[1];
 
-	if(system) system=system[1];
+	let gameName = message.content.match(/\s\"([a-z0-9]*)\"(\s|$)/i);
 
-	let gameName = message.content.match(/\s\'([a-z0-9]*)\'/i);
+	if(gameName) gameName = gameName[1];
 
-	if(gameName) gameName=gameName[1];
-
-	message.channel.send('Setting up the server for Play by Post play');
+	message.channel.send('Setting up the server for play by post play');
 	
+	console.log('Game system:' + system);
+	console.log('Name of the new game:' + gameName);
+
 	let gmType = 'GM';
-	console.log(system === 'StoryPath');
 	
 	switch (system) {
 		case 'StoryPath':
 			gmType = 'StoryGuide';
 			break;
+		case 'CofD':
+		case 'CoD':
+		case 'WoD':
+		case 'nWoD':
+		case 'oWoD':
+		case 'V5':
+			gmType = 'Storyteller';
+			break;
 		default:
 			gmType = 'GM';
 	}
-	console.log(gmType);
 
 	// Create roles on server
 	let roleString = 'Creating Roles: ';
@@ -149,21 +155,33 @@ function _init() {
 		  color: 'RED',
 		  permissions: Discord.Permissions.ADMINISTRATOR
 		})
-		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
+		  .then(role => addRole(role))
 		  .catch(console.error);
-		roleString += gmType = ', ';
+		roleString += gmType + ', ';
 	}
 
   	if(!message.guild.roles.find(val => val.name === 'Players')) {
-	  	// Create a Player Role
+	  	// Create a Players Role
 		console.log('Creating a Players role');
 		message.guild.createRole({
 		  name: 'Players',
 		  color: 'BLUE',
 		})
-		  .then(role => console.log(`Created new role with name ${role.name} and color ${role.color}`))
+		  .then(role => addRole(role))
 		  .catch(console.error);
-		roleString += 'Players';
+		roleString += 'Players, ';
+	}
+
+	if(!message.guild.roles.find(val => val.name === 'Observers')) {
+	  	// Create a Observers Role
+		console.log('Creating an Observers role');
+		message.guild.createRole({
+		  name: 'Observers',
+		  color: 'GREEN',
+		})
+		  .then(role => addRole(role))
+		  .catch(console.error);
+		roleString += 'Observers, ';
 	}
 
 	message.channel.send(roleString); 
