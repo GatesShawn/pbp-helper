@@ -79,8 +79,30 @@ function responseBuilder(receivedMessage) {
 	let re_die = /[0-9]+(\s|$)/;
 	let re_again = /8-again|9-again|no-again/;
 	let re_rote = /rote/;
+	let re_init = /\sinit(\s|$)/;
 
 	let die_match = receivedMessage.content.match(re_die);
+
+	// if an init call capture the results and re-direct
+	let init = receivedMessage.content.match(re_init);
+
+	if (init[0]) {
+
+		let result = Die.die.roll(10);
+		console.log('Result: ' + result);
+		if (die_match === null) {
+			die_match = [0];
+		}
+		console.log('Init Bonus: ' + parseInt(die_match[0]));
+		result += parseInt(die_match[0]);
+		console.log('Init response: ' + result);
+
+		receivedMessage.channel.send(receivedMessage.author.toString() + ", you got a " + result + "on initiative.");
+
+		return;
+	}
+
+	
 	if (die_match === null) {
 		receivedMessage.channel.send(receivedMessage.author.toString() + ", you didn't specify a number of dice to roll. Please try again.");
 		return;
