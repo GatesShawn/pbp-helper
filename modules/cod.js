@@ -26,7 +26,7 @@ let results_explosion = [];
 let success = [];
 let results_reroll = [];
 
-let initList = '';
+let initList = [];
 let init_current = 0;
 /**
  * Calls die rolling for Chronicles of Darkness
@@ -110,7 +110,7 @@ function responseBuilder(receivedMessage) {
 
 		receivedMessage.channel.send(receivedMessage.author.toString() + ", you got a " + result + " on initiative.");
 
-		initList += receivedMessage.author.toString() + ': ' + result + '\n';
+		initList.push(receivedMessage.author.toString() + ': ' + result);
 		manageInit(receivedMessage);
 
 		return;
@@ -279,8 +279,21 @@ function manageInit(receivedMessage, clear) {
 
   		//TDOD: add a check for duplicate storyteller inits, should enumarate automatically
 	  	//TODO: if player and already inited, replace? or reject? Multiple for familars/retainers/ etc
-	  	//TODO: Organize the list by init order before posting
-		receivedMessage.channel.send(">>> Current Initiatives\n" + initList)
+
+	  	initList.sort(function (a, b) {
+	  		let aValue = parseInt(a.split(': ')[1]);
+	  		let bValue = parseInt(b.split(': ')[1]);
+
+	  		if(aValue < bValue) {
+	  			return 1;
+	  		} else if (aValue > bValue) {
+	  			return -1;
+	  		} else {
+	  			return 0;
+	  		}
+	  	});
+
+		receivedMessage.channel.send(">>> Current Initiatives\n" + initList.join('\n'))
 			.then(message => pin(message))
 			.catch(console.error);
   	}
