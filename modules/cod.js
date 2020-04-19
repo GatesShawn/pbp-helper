@@ -19,12 +19,15 @@ const Die = require('../utils/die.js');
 let cod_die = 10;
 let cod_tn = 8;
 let cod_ES = 5;
+let GM = 'Storyteller'
 
 let results = [];
 let results_explosion = [];
 let success = [];
 let results_reroll = [];
 
+let initList = '';
+let init_current = 0;
 /**
  * Calls die rolling for Chronicles of Darkness
  * @param  Object options Parameter object
@@ -80,13 +83,21 @@ function responseBuilder(receivedMessage) {
 	let re_again = /8-again|9-again|no-again/;
 	let re_rote = /rote/;
 	let re_init = /\sinit(\s|$)/;
+	let re_init_clear = /\sinit\sclear(\s|$)/;
+
+	let init_clear = receivedMessage.content.match(re_init_clear);
+
+	if(init_clear !== null) {
+		manageInit(receivedMessage, true);
+		return;
+	}
 
 	let die_match = receivedMessage.content.match(re_die);
 
 	// if an init call capture the results and re-direct
 	let init = receivedMessage.content.match(re_init);
 
-	if (init[0]) {
+	if (init !== null) {
 
 		let result = Die.die.roll(10);
 		console.log('Result: ' + result);
@@ -97,7 +108,10 @@ function responseBuilder(receivedMessage) {
 		result += parseInt(die_match[0]);
 		console.log('Init response: ' + result);
 
-		receivedMessage.channel.send(receivedMessage.author.toString() + ", you got a " + result + "on initiative.");
+		receivedMessage.channel.send(receivedMessage.author.toString() + ", you got a " + result + " on initiative.");
+
+		initList += receivedMessage.author.toString() + ': ' + result + '\n';
+		manageInit(receivedMessage);
 
 		return;
 	}
@@ -133,7 +147,8 @@ function responseBuilder(receivedMessage) {
 
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send(receivedMessage.author.toString() + ', your roll was rejected because it was too large. Please roll again with a smaller dice pool.');
+		receivedMessage.channel.send(receivedMessage.author.toString() + ', your roll was rejected because it was too large. Please roll again with a smaller dice pool.')
+			.catch(console.error);
 		return;
 	}
 	let die_count = die_match[0];
@@ -200,7 +215,8 @@ function responseBuilder(receivedMessage) {
 		}
 	}
 	console.log('Success response to server: ' + response);
-	receivedMessage.channel.send(response);
+	receivedMessage.channel.send(response)
+		.catch(console.error);
 
 	let success_response = '';
 
@@ -226,11 +242,58 @@ function responseBuilder(receivedMessage) {
 		}
 	}
 	console.log('Results response to server: ' + success_response);
-	receivedMessage.channel.send(success_response);
+	receivedMessage.channel.send(success_response)
+		.catch(console.error);
 
 	results = [];
 	success = [];
 	results_explosion = [];
+}
+
+
+function manageInit(receivedMessage, clear) {
+	receivedMessage.channel.fetchPinnedMessages(true)
+  		.then(messages => currentInitCheck(messages))
+  		.catch(console.error);
+
+  	function currentInitCheck(messages) {
+  		console.log('Curent Init ID: ' + init_current);
+  		console.log('Current ID checK: ' + messages.find(val => val.id === init_current));
+
+  		let currentPin = messages.find(val => val.id === init_current);
+
+  		if (currentPin) {
+  			currentPin.delete();
+  		} 
+
+  		if (clear) {
+  			if(receivedMessage.guild.roles.find(val => val.name === GM ).members.find(val => val.user === receivedMessage.author)) {
+  				receivedMessage.channel.send(receivedMessage.author.toString() + ', Initiative order cleared.')
+					.catch(console.error);
+			} else {
+				receivedMessage.channel.send(receivedMessage.author.toString() + ', sorry, only the ' + GM + ' can do that.')
+					.catch(console.error);
+			}
+			return;
+  		}
+
+  		//TDOD: add a check for duplicate storyteller inits, should enumarate automatically
+	  	//TODO: if player and already inited, replace? or reject? Multiple for familars/retainers/ etc
+	  	//TODO: Organize the list by init order before posting
+		receivedMessage.channel.send(">>> Current Initiatives\n" + initList)
+			.then(message => pin(message))
+			.catch(console.error);
+  	}
+
+  	
+
+	function pin(message) {
+		init_current = message.id;
+		console.log('Pinned message ID: ' + init_current);
+		message.pin();
+	}
+
+	
 }
 
 exports.call = '/cod';
