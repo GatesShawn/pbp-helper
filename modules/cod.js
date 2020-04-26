@@ -15,6 +15,8 @@
 */
 
 const Die = require('../utils/die.js');
+const utils = require('../utils/utils.js');
+require('../utils/js-extensions.js');
 
 let cod_die = 10;
 let cod_tn = 8;
@@ -26,8 +28,8 @@ let results_explosion = [];
 let success = [];
 let results_reroll = [];
 
-let initList = [];
 let init_current = 0;
+
 /**
  * Calls die rolling for Chronicles of Darkness
  * @param  Object options Parameter object
@@ -85,6 +87,8 @@ function responseBuilder(receivedMessage) {
 	let re_init = /\sinit(\s|$)/;
 	let re_init_clear = /\sinit\sclear(\s|$)/;
 
+	let author = receivedMessage.author.toString();
+
 	let init_clear = receivedMessage.content.match(re_init_clear);
 
 	if(init_clear !== null) {
@@ -108,28 +112,25 @@ function responseBuilder(receivedMessage) {
 		result += parseInt(die_match[0]);
 		console.log('Init response: ' + result);
 
-		receivedMessage.channel.send(receivedMessage.author.toString() + ", you got a " + result + " on initiative.");
-
-		initList.push(receivedMessage.author.toString() + ': ' + result);
-		manageInit(receivedMessage);
+		manageInit(receivedMessage, false, result);
 
 		return;
 	}
 
 	
 	if (die_match === null) {
-		receivedMessage.channel.send(receivedMessage.author.toString() + ", you didn't specify a number of dice to roll. Please try again.");
+		receivedMessage.channel.send(author + ", you didn't specify a number of dice to roll. Please try again.");
 		return;
 	}
 	console.log('Number of dice to be rolled: ' + die_match);
 	let again_match = receivedMessage.content.match(re_again);
 	if (again_match === null) {again_match = '';}
-	console.log(again_match);
+	console.log("again_match: " + again_match);
 	let rote_match = receivedMessage.content.match(re_rote);
 	if (rote_match === null) {rote_match = '';}
-	console.log(rote_match);
+	console.log("rote_match: " + rote_match);
 	rote = rote_match[0] ? true : false;
-	console.log(rote);
+	console.log("rote: " + rote);
 	
 	switch (again_match[0]) {
 		case '9-again':
@@ -147,7 +148,7 @@ function responseBuilder(receivedMessage) {
 
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send(receivedMessage.author.toString() + ', your roll was rejected because it was too large. Please roll again with a smaller dice pool.')
+		receivedMessage.channel.send(author + ', your roll was rejected because it was too large. Please roll again with a smaller dice pool.')
 			.catch(console.error);
 		return;
 	}
@@ -166,7 +167,7 @@ function responseBuilder(receivedMessage) {
 		});
 	}
 
-	let response = receivedMessage.author.toString() + ', you rolled: '
+	let response = author + ', you rolled: '
 
 	for (let i = results.length-1; i >= 0; i--) {
 		let result_print = '';
@@ -250,24 +251,78 @@ function responseBuilder(receivedMessage) {
 	results_explosion = [];
 }
 
+function manageInit(receivedMessage, clear, result) {
+	let author = receivedMessage.author.toString();
+	let isStoryteller = utils.gmCheck(receivedMessage, GM);
+	let initList = new Map();
 
-function manageInit(receivedMessage, clear) {
 	receivedMessage.channel.fetchPinnedMessages(true)
   		.then(messages => currentInitCheck(messages))
   		.catch(console.error);
 
   	function currentInitCheck(messages) {
-  		console.log('Curent Init ID: ' + init_current);
-  		console.log('Current ID checK: ' + messages.find(val => val.id === init_current));
+
+// debug only: Clears the pinned list for when it has filled with half successful test posts
+ // messages.forEach(ms => ms.delete());
+
+  		console.log('Current Init ID: ' + init_current);
 
   		let currentPin = messages.find(val => val.id === init_current);
-
+  		console.log('Current ID checK: ' + currentPin);
   		if (currentPin) {
+
+  			let  initArray = currentPin.content.split('\n');
+
+
+  			// can just pass the array into the map constructor?
+
+  			for (var i = initArray.length - 1; i >= 0; i--) {
+
+  				console.log('Init Array i: ' + initArray[i]);
+
+  				initList.set(initArray[i].split(':')[0], initArray[i]);
+  			}
+
+  			console.log('Sanitized list: ' + initList);
+
+			initList.forEach((value, key) => {
+				console.log('Inits: '+ key + " -- " + value);
+			});
+
+  			let re_author = new RegExp(receivedMessage.author.toString(), 'g');
+  			let author_match = currentPin.content.match(re_author);
+
+  			console.log('author_match: '+ author_match);
+  			if(author_match) {
+  				console.log("isStoryteller?: " + isStoryteller);
+
+  				receivedMessage.channel.send(receivedMessage.author.toString() + ", I'm sorry, you have already rolled for initiative.")
+					.catch(console.error);
+
+  				if (isStoryteller) {
+  					//initList.set(author + '(NPC 1)', initList.get(author).splice(author.indexOf(':')-2, '(NPC 1)'));
+  					//TDOD: add a check for duplicate storyteller inits, should enumarate automatically
+  					// update them as needed, iterating the number
+  				
+
+  				} else {
+  					//handle the player case
+  					//TODO: if player and already inited, replace? or reject? Multiple for familars/retainers/ etc
+  				}
+  			} else {
+  				// new addition
+  				receivedMessage.channel.send(author + ", you got a " + result + " on initiative.");
+  				initList.set(author, author + ': ' + result);
+  			}
   			currentPin.delete();
-  		} 
+  		} else {
+  			receivedMessage.channel.send(author + ", you got a " + result + " on initiative.");
+  			// start a new table
+  			initList.set(author, author + ': ' + result);
+  		}
 
   		if (clear) {
-  			if(receivedMessage.guild.roles.find(val => val.name === GM ).members.find(val => val.user === receivedMessage.author)) {
+  			if(isStoryteller) {
   				receivedMessage.channel.send(receivedMessage.author.toString() + ', Initiative order cleared.')
 					.catch(console.error);
 			} else {
@@ -277,36 +332,44 @@ function manageInit(receivedMessage, clear) {
 			return;
   		}
 
-  		//TDOD: add a check for duplicate storyteller inits, should enumarate automatically
-	  	//TODO: if player and already inited, replace? or reject? Multiple for familars/retainers/ etc
+	  	
 
-	  	initList.sort(function (a, b) {
-	  		let aValue = parseInt(a.split(': ')[1]);
-	  		let bValue = parseInt(b.split(': ')[1]);
+	  	console.log('Cleaning up header line if needed: ' + initList.delete(">>> Current Initiatives"));
 
-	  		if(aValue < bValue) {
-	  			return 1;
-	  		} else if (aValue > bValue) {
-	  			return -1;
-	  		} else {
-	  			return 0;
-	  		}
-	  	});
+	  	let initTable = [">>> Current Initiatives"];
 
-		receivedMessage.channel.send(">>> Current Initiatives\n" + initList.join('\n'))
+	  	initList.forEach(value => initTable.push(value));
+
+	  	if (initTable.length > 0) {
+		  	initTable.sort(function (a, b) {
+		  		let aValue = parseInt(a.split(': ')[1]);
+		  		let bValue = parseInt(b.split(': ')[1]);
+
+		  		if(aValue < bValue) {
+		  			return 1;
+		  		} else if (aValue > bValue) {
+		  			return -1;
+		  		} else {
+		  			return 0;
+		  		}
+		  	});
+	  	}
+
+	  	initTable = initTable.join('\n');
+
+		console.log("final init table: " + initTable);
+
+		receivedMessage.channel.send(initTable)
 			.then(message => pin(message))
 			.catch(console.error);
   	}
-
-  	
 
 	function pin(message) {
 		init_current = message.id;
 		console.log('Pinned message ID: ' + init_current);
 		message.pin();
+		delete initList;
 	}
-
-	
 }
 
 exports.call = '/cod';
