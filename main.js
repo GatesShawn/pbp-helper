@@ -18,35 +18,13 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const secret_token = require('./secret_token.js');
+const ps = require('./utils/psuedo-switch.js');
 
 // global constants
 const client = new Discord.Client();
 
 // global variables
 let message = {};
-let callbacks = {};
-
-/**
- * Adds items to the psuedoSwitch functions callback list
- * @param {String}   _case Value to use for the 'switch case'
- * @param {Function} fn    Function to call when _case match is made
- */
-function add(_case, fn) {
-   callbacks[_case] = callbacks[_case] || [];
-   callbacks[_case].push(fn);
-}
-
-/**
- * Function that works like a switch case but allows for 'cases' to be added dynamically
- * @param  {String} value String to check against the callback list
- */
-function pseudoSwitch(value) {
-   if (callbacks[value]) {
-      callbacks[value].forEach(function(fn) {
-          fn();
-      });
-   }
-}
 
 // check the module folder for modules and add them to the switch for loading
 fs.readdir('./modules', function callback(err, files) {
@@ -54,7 +32,7 @@ fs.readdir('./modules', function callback(err, files) {
 	console.log('Loading System Modules: ' + files);
 	for (let i = files.length - 1; i >= 0; i--) {	
 		let sysModule = require('./modules/' + files[i]);
-		add(sysModule.call, function() {
+		ps.add(sysModule.call, function() {
 		   sysModule.responseBuilder(message);
 		});
 	}
@@ -90,7 +68,7 @@ client.on('message', (receivedMessage) => {
 	console.log('Command Received: ' + cmd);
 
 	message = receivedMessage;
-	pseudoSwitch(cmd);
+	ps.pseudoSwitch(cmd);
 
 });
 
@@ -238,7 +216,7 @@ function addRole(role) {
 	message.guild.member(client.user).addRole(role);
 }
 
-add('/init', function() {
+ps.add('/init', function() {
 	_init();
 });
 
