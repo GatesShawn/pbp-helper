@@ -1,5 +1,5 @@
 /*	
-//	Copyright 2019 Shawn Gates
+//	Copyright 2020 Shawn Gates
 //
 //	Licensed under the Apache License, Version 2.0 (the "License");
 //	you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ function add(_case, fn) {
 }
 
 /**
- * Function that works like a switch case but allows for 'cases' to be added dynamiclly
+ * Function that works like a switch case but allows for 'cases' to be added dynamically
  * @param  {String} value String to check against the callback list
  */
 function pseudoSwitch(value) {
@@ -83,13 +83,13 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-    // if (receivedMessage.guild === 'pbp-helper-test') {
-    //    return;
-    //  }
+// if (receivedMessage.guild != 'pbp-helper-test') {
+// 	return;
+// }
 
 	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
-	console.log('Command Recieveied: ' + cmd);
+	console.log('Command Received: ' + cmd);
 
 	message = receivedMessage;
 	pseudoSwitch(cmd);
@@ -100,7 +100,7 @@ client.on('message', (receivedMessage) => {
  * Function to set up the server as a PbP server
  */
 function _init() {
-	console.log('Starting init funciton')
+	console.log('Starting init function')
 
 	let system = message.content.match(/\s([a-z0-9]*)\s/i);
 
@@ -113,6 +113,7 @@ function _init() {
 	message.channel.send('Setting up the server for Play by Post play');
 	
 	let gmType = 'GM';
+	// change to use the 'faux' switch case (make a util function)
 	console.log(system === 'StoryPath');
 	
 	switch (system) {
@@ -177,7 +178,7 @@ function _init() {
 
 		let category = null;
 
-		// Create channel categrory for game on server
+		// Create channel category for game on server
 		message.channel.send('Creating channel category named: ' + gameName); 
 
 		message.guild.createChannel(gameName, { type: 'category' })
@@ -199,12 +200,17 @@ function makeChannels() {
 	  .then(channelString += 'ooc, ')
 	  .catch(console.error);
 
-
+	  // make posting here GM only??
+	  //change name to PCs??
 	message.guild.createChannel('character_sheets', { type: 'text', topic: 'Contains a sheet for each character in the game', parent: category })
 	  .then(channelString += 'character_sheets, ')
 	  .catch(console.error);
 
 	message.channel.send(channelString);
+
+	// TODO: Add Channels: NPC, Rules Discussion, bot feedback, non-player chat (general?)
+	// TODO: (ability to specify different styles: closed game, LARP like? chat versus PbP?)
+	// TDOD:  Larp style channels: Server rules, character submissions,
 }
 
 function addRole(role) {
