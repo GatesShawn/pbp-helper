@@ -18,26 +18,28 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const secret_token = require('./secret_token.js');
-const ps = require('./utils/psuedo-switch.js');
+const commandList = require('./utils/psuedo-switch.js');
+require('./utils/js-extensions.js');
 
 // global constants
 const client = new Discord.Client();
 
 // global variables
 let message = {};
+let systemTypes = new Map();
 
 // check the module folder for modules and add them to the switch for loading
 fs.readdir('./modules', function callback(err, files) {
 	if(err) console.log (err);
 	console.log('Loading System Modules: ' + files);
-	for (let i = files.length - 1; i >= 0; i--) {	
+	for (let i = files.length - 1; i >= 0; i--) {
 		let sysModule = require('./modules/' + files[i]);
-		ps.add(sysModule.call, function() {
-		   sysModule.responseBuilder(message);
+		commandList.add(sysModule.call, function() {
+			sysModule.responseBuilder(message);
 		});
+		systemTypes = systemTypes.merge(sysModule.system);
 	}
 });
-
 // list connected servers and channels when we connect to the Discord service
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
@@ -60,7 +62,7 @@ client.on('message', (receivedMessage) => {
         return;
     }
 // if (receivedMessage.guild != 'pbp-helper-test') {
-// 	return;
+	// return;
 // }
 
 	let cmd = receivedMessage.content.match(/\/[a-z]+/);
@@ -68,7 +70,7 @@ client.on('message', (receivedMessage) => {
 	console.log('Command Received: ' + cmd);
 
 	message = receivedMessage;
-	ps.pseudoSwitch(cmd);
+	commandList.pseudoSwitch(cmd);
 
 });
 
@@ -85,31 +87,16 @@ function _init() {
 
 	if(gameName) gameName = gameName[1];
 
+	//TODO: Doesnt handle if the init function is called with the game name missing the quotes
+
 	message.channel.send('Setting up the server for play by post play');
 	
 	console.log('Game system:' + system);
 	console.log('Name of the new game:' + gameName);
 
-	let gmType = 'GM';
+	gmType = systemTypes.get(system);
 
-	// change to use the 'faux' switch case (make a util function)
-	console.log(system === 'StoryPath');
-	
-	switch (system) {
-		case 'StoryPath':
-			gmType = 'StoryGuide';
-			break;
-		case 'CofD':
-		case 'CoD':
-		case 'WoD':
-		case 'nWoD':
-		case 'oWoD':
-		case 'V5':
-			gmType = 'Storyteller';
-			break;
-		default:
-			gmType = 'GM';
-	}
+	console.log('GM Type: ' + gmType);
 
 	// Create roles on server
 	let roleString = 'Creating Roles: ';
@@ -216,9 +203,25 @@ function addRole(role) {
 	message.guild.member(client.user).addRole(role);
 }
 
-ps.add('/init', function() {
+function _reset() {
+
+	console.log('Clearing out all of our created content');
+	
+	// remove all roles
+	message.guild.roles.forEach(function (value, key) {
+		value.delete()
+			.catch(console.error);
+	});
+}
+
+commandList.add('/init', function() {
 	_init();
 });
+
+commandList.add('/reset', function() {
+	_reset();
+});
+
 
 // log in to the bot with the secret token
 let bot_secret_token = secret_token.bot_secret_token;
