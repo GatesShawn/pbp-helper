@@ -25,6 +25,16 @@ let results_explosion = [];
 let success = [];
 let results_reroll = [];
 
+let gm = 'Storyteller';
+let call = '/cod';
+let systems = new Map([
+			[ 'CofD', gm ],
+			[ 'CoD', gm ],
+			[ 'Chronicles of Darkness', gm ],
+			[ 'nWoD', gm ],
+			[ 'New World of Darkness', gm ],
+		]);
+
 /**
  * Calls die rolling for Chronicles of Darkness
  * @param  Object options Parameter object
@@ -211,5 +221,7 @@ function responseBuilder(receivedMessage) {
 	results_explosion = [];
 }
 
-exports.call = '/cod';
+// Set the attributes
+exports.call = call;
+exports.system = systems;
 exports.responseBuilder = responseBuilder;

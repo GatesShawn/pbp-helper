@@ -38,5 +38,6 @@ function pseudoSwitch(value) {
    }
 }
 
+exports.list = callbacks;
 exports.add = add;
 exports.pseudoSwitch = pseudoSwitch;
