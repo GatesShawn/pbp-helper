@@ -14,7 +14,8 @@
 // 	limitations under the License.
 */
 
-const Die = require('../utils/die.js');
+const Die = require('../../utils/die.js');
+const fs = require('fs');
 
 let gm = 'GameModerator';
 let call = '/sen';
@@ -25,7 +26,14 @@ let systems = new Map([
 		]);
 
 let results = [];
+let strings;
 
+// load and parse the string file
+try{
+	strings = JSON.parse(fs.readFileSync(__dirname + '/resources.json', 'utf8'));
+} catch (err) {
+	console.log(err);
+}
 /**
  * Calls die rolling for Sentinels
  * @param  Object options Parameter object
@@ -48,12 +56,12 @@ function roll(options) {
 }
 
 function responseBuilder(receivedMessage) {
-
+	let author = receivedMessage.author.toString();
 	let re_die = /[0-9]+/g;
 
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
-		receivedMessage.channel.send(receivedMessage.author.toString() + ", your roll was rejected because you didn't specify any dice types to roll.");
+		receivedMessage.channel.send(author + strings.no_dice);
 		return;
 	}
 	console.log(die_match);
@@ -71,7 +79,7 @@ function responseBuilder(receivedMessage) {
 				roll({type: die_match[i]});
 				break;
 			default:
-				receivedMessage.channel.send(receivedMessage.author.toString() + ", your roll was rejected because it didn't contain the correct die sizes.");
+				receivedMessage.channel.send(author + strings.wrong_dice);
 				return;
 		}
 	}
@@ -81,9 +89,9 @@ function responseBuilder(receivedMessage) {
 	 		return b - a;
 		});
 
-		response = receivedMessage.author.toString() + ', you rolled: Max: ' + results[0] + ' Mid: ' + results[1] + ' Min: ' + results[2];
+		response = author + strings.roll +  strings.value.max + results[0] + strings.value.mid + results[1] + strings.value.min + results[2];
 	} else {
-		response = receivedMessage.author.toString() + ', you rolled: ' + results[0];
+		response = author + strings.roll + results[0];
 	}
 	console.log('Success response to server: ' + response);
 	receivedMessage.channel.send(response);

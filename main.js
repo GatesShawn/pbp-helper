@@ -31,18 +31,8 @@ let systemTypes = new Map();
 // load and parse the string file
 var strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
 
-// check the module folder for modules and add them to the switch for loading
-fs.readdir('./modules', function callback(err, files) {
-	if(err) console.log (err);
-	console.log('Loading System Modules: ' + files);
-	for (let i = files.length - 1; i >= 0; i--) {
-		let sysModule = require('./modules/' + files[i]);
-		commandList.add(sysModule.call, function() {
-			sysModule.responseBuilder(message);
-		});
-		systemTypes = systemTypes.merge(sysModule.system);
-	}
-});
+_loadModules();
+
 // list connected servers and channels when we connect to the Discord service
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
@@ -76,6 +66,23 @@ if (receivedMessage.guild != 'pbp-helper-test') {
 	commandList.pseudoSwitch(cmd);
 
 });
+
+function _loadModules() {
+	// check the module folder for modules and add them to the switch for loading
+	let files = fs.readdirSync('./modules');
+	console.log('Loading System Modules: ' + files);
+	for (let i = files.length - 1; i >= 0; i--) {
+		_registerModule(files[i]);
+	}
+}
+
+function _registerModule(file) {
+	let sysModule = require('./modules/' + file.split('.')[0] + '/' + file);
+	commandList.add(sysModule.call, function() {
+		sysModule.responseBuilder(message);
+	});
+	systemTypes = systemTypes.merge(sysModule.system);
+}
 
 /**
  * Function to set up the server as a PbP server
@@ -217,12 +224,18 @@ function _reset() {
 	});
 }
 
+// Expose commands to Discord
+
 commandList.add('/init', function() {
 	_init();
 });
 
 commandList.add('/reset', function() {
 	_reset();
+});
+
+commandList.add('/reload_modules', function() {
+	_loadModules();
 });
 
 
