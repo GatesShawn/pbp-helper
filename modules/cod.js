@@ -191,11 +191,10 @@ function responseBuilder(receivedMessage) {
 	receivedMessage.channel.send(response);
 
 	let success_response = '';
-
 	if (chance_die) {
-		if(success[0] == 10) {
+		if(results[0] == 10) {
 			success_response = "Success! You rolled a 10 on a chance die!";
-		} else if(success[0] == 1) {
+		} else if(results[0] == 1) {
 			success_response = "You got a Dramatic Failure!";
 		} else {
 			success_response = "You didn't roll a success. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
