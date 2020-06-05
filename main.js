@@ -28,6 +28,10 @@ const client = new Discord.Client();
 let message = {};
 let systemTypes = new Map();
 
+// load and parse the string file
+var strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
+
+
 // check the module folder for modules and add them to the switch for loading
 fs.readdir('./modules', function callback(err, files) {
 	if(err) console.log (err);
@@ -61,9 +65,9 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-// if (receivedMessage.guild != 'pbp-helper-test') {
-	// return;
-// }
+if (receivedMessage.guild != 'pbp-helper-test') {
+	return;
+}
 
 	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
@@ -89,30 +93,30 @@ function _init() {
 
 	//TODO: Doesnt handle if the init function is called with the game name missing the quotes
 
-	message.channel.send('Setting up the server for play by post play');
+	message.channel.send(strings.init);
 	
 	console.log('Game system:' + system);
 	console.log('Name of the new game:' + gameName);
 
-	gmType = systemTypes.get(system);
+	let gmType = systemTypes.get(system);
 
 	console.log('GM Type: ' + gmType);
 
 	// Create roles on server
-	let roleString = 'Creating Roles: ';
+	let roleString = strings.roleString;
 	
-	if(!message.guild.roles.find(val => val.name === 'Bots')) {
+	if(!message.guild.roles.find(val => val.name === strings.roles.bots)) {
 		// Create a Bots role for itself
 		console.log('Creating a Bots role');
 		message.guild.createRole({
-		  name: 'Bots',
+		  name: strings.roles.bots,
 		  color: 'GREY',
 		  permissions: Discord.Permissions.ADMINISTRATOR
 		})
 		  .then(role => addRole(role))
 		  .catch(console.error);
 
-		 roleString += 'Bots, ';
+		 roleString += strings.roles.bots + ', ';
 	}
 
 	if(!message.guild.roles.find(val => val.name === gmType)) {
@@ -128,7 +132,7 @@ function _init() {
 		roleString += gmType + ', ';
 	}
 
-  	if(!message.guild.roles.find(val => val.name === 'Players')) {
+  	if(!message.guild.roles.find(val => val.name === strings.roles.players)) {
 	  	// Create a Players Role
 		console.log('Creating a Players role');
 		message.guild.createRole({
@@ -137,10 +141,10 @@ function _init() {
 		})
 		  .then(role => addRole(role))
 		  .catch(console.error);
-		roleString += 'Players, ';
+		roleString += strings.roles.players + ', ';
 	}
 
-	if(!message.guild.roles.find(val => val.name === 'Observers')) {
+	if(!message.guild.roles.find(val => val.name === strings.roles.observers)) {
 	  	// Create a Observers Role
 		console.log('Creating an Observers role');
 		message.guild.createRole({
@@ -149,7 +153,7 @@ function _init() {
 		})
 		  .then(role => addRole(role))
 		  .catch(console.error);
-		roleString += 'Observers, ';
+		roleString += strings.roles.observers + ', ';
 	}
 
 	message.channel.send(roleString); 

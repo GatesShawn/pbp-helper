@@ -1,0 +1,14 @@
+{
+	"init":"Setting up the server for play by post play",
+	"roleString": "Creating Roles: ",
+	"roles": {
+			"bots": "Bots",
+			"players": "Players",
+			"observers": "Observers"
+	},
+	"channelString": "Creating channels: ",
+	"channels": {
+		"channelString": "Creating channels for game: ",
+		"categoryString":"Creating channel category named: "
+	}
+}
