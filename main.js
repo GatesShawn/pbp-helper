@@ -31,7 +31,6 @@ let systemTypes = new Map();
 // load and parse the string file
 var strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
 
-
 // check the module folder for modules and add them to the switch for loading
 fs.readdir('./modules', function callback(err, files) {
 	if(err) console.log (err);
@@ -158,17 +157,17 @@ function _init() {
 
 	message.channel.send(roleString); 
 
-	gameName = gameName ? gameName : 'New PbP Game'
+	gameName = gameName ? gameName : strings.gameString;
 
-	message.channel.send('Creating channels:' );
+	message.channel.send(strings.setupChannels);
 	
 	if(!message.guild.channels.find(val => val.name === gameName)) {
-		console.log('Creating channels for game: ' + gameName);
+		console.log(strings.channelString + gameName);
 
 		let category = null;
 
 		// Create channel category for game on server
-		message.channel.send('Creating channel category named: ' + gameName); 
+		message.channel.send(strings.categoryString + gameName); 
 
 		message.guild.createChannel(gameName, { type: 'category' })
 		  .then(parent => setParent(parent))
@@ -183,16 +182,16 @@ function setParent(channelCategory) {
 
 function makeChannels() {
 	// Create channels on server
-	let channelString = 'Creating channels: ';
+	let channelString = strings.setupChannels;
 
-	message.guild.createChannel('ooc', { type: 'text', topic: 'General out of character chat', parent: category })
-	  .then(channelString += 'ooc, ')
+	message.guild.createChannel(strings.channels.ooc, { type: 'text', topic: strings.channel_topics.ooc, parent: category })
+	  .then(channelString += strings.channels.ooc + ', ')
 	  .catch(console.error);
 
 	  // make posting here GM only??
 	  //change name to PCs??
-	message.guild.createChannel('character_sheets', { type: 'text', topic: 'Contains a sheet for each character in the game', parent: category })
-	  .then(channelString += 'character_sheets, ')
+	message.guild.createChannel(strings.channels.character_sheets, { type: 'text', topic: strings.channel_topics.character_sheets, parent: category })
+	  .then(channelString += strings.channels.character_sheets + ', ')
 	  .catch(console.error);
 
 	message.channel.send(channelString);
