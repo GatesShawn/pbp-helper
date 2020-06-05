@@ -28,18 +28,11 @@ const client = new Discord.Client();
 let message = {};
 let systemTypes = new Map();
 
-// check the module folder for modules and add them to the switch for loading
-fs.readdir('./modules', function callback(err, files) {
-	if(err) console.log (err);
-	console.log('Loading System Modules: ' + files);
-	for (let i = files.length - 1; i >= 0; i--) {
-		let sysModule = require('./modules/' + files[i]);
-		commandList.add(sysModule.call, function() {
-			sysModule.responseBuilder(message);
-		});
-		systemTypes = systemTypes.merge(sysModule.system);
-	}
-});
+// load and parse the string file
+var strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
+
+_loadModules();
+
 // list connected servers and channels when we connect to the Discord service
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
@@ -61,9 +54,9 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-// if (receivedMessage.guild != 'pbp-helper-test') {
-	// return;
-// }
+if (receivedMessage.guild != 'pbp-helper-test') {
+	return;
+}
 
 	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
@@ -73,6 +66,23 @@ client.on('message', (receivedMessage) => {
 	commandList.pseudoSwitch(cmd);
 
 });
+
+function _loadModules() {
+	// check the module folder for modules and add them to the switch for loading
+	let files = fs.readdirSync('./modules');
+	console.log('Loading System Modules: ' + files);
+	for (let i = files.length - 1; i >= 0; i--) {
+		_registerModule(files[i]);
+	}
+}
+
+function _registerModule(file) {
+	let sysModule = require('./modules/' + file.split('.')[0] + '/' + file);
+	commandList.add(sysModule.call, function() {
+		sysModule.responseBuilder(message);
+	});
+	systemTypes = systemTypes.merge(sysModule.system);
+}
 
 /**
  * Function to set up the server as a PbP server
@@ -89,30 +99,30 @@ function _init() {
 
 	//TODO: Doesnt handle if the init function is called with the game name missing the quotes
 
-	message.channel.send('Setting up the server for play by post play');
+	message.channel.send(strings.init);
 	
 	console.log('Game system:' + system);
 	console.log('Name of the new game:' + gameName);
 
-	gmType = systemTypes.get(system);
+	let gmType = systemTypes.get(system);
 
 	console.log('GM Type: ' + gmType);
 
 	// Create roles on server
-	let roleString = 'Creating Roles: ';
+	let roleString = strings.roleString;
 	
-	if(!message.guild.roles.find(val => val.name === 'Bots')) {
+	if(!message.guild.roles.find(val => val.name === strings.roles.bots)) {
 		// Create a Bots role for itself
 		console.log('Creating a Bots role');
 		message.guild.createRole({
-		  name: 'Bots',
+		  name: strings.roles.bots,
 		  color: 'GREY',
 		  permissions: Discord.Permissions.ADMINISTRATOR
 		})
 		  .then(role => addRole(role))
 		  .catch(console.error);
 
-		 roleString += 'Bots, ';
+		 roleString += strings.roles.bots + ', ';
 	}
 
 	if(!message.guild.roles.find(val => val.name === gmType)) {
@@ -128,7 +138,7 @@ function _init() {
 		roleString += gmType + ', ';
 	}
 
-  	if(!message.guild.roles.find(val => val.name === 'Players')) {
+  	if(!message.guild.roles.find(val => val.name === strings.roles.players)) {
 	  	// Create a Players Role
 		console.log('Creating a Players role');
 		message.guild.createRole({
@@ -137,10 +147,10 @@ function _init() {
 		})
 		  .then(role => addRole(role))
 		  .catch(console.error);
-		roleString += 'Players, ';
+		roleString += strings.roles.players + ', ';
 	}
 
-	if(!message.guild.roles.find(val => val.name === 'Observers')) {
+	if(!message.guild.roles.find(val => val.name === strings.roles.observers)) {
 	  	// Create a Observers Role
 		console.log('Creating an Observers role');
 		message.guild.createRole({
@@ -149,22 +159,22 @@ function _init() {
 		})
 		  .then(role => addRole(role))
 		  .catch(console.error);
-		roleString += 'Observers, ';
+		roleString += strings.roles.observers + ', ';
 	}
 
 	message.channel.send(roleString); 
 
-	gameName = gameName ? gameName : 'New PbP Game'
+	gameName = gameName ? gameName : strings.gameString;
 
-	message.channel.send('Creating channels:' );
+	message.channel.send(strings.setupChannels);
 	
 	if(!message.guild.channels.find(val => val.name === gameName)) {
-		console.log('Creating channels for game: ' + gameName);
+		console.log(strings.channelString + gameName);
 
 		let category = null;
 
 		// Create channel category for game on server
-		message.channel.send('Creating channel category named: ' + gameName); 
+		message.channel.send(strings.categoryString + gameName); 
 
 		message.guild.createChannel(gameName, { type: 'category' })
 		  .then(parent => setParent(parent))
@@ -179,16 +189,16 @@ function setParent(channelCategory) {
 
 function makeChannels() {
 	// Create channels on server
-	let channelString = 'Creating channels: ';
+	let channelString = strings.setupChannels;
 
-	message.guild.createChannel('ooc', { type: 'text', topic: 'General out of character chat', parent: category })
-	  .then(channelString += 'ooc, ')
+	message.guild.createChannel(strings.channels.ooc, { type: 'text', topic: strings.channel_topics.ooc, parent: category })
+	  .then(channelString += strings.channels.ooc + ', ')
 	  .catch(console.error);
 
 	  // make posting here GM only??
 	  //change name to PCs??
-	message.guild.createChannel('character_sheets', { type: 'text', topic: 'Contains a sheet for each character in the game', parent: category })
-	  .then(channelString += 'character_sheets, ')
+	message.guild.createChannel(strings.channels.character_sheets, { type: 'text', topic: strings.channel_topics.character_sheets, parent: category })
+	  .then(channelString += strings.channels.character_sheets + ', ')
 	  .catch(console.error);
 
 	message.channel.send(channelString);
@@ -214,12 +224,18 @@ function _reset() {
 	});
 }
 
+// Expose commands to Discord
+
 commandList.add('/init', function() {
 	_init();
 });
 
 commandList.add('/reset', function() {
 	_reset();
+});
+
+commandList.add('/reload_modules', function() {
+	_loadModules();
 });
 
 
