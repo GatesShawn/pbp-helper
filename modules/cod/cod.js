@@ -14,6 +14,7 @@
 // 	limitations under the License.
 */
 
+const messageBuilder = require('../../utils/message-builder.js');
 const Die = require('../../utils/die.js');
 const fs = require('fs');
 
@@ -102,7 +103,7 @@ function responseBuilder(receivedMessage) {
 
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match === null) {
-		receivedMessage.channel.send(author + strings.no_dice);
+		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
 		return;
 	}
 	console.log('Number of dice to be rolled: ' + die_match);
@@ -131,7 +132,7 @@ function responseBuilder(receivedMessage) {
 
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send(author + strings.large_roll);
+		receivedMessage.channel.send('', new messageBuilder.message(author + strings.large_roll));
 		return;
 	}
 	let die_count = die_match[0];
@@ -198,32 +199,32 @@ function responseBuilder(receivedMessage) {
 		}
 	}
 	console.log('Success response to server: ' + response);
-	receivedMessage.channel.send(response);
 
-	let success_response = '';
+	response += '\n';
+
 	if (chance_die) {
 		if(results[0] == 10) {
-			success_response = strings.chance.success;
+			response += strings.chance.success;
 		} else if(results[0] == 1) {
-			success_response = strings.chance.dramatic_failure;
+			response += strings.chance.dramatic_failure;
 		} else {
-			success_response = strings.chance.failure;
+			response += strings.chance.failure;
 		}
 	} else {
 		// success counting
 		if(success.length == 0) {
 			// failure
-			success_response = strings.results.failure;
+			response += strings.results.failure;
 		} else if (success.length >= cod_ES) {
 			//exceptional success
-			success_response = strings.results.exceptional_success_1 + success.length + strings.results.exceptional_success_2;
+			response += strings.results.exceptional_success_1 + success.length + strings.results.exceptional_success_2;
 		} else {
 			//regular success
-			success_response = strings.results.success_1 + success.length + strings.results.success_2;
+			response += strings.results.success_1 + success.length + strings.results.success_2;
 		}
 	}
-	console.log('Results response to server: ' + success_response);
-	receivedMessage.channel.send(success_response);
+	console.log('Results response to server: ' + response);
+	receivedMessage.channel.send('', new messageBuilder.message(response));
 
 	results = [];
 	success = [];
