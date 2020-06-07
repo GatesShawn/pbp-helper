@@ -100,10 +100,16 @@ function responseBuilder(receivedMessage) {
 	let chance_die = false;
 	let again = 10;
 	let re_die = /[0-9]+(\s|$)/;
+	let re_chance = /chance/;
 	let re_again = /8-again|9-again|no-again/;
 	let re_rote = /rote/;
 
+	let chance_match = receivedMessage.content.match(re_chance);
 	let die_match = receivedMessage.content.match(re_die);
+
+	if (chance_match !== null) {
+		die_match = [0];
+	}
 	if (die_match === null) {
 		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
 		receivedMessage.channel.stopTyping(true);
