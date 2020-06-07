@@ -54,7 +54,7 @@ function start(message, systemTypes) {
 	message.channel.send('', new messageBuilder.message(initResponse))
 		.catch(console.error);
 
-	message.channel.stopTyping();
+	message.channel.stopTyping(true);
 }
 	
 function createRoles(message) {

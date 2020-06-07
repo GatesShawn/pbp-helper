@@ -104,7 +104,7 @@ function responseBuilder(receivedMessage) {
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match === null) {
 		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
-		receivedMessage.channel.stopTyping();
+		receivedMessage.channel.stopTyping(true);
 		return;
 	}
 	console.log('Number of dice to be rolled: ' + die_match);
@@ -134,7 +134,7 @@ function responseBuilder(receivedMessage) {
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
 		receivedMessage.channel.send('', new messageBuilder.message(author + strings.large_roll));
-		receivedMessage.channel.stopTyping();
+		receivedMessage.channel.stopTyping(true);
 		return;
 	}
 	let die_count = die_match[0];
@@ -228,7 +228,7 @@ function responseBuilder(receivedMessage) {
 	console.log('Results response to server: ' + response);
 	receivedMessage.channel.send('', new messageBuilder.message(response));
 
-	receivedMessage.channel.stopTyping();
+	receivedMessage.channel.stopTyping(true);
 	results = [];
 	success = [];
 	results_explosion = [];
