@@ -55,7 +55,7 @@ client.on('message', (receivedMessage) => {
 if (receivedMessage.guild != 'pbp-helper-test') {
 	return;
 }
-
+	receivedMessage.channel.startTyping();
 	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
 	console.log('Command Received: ' + cmd);

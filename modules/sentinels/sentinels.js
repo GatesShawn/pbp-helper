@@ -62,8 +62,8 @@ function responseBuilder(receivedMessage) {
 
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
-		receivedMessage.channel.send(author + strings.no_dice);
 		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
+		receivedMessage.channel.stopTyping(true);
 		return;
 	}
 	console.log(die_match);
@@ -82,6 +82,7 @@ function responseBuilder(receivedMessage) {
 				break;
 			default:
 				receivedMessage.channel.send('', new messageBuilder.message(author + strings.wrong_dice));
+				receivedMessage.channel.stopTyping(true);
 				return;
 		}
 	}
@@ -98,6 +99,7 @@ function responseBuilder(receivedMessage) {
 	console.log('Success response to server: ' + response);
 	receivedMessage.channel.send('', new messageBuilder.message(response));
 
+	receivedMessage.channel.stopTyping(true);
 	results = [];
 }
 
