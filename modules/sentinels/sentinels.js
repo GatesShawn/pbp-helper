@@ -16,6 +16,7 @@
 
 const Die = require('../../utils/die.js');
 const fs = require('fs');
+const messageBuilder = require('../../utils/message-builder.js');
 
 let gm = 'GameModerator';
 let call = '/sen';
@@ -62,6 +63,7 @@ function responseBuilder(receivedMessage) {
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
 		receivedMessage.channel.send(author + strings.no_dice);
+		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
 		return;
 	}
 	console.log(die_match);
@@ -79,7 +81,7 @@ function responseBuilder(receivedMessage) {
 				roll({type: die_match[i]});
 				break;
 			default:
-				receivedMessage.channel.send(author + strings.wrong_dice);
+				receivedMessage.channel.send('', new messageBuilder.message(author + strings.wrong_dice));
 				return;
 		}
 	}
@@ -89,12 +91,12 @@ function responseBuilder(receivedMessage) {
 	 		return b - a;
 		});
 
-		response = author + strings.roll +  strings.value.max + results[0] + strings.value.mid + results[1] + strings.value.min + results[2];
+		response = author + strings.roll +  strings.value.max + '**' + results[0]  + '**' + strings.value.mid  + '**' + results[1]  + '**' + strings.value.min  + '**' + results[2] + '**';
 	} else {
-		response = author + strings.roll + results[0];
+		response = author + strings.roll  + '**' + results[0] + '**';
 	}
 	console.log('Success response to server: ' + response);
-	receivedMessage.channel.send(response);
+	receivedMessage.channel.send('', new messageBuilder.message(response));
 
 	results = [];
 }
