@@ -21,6 +21,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const secret_token = require('./secret_token.js');
 const init = require('./init.js');
+const help = require('./help.js');
 const commandList = require('./utils/psuedo-switch.js');
 require('./utils/js-extensions.js');
 
@@ -108,10 +109,18 @@ function _reset() {
 	message.guild.createChannel('general', { type: 'text'});
 }
 
+function _help() {
+	help.help(message.channel);
+}
+
 // Expose commands to Discord
 
 commandList.add('/init', function() {
 	_init();
+});
+
+commandList.add('/help', function() {
+	_help();
 });
 
 commandList.add('/reset', function() {

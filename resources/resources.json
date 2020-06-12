@@ -24,5 +24,6 @@
 	"channelTopics":{
 		"ooc":"General out of character chat",
 		"character_sheets": "Contains a sheet for each character in the game"
-	}
+	},
+	"help": "Welcome to Play By Post Helper! To start a game use the /init command."
 }
