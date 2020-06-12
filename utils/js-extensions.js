@@ -12,6 +12,8 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
+// 
+//  @author Shawn Gates
 */
 
 if (String.prototype.splice === undefined) {
@@ -28,3 +30,23 @@ if (String.prototype.splice === undefined) {
       text + this.substring(calculatedOffset + removeCount);
   };
 }
+
+if (Map.prototype.merge === undefined) {
+  /**
+  * Merges provided map into this map and returns the new combined map
+  * @param {Map} map The second map to merge into this map
+  * @returns {Map} A new Map that is a combination of the two maps
+  **/
+  Map.prototype.merge = function(map) {
+  	let mapTest = map instanceof Map
+  	if(!mapTest) {
+  		console.log('Merge requires a Map object be supplied.');
+  		return;
+  	}
+
+  	let newMap = new Map([...map, ...this]);
+
+  	return newMap;
+  };
+}
+

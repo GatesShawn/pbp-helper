@@ -1,0 +1,28 @@
+{
+	"bot_name":"PbP Helper",
+	"init":"Setting up the server for play by post play",
+	"gameString":"New PbP Game",
+	"roleString": "Creating Roles: ",
+	"roles": {
+			"bots": "Bots",
+			"players": "Players",
+			"observers": "Observers"
+	},
+	"roleColors": {
+		"bots": "GREY",
+		"players": "BLUE",
+		"GM": "RED",
+		"observers": "RED"
+	},
+	"setupChannels": "Creating channels and categories: ",
+	"channelString": "Creating channels for game: ",
+	"categoryString":"Creating channel category named: ",
+	"channels": {
+		"ooc":"ooc",
+		"character_sheets": "character_sheets"
+	},
+	"channelTopics":{
+		"ooc":"General out of character chat",
+		"character_sheets": "Contains a sheet for each character in the game"
+	}
+}
