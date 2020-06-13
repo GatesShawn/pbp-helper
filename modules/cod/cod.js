@@ -16,8 +16,8 @@
 //	@author Shawn Gates
 */
 
-const utils = require('../utils/utils.js');
-require('../utils/js-extensions.js');
+const utils = require('../../utils/utils.js');
+require('../../utils/js-extensions.js');
 const messageBuilder = require('../../utils/message-builder.js');
 const Die = require('../../utils/die.js');
 const fs = require('fs');
@@ -110,8 +110,6 @@ function responseBuilder(receivedMessage) {
 	let re_init = /\sinit(\s|$)/;
 	let re_init_clear = /\sinit\sclear(\s|$)/;
 
-	let author = receivedMessage.author.toString();
-
 	let init_clear = receivedMessage.content.match(re_init_clear);
 
 	if(init_clear !== null) {
@@ -145,7 +143,8 @@ function responseBuilder(receivedMessage) {
 	}
 	if (die_match === null) {
 		
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
+		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice))
+			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 
 		return;
@@ -285,7 +284,6 @@ function responseBuilder(receivedMessage) {
 	results_explosion = [];
 }
 
-<<<<<<< HEAD:modules/cod.js
 function manageInit(receivedMessage, clear, result) {
 	let author = receivedMessage.author.toString();
 	let isStoryteller = utils.gmCheck(receivedMessage, GM);
