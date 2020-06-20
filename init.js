@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const messageBuilder = require('./utils/message-builder.js');
+const help = require('./utils/help-system.js');
 
 let initResponse = '';
 let roleString = '';
@@ -31,10 +32,17 @@ let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
 function start(message, systemTypes) {
 	console.log('Starting init function');
 
+	//check for help command and rout to that instead	
+	if(help.check(message.content)) {
+		initHelp(message);
+		return;
+	}
+
 	// Start constructing the response
-	initResponse += strings.init + '\n';
+	initResponse += strings.init.setup + '\n';
 
 	// Find what Game System to init
+	// TDOO: this doesnt work with multiple word games, i.e. World of Darkness
 	system = message.content.match(/\s([a-z0-9]*)(\s|$)/i);
 	if(system) system = system[1];
 	console.log('Game system:' + system);
@@ -136,5 +144,17 @@ function makeChannels(category) {
 	
 // 	message.guild.member(client.user).addRole(role);
 // }
+
+/**
+ * @param {Message} message
+ * @return 
+ */
+function initHelp(message) {
+	let response = strings.init.help;
+	// add automatic listing of supported game systems
+	message.channel.send('', new messageBuilder.message(response))
+		.catch(console.error);
+	message.channel.stopTyping(true);
+}
 
 exports.start = start;
