@@ -22,11 +22,13 @@ const messageBuilder = require('./utils/message-builder.js');
 // load and parse the string file
 let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
 
-function help(channel) {
+function help(channel, systems) {
 
-	channel.send('', new messageBuilder.message(strings.help))
+	let helpMessage = strings.help;
+
+	channel.send('', new messageBuilder.message(helpMessage))
 		.catch(console.error);
-	message.channel.stopTyping(true);
+	channel.stopTyping(true);
 }
 
 exports.help = help;

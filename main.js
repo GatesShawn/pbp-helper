@@ -110,7 +110,7 @@ function _reset() {
 }
 
 function _help() {
-	help.help(message.channel);
+	help.help(message.channel, systemTypes);
 }
 
 // Expose commands to Discord
