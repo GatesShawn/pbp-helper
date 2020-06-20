@@ -17,5 +17,6 @@
 	"channelTopics":{
 		"ooc":"General out of character chat",
 		"character_sheets": "Contains a sheet for each character in the game"
-	}
+	},
+	"help":"To use the Chronicles of Darkness module please specify a number of dice to roll or call 'init' to use the initiative system. \n A roll of '0' or 'chance' will roll a chance die.\n You can also specify 'rote', '8-again', '9-again', or 'no-again' to modify your dice roll.\n If calling 'init' any number provided will be used as a modifier to the d10 roll."
 }
