@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const messageBuilder = require('./utils/message-builder.js');
+const help = require('./utils/help-system.js');
 
 let initResponse = '';
 let roleString = '';
@@ -31,10 +32,8 @@ let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
 function start(message, systemTypes) {
 	console.log('Starting init function');
 
-	//check for help command and rout to that instead
-	// will false positive if 'help' is in the name of the game
-	let help = message.content.match(/\s(help)(\s|$)/i);
-	if(help) {
+	//check for help command and rout to that instead	
+	if(help.check(message.content)) {
 		initHelp(message);
 		return;
 	}
