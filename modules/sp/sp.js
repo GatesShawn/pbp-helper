@@ -20,9 +20,9 @@ const Die = require('../../utils/die.js');
 const messageBuilder = require('../../utils/message-builder.js');
 const fs = require('fs');
 
-let storypath_die = 10;
-let storypath_tn = 8;
-let GM = 'Storyguide';
+let storypath_die = 10; 
+let storypath_tn = 7; // this changes more than I hoped, Scion defaults to 7, TCfBtS! is 8... Skill Tricks in TC can change this as well (maybe other things too) TC will need a way to change it per roll
+let GM = 'Storyguide'; 
 let strings;
 
 // load and parse the string file
@@ -32,6 +32,7 @@ try{
 	console.log(err);
 }
 
+// might be able to make this one Map (key: [value, success or not])
 let results = [];
 let success = [];
 
@@ -45,7 +46,7 @@ let systems = new Map([
  * Calls die rolling for StoryPath
  * @param  Object options Parameter object
  * @param Boolean options.chance_die Sets whether the roll being made is a chance die
- * @param Number options.again value to use for rolling again
+ * @param Number options.double value to use for double successes
  * @return {[type]}         [description]
  */
 function roll(options) {
@@ -56,19 +57,19 @@ function roll(options) {
 
 	let result = Die.die.roll(10);
 	results.push(result);
-	if(result >= 8)	success.push(result);
+	if(result >= storypath_tn) success.push(result);
 	
-	// 10s are two succsses
-	if(result >= options.again) {
-			success.push(result);
+	// 10s are two succsses in they came from (they re-roll in Scion?!)
+	if(result >= options.double) {
+		success.push(result);
 	}
 }
 
 function responseBuilder(receivedMessage) {
 	let author = receivedMessage.author.toString();
-	let again = 10;
+	let double = 10;
 	let re_die = /[0-9]+/;
-	let re_again = /8|9-again/;
+	let re_double = /double (8|9)/;
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
 		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice))
@@ -88,27 +89,48 @@ function responseBuilder(receivedMessage) {
 	console.log('Number of dice to be rolled: ' + die_match);
 	let die_count = die_match[0];
 
+	let double_match = receivedMessage.content.match(re_double);
+	if (double_match === null) {double_match = '';}
+	console.log('Double Match results: ' + double_match);
+
+	switch (double_match[0]) {
+		case 'double 9':
+			double = 9;
+			break;
+		case 'double 8':
+			double = 8;
+			break;
+		case 'double 7':
+			double = 7;
+		break;
+		default:
+	}
+	console.log('Double value: ' + double);
+
 	for (var i = die_count-1; i >= 0; i--) {
 		roll({
-			again: again,
+			double: double,
 		});
 	}
 
 	let response = author + strings.roll;
 
+	// add failure line in 'gets consolation'
+	// and handle botches, consolation = two momentum (is this different for different games?)
+
 	for (let i = results.length - 1; i >= 0; i--) {
-			let result_print = ''
-			if (results[i] >= 8) {
-				result_print = '**' + results[i] + '**';
-			} else {
-				result_print = results[i];
-			}
-			//add a comma between results
-			if(i > 0) { 
-				response += result_print + ', ';
-			} else {
-				response += result_print;
-			}
+		let result_print = ''
+		if (results[i] >= storypath_tn) {
+			result_print = '**' + results[i] + '**';
+		} else {
+			result_print = results[i];
+		}
+		//add a comma between results
+		if(i > 0) { 
+			response += result_print + ', ';
+		} else {
+			response += result_print;
+		}
 	}
 
 	response += strings.response_1 + success.length + strings.response_2;
@@ -122,6 +144,13 @@ function responseBuilder(receivedMessage) {
 	results = [];
 	success = [];
 }
+
+// initiaitcve system
+// TC (maybe all?)
+// 1. Roll init
+// 2. gives ticks
+// 3. Storyguide or players choose who goes on a given tick, that uses thier focus
+// 4. New round, same tickes, but focuses can be different
 
 exports.call = call;
 exports.system = systems;
