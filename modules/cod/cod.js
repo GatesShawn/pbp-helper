@@ -17,6 +17,7 @@
 */
 
 const messageBuilder = require('../../utils/message-builder.js');
+const help = require('../../utils/help-system.js');
 const Die = require('../../utils/die.js');
 const fs = require('fs');
 
@@ -103,6 +104,12 @@ function responseBuilder(receivedMessage) {
 	let re_chance = /chance/;
 	let re_again = /8-again|9-again|no-again/;
 	let re_rote = /rote/;
+
+	//check for help command and rout to that instead	
+	if(help.check(receivedMessage.content)) {
+		helpBuilder(receivedMessage);
+		return;
+	}
 
 	let chance_match = receivedMessage.content.match(re_chance);
 	let die_match = receivedMessage.content.match(re_die);
@@ -240,6 +247,18 @@ function responseBuilder(receivedMessage) {
 	results = [];
 	success = [];
 	results_explosion = [];
+}
+
+/**
+ * @param {Message} message
+ * @return 
+ */
+function helpBuilder(message) {
+	let response = strings.help;
+	// add automatic listing of supported game systems
+	message.channel.send('', new messageBuilder.message(response))
+		.catch(console.error);
+	message.channel.stopTyping(true);
 }
 
 // Set the attributes
