@@ -107,7 +107,7 @@ function responseBuilder(receivedMessage) {
 
 	//check for help command and rout to that instead	
 	if(help.check(receivedMessage.content)) {
-		codHelp(receivedMessage);
+		helpBuilder(receivedMessage);
 		return;
 	}
 
@@ -253,7 +253,7 @@ function responseBuilder(receivedMessage) {
  * @param {Message} message
  * @return 
  */
-function codHelp(message) {
+function helpBuilder(message) {
 	let response = strings.help;
 	// add automatic listing of supported game systems
 	message.channel.send('', new messageBuilder.message(response))
