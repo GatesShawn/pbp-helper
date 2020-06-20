@@ -19,6 +19,7 @@
 const Die = require('../../utils/die.js');
 const fs = require('fs');
 const messageBuilder = require('../../utils/message-builder.js');
+const help = require('../../utils/help-system.js');
 
 let gm = 'GameModerator';
 let call = '/sen';
@@ -59,6 +60,13 @@ function roll(options) {
 }
 
 function responseBuilder(receivedMessage) {
+
+	//check for help command and rout to that instead	
+	if(help.check(receivedMessage.content)) {
+		helpBuilder(receivedMessage);
+		return;
+	}
+
 	let author = receivedMessage.author.toString();
 	let re_die = /[0-9]+/g;
 
@@ -103,6 +111,18 @@ function responseBuilder(receivedMessage) {
 
 	receivedMessage.channel.stopTyping(true);
 	results = [];
+}
+
+/**
+ * @param {Message} message
+ * @return 
+ */
+function helpBuilder(message) {
+	let response = strings.help;
+	// add automatic listing of supported game systems
+	message.channel.send('', new messageBuilder.message(response))
+		.catch(console.error);
+	message.channel.stopTyping(true);
 }
 
 exports.call = call;

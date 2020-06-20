@@ -6,5 +6,6 @@
 			"min": " **Min:** ",
 			"mid": " **Mid:** ",
 			"max": " **Max:** "
-	}
+	},
+	"help":"To use the Sentinels module please specify one to three die sizes to roll, such as '/sen 8 10 6'. \n Die sizes of 4, 6, 8, 10, and 12 are accepted. \n You will get Max, Mid, and Min results."
 }
