@@ -31,8 +31,16 @@ let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
 function start(message, systemTypes) {
 	console.log('Starting init function');
 
+	//check for help command and rout to that instead
+	// will false positive if 'help' is in the name of the game
+	let help = message.content.match(/\s(help)(\s|$)/i);
+	if(help) {
+		initHelp(message);
+		return;
+	}
+
 	// Start constructing the response
-	initResponse += strings.init + '\n';
+	initResponse += strings.init.setup + '\n';
 
 	// Find what Game System to init
 	system = message.content.match(/\s([a-z0-9]*)(\s|$)/i);
@@ -136,5 +144,16 @@ function makeChannels(category) {
 	
 // 	message.guild.member(client.user).addRole(role);
 // }
+
+/**
+ * @param {Message} message
+ * @return 
+ */
+function initHelp(message) {
+	let response = strings.init.help;
+	message.channel.send('', new messageBuilder.message(response))
+		.catch(console.error);
+	message.channel.stopTyping(true);
+}
 
 exports.start = start;

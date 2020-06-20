@@ -1,6 +1,9 @@
 {
 	"bot_name":"PbP Helper",
-	"init":"Setting up the server for play by post play",
+	"init": {
+		"setup":"Setting up the server for play by post play",
+		"help":"To use the /init command please specify a game system and game name like so: '/init CofD \"My Game Name\"'"
+	},
 	"gameString":"New PbP Game",
 	"roleString": "Creating Roles: ",
 	"roles": {
@@ -25,5 +28,5 @@
 		"ooc":"General out of character chat",
 		"character_sheets": "Contains a sheet for each character in the game"
 	},
-	"help": "Welcome to Play By Post Helper! To start a game use the /init command."
+	"help": "Welcome to Play By Post Helper! To start a game use the /init command.\n For more details on /init please use '/init help'."
 }
