@@ -100,6 +100,7 @@ function responseBuilder(receivedMessage) {
 	let response = '';
 
 	// an intrinsic lets some re-roll ones, allow rolling or add a keyword to re-roll for them
+	// intrinsic that Extremes out values, I think this is before the max mid min determination so could change the order?
 	if (results.length > 2) {
 		if(!batch_match) {
 			results.sort(function compareNumbers(a, b) {
