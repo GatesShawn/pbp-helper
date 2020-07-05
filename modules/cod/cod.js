@@ -12,9 +12,14 @@
 //	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // 	See the License for the specific language governing permissions and
 // 	limitations under the License.
+// 
+//	@author Shawn Gates
 */
 
-const Die = require('../utils/die.js');
+const messageBuilder = require('../../utils/message-builder.js');
+const help = require('../../utils/help-system.js');
+const Die = require('../../utils/die.js');
+const fs = require('fs');
 
 let cod_die = 10;
 let cod_tn = 8;
@@ -24,6 +29,24 @@ let results = [];
 let results_explosion = [];
 let success = [];
 let results_reroll = [];
+let strings;
+
+// load and parse the string file
+try{
+	strings = JSON.parse(fs.readFileSync(__dirname + '/resources.json', 'utf8'));
+} catch (err) {
+	console.log(err);
+}
+
+let gm = 'Storyteller';
+let call = '/cod';
+let systems = new Map([
+			[ 'CofD', gm ],
+			[ 'CoD', gm ],
+			[ 'Chronicles of Darkness', gm ],
+			[ 'nWoD', gm ],
+			[ 'New World of Darkness', gm ],
+		]);
 
 /**
  * Calls die rolling for Chronicles of Darkness
@@ -73,16 +96,30 @@ function roll(options) {
  * @return {[type]}                 [description]
  */
 function responseBuilder(receivedMessage) {
+	let author = receivedMessage.author.toString();
 	let rote = false;
 	let chance_die = false;
 	let again = 10;
 	let re_die = /[0-9]+(\s|$)/;
+	let re_chance = /chance/;
 	let re_again = /8-again|9-again|no-again/;
 	let re_rote = /rote/;
 
+	//check for help command and rout to that instead	
+	if(help.check(receivedMessage.content)) {
+		helpBuilder(receivedMessage);
+		return;
+	}
+
+	let chance_match = receivedMessage.content.match(re_chance);
 	let die_match = receivedMessage.content.match(re_die);
+
+	if (chance_match !== null) {
+		die_match = [0];
+	}
 	if (die_match === null) {
-		receivedMessage.channel.send(receivedMessage.author.toString() + ", you didn't specify a number of dice to roll. Please try again.");
+		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
+		receivedMessage.channel.stopTyping(true);
 		return;
 	}
 	console.log('Number of dice to be rolled: ' + die_match);
@@ -111,7 +148,8 @@ function responseBuilder(receivedMessage) {
 
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send(receivedMessage.author.toString() + ', your roll was rejected because it was too large. Please roll again with a smaller dice pool.');
+		receivedMessage.channel.send('', new messageBuilder.message(author + strings.large_roll));
+		receivedMessage.channel.stopTyping(true);
 		return;
 	}
 	let die_count = die_match[0];
@@ -129,7 +167,7 @@ function responseBuilder(receivedMessage) {
 		});
 	}
 
-	let response = receivedMessage.author.toString() + ', you rolled: '
+	let response = author + strings.roll;
 
 	for (let i = results.length-1; i >= 0; i--) {
 		let result_print = '';
@@ -178,38 +216,52 @@ function responseBuilder(receivedMessage) {
 		}
 	}
 	console.log('Success response to server: ' + response);
-	receivedMessage.channel.send(response);
 
-	let success_response = '';
+	response += '\n';
 
 	if (chance_die) {
-		if(success[0] == 10) {
-			success_response = "Success! You rolled a 10 on a chance die!";
-		} else if(success[0] == 1) {
-			success_response = "You got a Dramatic Failure!";
+		if(results[0] == 10) {
+			response += strings.chance.success;
+		} else if(results[0] == 1) {
+			response += strings.chance.dramatic_failure;
 		} else {
-			success_response = "You didn't roll a success. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
+			response += strings.chance.failure;
 		}
 	} else {
 		// success counting
 		if(success.length == 0) {
 			// failure
-			success_response = "You rolled no successes. That's a Failure. Would you like to make it a Dramatic Failure for a Beat?";
+			response += strings.results.failure;
 		} else if (success.length >= cod_ES) {
 			//exceptional success
-			success_response = "You rolled " + success.length + " successes. That's an Exceptional Success!";
+			response += strings.results.exceptional_success_1 +  '**' + success.length +  '**' + strings.results.exceptional_success_2;
 		} else {
 			//regular success
-			success_response = "You rolled " + success.length + " successes.";
+			response += strings.results.success_1 + '**' +  success.length + '**' +  strings.results.success_2;
 		}
 	}
-	console.log('Results response to server: ' + success_response);
-	receivedMessage.channel.send(success_response);
+	console.log('Results response to server: ' + response);
+	receivedMessage.channel.send('', new messageBuilder.message(response));
 
+	receivedMessage.channel.stopTyping(true);
 	results = [];
 	success = [];
 	results_explosion = [];
 }
 
-exports.call = '/cod';
+/**
+ * @param {Message} message
+ * @return 
+ */
+function helpBuilder(message) {
+	let response = strings.help;
+	// add automatic listing of supported game systems
+	message.channel.send('', new messageBuilder.message(response))
+		.catch(console.error);
+	message.channel.stopTyping(true);
+}
+
+// Set the attributes
+exports.call = call;
+exports.system = systems;
 exports.responseBuilder = responseBuilder;
