@@ -1,5 +1,5 @@
 /*	
-//	Copyright 2019 Shawn Gates
+//	Copyright 2020 Shawn Gates
 //
 //	Licensed under the Apache License, Version 2.0 (the "License");
 //	you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ const messageBuilder = require('../../utils/message-builder.js');
 const fs = require('fs');
 
 let storypath_die = 10; 
-let storypath_tn = 7; // this changes more than I hoped, Scion defaults to 7, TCfBtS! is 8... Skill Tricks in TC can change this as well (maybe other things too) TC will need a way to change it per roll
+let storypath_tn = 8; // this changes more than I hoped. Skill Tricks in TC can change this as well (maybe other things too) TC will need a way to change it per roll
 let GM = 'Storyguide'; 
 let strings;
 
@@ -89,6 +89,7 @@ function responseBuilder(receivedMessage) {
 	console.log('Number of dice to be rolled: ' + die_match);
 	let die_count = die_match[0];
 
+	//change back to -again...
 	let double_match = receivedMessage.content.match(re_double);
 	if (double_match === null) {double_match = '';}
 	console.log('Double Match results: ' + double_match);
@@ -117,6 +118,9 @@ function responseBuilder(receivedMessage) {
 
 	// add failure line in 'gets consolation'
 	// and handle botches, consolation = two momentum (is this different for different games?)
+	// dr:e, scion : botch gives 2 extra momentum, for total of 3
+	// dr:e, scion has voluntary botches on failur, for 2 momentum
+	// scions; faild specialty gives +1 momentum
 
 	for (let i = results.length - 1; i >= 0; i--) {
 		let result_print = ''
@@ -150,7 +154,7 @@ function responseBuilder(receivedMessage) {
 // 1. Roll init
 // 2. gives ticks
 // 3. Storyguide or players choose who goes on a given tick, that uses thier focus
-// 4. New round, same tickes, but focuses can be different
+// 4. New round, same tickes, but focuses can be different, Dr:e, scion:  doesnt say to rechoose, its set
 
 exports.call = call;
 exports.system = systems;
