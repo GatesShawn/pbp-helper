@@ -55,7 +55,7 @@ function roll(options) {
 
 	let result = Die.die.roll(options.type);
 
-	results.push(result);
+	results.push({result:result, type:options.type});
 	console.log('Results Array: ' + results);
 }
 
@@ -98,13 +98,13 @@ function responseBuilder(receivedMessage) {
 	}
 	let response = '';
 	if (results.length > 2) {
+		console.log(results);
 		results.sort(function compareNumbers(a, b) {
-	 		return b - a;
+	 		return b.result - a.result;
 		});
-
-		response = author + strings.roll +  strings.value.max + '**' + results[0]  + '**' + strings.value.mid  + '**' + results[1]  + '**' + strings.value.min  + '**' + results[2] + '**';
+		response = author + strings.roll +  strings.value.max + '**' + results[0].result  + '**'  + "(d" + results[0].type + ") "+ strings.value.mid  + '**' + results[1].result  + '**'  + "(d" + results[1].type + ") " + strings.value.min  + '**' + results[2].result + '**'  + "(d" + results[2].type + ")";
 	} else {
-		response = author + strings.roll  + '**' + results[0] + '**';
+		response = author + strings.roll  + '**' + results[0].result + '**' + "(d" + results[0].type + ")";
 	}
 	console.log('Success response to server: ' + response);
 	receivedMessage.channel.send('', new messageBuilder.message(response));
