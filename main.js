@@ -63,8 +63,11 @@ client.on('message', (receivedMessage) => {
 
 	console.log('Command Received: ' + cmd);
 
-	if(cmd === null) receivedMessage.channel.stopTyping(true);
-
+	if(cmd == null) {
+		console.log('No command; canceling the typing notification');
+		receivedMessage.channel.stopTyping(true);
+	}
+	
 	message = receivedMessage;
 	commandList.pseudoSwitch(cmd);
 
