@@ -69,6 +69,7 @@ function responseBuilder(receivedMessage) {
 
 	let author = receivedMessage.author.toString();
 	let re_die = /[0-9]+/g;
+	let re_batch = /batch/g;
 
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
@@ -76,7 +77,7 @@ function responseBuilder(receivedMessage) {
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
-	console.log(die_match);
+	let batch_match = receivedMessage.content.match(re_batch);
 
 	// check for the acceptable types of dice
 	for (var i = die_match.length - 1; i >= 0; i--) {
@@ -97,12 +98,26 @@ function responseBuilder(receivedMessage) {
 		}
 	}
 	let response = '';
+
+	// an intrinsic lets some re-roll ones, allow rolling or add a keyword to re-roll for them
 	if (results.length > 2) {
-		console.log(results);
-		results.sort(function compareNumbers(a, b) {
-	 		return b.result - a.result;
-		});
-		response = author + strings.roll +  strings.value.max + '**' + results[0].result  + '**'  + "(d" + results[0].type + ") "+ strings.value.mid  + '**' + results[1].result  + '**'  + "(d" + results[1].type + ") " + strings.value.min  + '**' + results[2].result + '**'  + "(d" + results[2].type + ")";
+		if(!batch_match) {
+			results.sort(function compareNumbers(a, b) {
+		 		return b.result - a.result;
+			});
+			response = author + strings.roll +  strings.value.max + '**' + results[0].result  + '**'  + "(d" + results[0].type + ") "+ strings.value.mid  + '**' + results[1].result  + '**'  + "(d" + results[1].type + ") " + strings.value.min  + '**' + results[2].result + '**'  + "(d" + results[2].type + ")";
+		} else {
+
+			// handle batch rolling for the GM
+			response = author + strings.roll;
+			for (var i = results.length - 1; i >= 0; i--) {
+				response += '**' + results[i].result  + '**' + "(d" + results[i].type + ")";
+				if (results[i] !== 1) {
+					response += ', ';
+				}
+			}
+			
+		}
 	} else {
 		response = author + strings.roll  + '**' + results[0].result + '**' + "(d" + results[0].type + ")";
 	}
@@ -129,4 +144,12 @@ exports.call = call;
 exports.system = systems;
 exports.responseBuilder = responseBuilder;
 
-// sentinals init is a nimination system, maybe a tracker that just ticks off who has gone and then resets once all do
+// sentinels init is a nomination system, maybe a tracker that just ticks off who has gone and then resets once all do
+// 
+// Starting a sentinels game add the boost/hinder/etc chart and pin it
+// |EFFECT DIE RESULT | MOD SIZE | OUTCOME                                      |
+// |0 or Less         | Nothing  | Action utterly, spectacularly fails          |
+// |1-3               | +/- 1    | Action fails, or succeeds with a major twist |
+// |4-7               | +/- 2    | Action succeeds, but with a minor twist      |
+// |8-11              | +/- 3    | Action completely succeeds                   |
+// |12+               | +/- 4    | Action succeeds beyond expectations          |
