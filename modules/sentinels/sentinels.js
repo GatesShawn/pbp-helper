@@ -21,11 +21,12 @@ const fs = require('fs');
 const messageBuilder = require('../../utils/message-builder.js');
 const help = require('../../utils/help-system.js');
 
+let system = 'Sentinels of the Multiverse';
 let gm = 'GameModerator';
 let call = '/sen';
 let systems = new Map([
 			[ 'Sentinels', gm ],
-			['Sentinels of the Multiverse',  gm ],
+			[system,  gm ],
 			['SotM', gm ]
 		]);
 
@@ -60,6 +61,7 @@ function roll(options) {
 }
 
 function responseBuilder(receivedMessage) {
+	receivedMessage.channel.startTyping();
 
 	//check for help command and rout to that instead	
 	if(help.check(receivedMessage.content)) {
@@ -72,11 +74,10 @@ function responseBuilder(receivedMessage) {
 
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice));
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
-	console.log(die_match);
 
 	// check for the acceptable types of dice
 	for (var i = die_match.length - 1; i >= 0; i--) {
@@ -91,14 +92,13 @@ function responseBuilder(receivedMessage) {
 				roll({type: die_match[i]});
 				break;
 			default:
-				receivedMessage.channel.send('', new messageBuilder.message(author + strings.wrong_dice));
+				receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.wrong_dice));
 				receivedMessage.channel.stopTyping(true);
 				return;
 		}
 	}
 	let response = '';
 	if (results.length > 2) {
-		console.log(results);
 		results.sort(function compareNumbers(a, b) {
 	 		return b.result - a.result;
 		});
@@ -107,20 +107,21 @@ function responseBuilder(receivedMessage) {
 		response = author + strings.roll  + '**' + results[0].result + '**' + "(d" + results[0].type + ")";
 	}
 	console.log('Success response to server: ' + response);
-	receivedMessage.channel.send('', new messageBuilder.message(response));
+	receivedMessage.channel.send('', new messageBuilder.message(system, response));
 
 	receivedMessage.channel.stopTyping(true);
 	results = [];
 }
 
 /**
+ * Callback for help calls
  * @param {Message} message
  * @return 
  */
 function helpBuilder(message) {
 	let response = strings.help;
 	// add automatic listing of supported game systems
-	message.channel.send('', new messageBuilder.message(response))
+	message.channel.send('', new messageBuilder.message(system, response))
 		.catch(console.error);
 	message.channel.stopTyping(true);
 }

@@ -57,16 +57,10 @@ client.on('message', (receivedMessage) => {
     }
 // if (receivedMessage.guild != 'pbp-helper-test') {
 // 	return;
-// }
-	receivedMessage.channel.startTyping();
+//}
 	let cmd = receivedMessage.content.match(/\/[a-z]+/);
 
 	console.log('Command Received: ' + cmd);
-
-	if(cmd == null) {
-		console.log('No command; canceling the typing notification');
-		receivedMessage.channel.stopTyping(true);
-	}
 	
 	message = receivedMessage;
 	commandList.pseudoSwitch(cmd);
