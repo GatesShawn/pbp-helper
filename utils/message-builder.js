@@ -23,10 +23,10 @@ const fs = require('fs');
 // load and parse the string file
 var strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
 
-function messageBuilder (content) {
+function messageBuilder (system, content) {
 	let embed = new Discord.RichEmbed();
 
-	embed.setAuthor(strings.bot_name);
+	embed.setAuthor(system);
 	embed.setDescription(content);
 
 	return embed;

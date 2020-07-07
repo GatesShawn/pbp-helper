@@ -39,6 +39,7 @@ try{
 }
 
 let gm = 'Storyteller';
+let system = 'Chronicles of Darkness';
 let call = '/cod';
 let systems = new Map([
 			[ 'CofD', gm ],
@@ -105,6 +106,8 @@ function responseBuilder(receivedMessage) {
 	let re_again = /8-again|9-again|no-again/;
 	let re_rote = /rote/;
 
+	receivedMessage.channel.startTyping();
+
 	//check for help command and rout to that instead	
 	if(help.check(receivedMessage.content)) {
 		helpBuilder(receivedMessage);
@@ -118,7 +121,7 @@ function responseBuilder(receivedMessage) {
 		die_match = [0];
 	}
 	if (die_match === null) {
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice));
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice));
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
@@ -148,7 +151,7 @@ function responseBuilder(receivedMessage) {
 
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.large_roll));
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.large_roll));
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
@@ -241,7 +244,7 @@ function responseBuilder(receivedMessage) {
 		}
 	}
 	console.log('Results response to server: ' + response);
-	receivedMessage.channel.send('', new messageBuilder.message(response));
+	receivedMessage.channel.send('', new messageBuilder.message(system, response));
 
 	receivedMessage.channel.stopTyping(true);
 	results = [];
@@ -256,7 +259,7 @@ function responseBuilder(receivedMessage) {
 function helpBuilder(message) {
 	let response = strings.help;
 	// add automatic listing of supported game systems
-	message.channel.send('', new messageBuilder.message(response))
+	message.channel.send('', new messageBuilder.message(system, response))
 		.catch(console.error);
 	message.channel.stopTyping(true);
 }
