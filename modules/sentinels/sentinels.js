@@ -71,12 +71,18 @@ function responseBuilder(receivedMessage) {
 
 	let author = receivedMessage.author.toString();
 	let re_die = /[0-9]+/g;
+	let re_batch = /b|batch/g;
 
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
 		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice));
 		receivedMessage.channel.stopTyping(true);
 		return;
+	}
+
+	let batch_match = receivedMessage.content.match(re_batch);
+	if (batch_match===null) {
+		batch_match = false;
 	}
 
 	// check for the acceptable types of dice
@@ -97,14 +103,21 @@ function responseBuilder(receivedMessage) {
 				return;
 		}
 	}
-	let response = '';
-	if (results.length > 2) {
-		results.sort(function compareNumbers(a, b) {
-	 		return b.result - a.result;
-		});
-		response = author + strings.roll +  strings.value.max + '**' + results[0].result  + '**'  + "(d" + results[0].type + ") "+ strings.value.mid  + '**' + results[1].result  + '**'  + "(d" + results[1].type + ") " + strings.value.min  + '**' + results[2].result + '**'  + "(d" + results[2].type + ")";
+	let response = author + strings.roll;
+	if(batch_match) {
+			console.log('Batch mode');
+			for (var i = results.length - 1; i >= 0; i--) {
+				response += ' **' + results[i].result + '**' + "(d" + results[i].type + ") ";
+			}
 	} else {
-		response = author + strings.roll  + '**' + results[0].result + '**' + "(d" + results[0].type + ")";
+		if (results.length > 2) {
+			results.sort(function compareNumbers(a, b) {
+		 		return b.result - a.result;
+			});
+			response += strings.value.max + '**' + results[0].result  + '**'  + "(d" + results[0].type + ") "+ strings.value.mid  + '**' + results[1].result  + '**'  + "(d" + results[1].type + ") " + strings.value.min  + '**' + results[2].result + '**'  + "(d" + results[2].type + ")";
+		} else {
+			response += '**' + results[0].result + '**' + "(d" + results[0].type + ")";
+		}
 	}
 	console.log('Success response to server: ' + response);
 	receivedMessage.channel.send('', new messageBuilder.message(system, response));
