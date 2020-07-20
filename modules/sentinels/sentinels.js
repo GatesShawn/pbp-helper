@@ -70,8 +70,16 @@ function responseBuilder(receivedMessage) {
 	}
 
 	let author = receivedMessage.author.toString();
+
 	let re_die = /[0-9]+/g;
 	let re_batch = /b|batch/g;
+	let re_init = /init/g;
+
+	let init_match = receivedMessage.content.match(re_init);
+	if(init_match) {
+		init(receivedMessage);
+		return;
+	}
 
 	let die_match = receivedMessage.content.match(re_die);
 	if (die_match===null) {
@@ -115,6 +123,8 @@ function responseBuilder(receivedMessage) {
 		 		return b.result - a.result;
 			});
 			response += strings.value.max + '**' + results[0].result  + '**'  + "(d" + results[0].type + ") "+ strings.value.mid  + '**' + results[1].result  + '**'  + "(d" + results[1].type + ") " + strings.value.min  + '**' + results[2].result + '**'  + "(d" + results[2].type + ")";
+		} else if (results.length === 2) {
+			response += '**' + results[0].result + '**' + "(d" + results[0].type + ") " + '**' + results[1].result + '**' + "(d" + results[1].type + ")";
 		} else {
 			response += '**' + results[0].result + '**' + "(d" + results[0].type + ")";
 		}
@@ -124,6 +134,39 @@ function responseBuilder(receivedMessage) {
 
 	receivedMessage.channel.stopTyping(true);
 	results = [];
+}
+
+function init(message) {
+	message.channel.send('', new messageBuilder.message(system, 'Initiative Tracker\n'))
+		.catch(console.error);
+	const filter = (reaction, user) => {
+		return ['❔', '✔️'].includes(reaction.emoji.name) && user.id === message.author.id;
+	};
+	message.channel.send('', new messageBuilder.message(system, 'Environment\n'))
+		.then(post => {
+			post.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+				.then(collected => {
+					const reaction = collected.first();
+					if (reaction.emoji.name === '❔') {
+						// post.clearReactions()
+						// 	.then(post.react('✔️'))
+						// 	.catch(console.error);
+						post.react('✔️');
+					}
+				})
+			post.react("❔");
+		})
+		.catch(console.error);
+		
+	// if(players) {
+
+	// }
+
+
+	// if(npcs) {
+
+	// }
+	// message.channel.send('', new messageBuilder.message(system, response));
 }
 
 /**
