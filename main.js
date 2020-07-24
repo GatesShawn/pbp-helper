@@ -1,22 +1,41 @@
+/*	
+//	Copyright 2020 Shawn Gates
+//
+//	Licensed under the Apache License, Version 2.0 (the "License");
+//	you may not use this file except in compliance with the License.
+//	You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//	Unless required by applicable law or agreed to in writing, software
+// 	distributed under the License is distributed on an "AS IS" BASIS,
+//	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// 	See the License for the specific language governing permissions and
+// 	limitations under the License.
+// 
+//	@author Shawn Gates
+*/
+
+// setup libs
 const Discord = require('discord.js');
+const fs = require('fs');
 const secret_token = require('./secret_token.js');
 const log = require('./log.js');
-// const cod = require('./cod.js');
+const init = require('./init.js');
+const help = require('./help.js');
+const commandList = require('./utils/psuedo-switch.js');
+require('./utils/js-extensions.js');
 
+// global constants
 const client = new Discord.Client();
 
-let die = {
-  sides: 6,
-  roll: function (sides) {
-  	
-  	if(sides) this.sides = sides;
+// global variables
+let message = {};
+let systemTypes = new Map();
 
-    var randomNumber = Math.floor(Math.random() * this.sides) + 1;
-    
-    return randomNumber;
-  }
-}
+_loadModules();
 
+// list connected servers and channels when we connect to the Discord service
 client.on('ready', () => {
     console.log("Connected as " + client.user.tag);
     // List servers the bot is connected to
@@ -29,37 +48,56 @@ client.on('ready', () => {
             console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`);
         });
     });
+});	
+
+// listen for messages from the bot
+client.on('message', (receivedMessage) => {
+    // Prevent bot from responding to its own messages
+    if (receivedMessage.author == client.user) {
+        return;
+    }
+// if (receivedMessage.guild != 'pbp-helper-test') {
+// 	return;
+//}
+	let cmd = receivedMessage.content.match(/\/[a-z]+/);
+
+	console.log('Command Received: ' + cmd);
+	
+	message = receivedMessage;
+	commandList.pseudoSwitch(cmd);
 
 });
 
-let results = [];
-let success = [];
+function _loadModules() {
+	// check the module folder for modules and add them to the switch for loading
+	let files = fs.readdirSync('./modules');
+	console.log('Loading System Modules: ' + files);
+	for (let i = files.length - 1; i >= 0; i--) {
+		_registerModule(files[i]);
+	}
+}
+
+function _registerModule(file) {
+	let sysModule = require('./modules/' + file.split('.')[0] + '/' + file);
+	commandList.add(sysModule.call, function() {
+		sysModule.responseBuilder(message);
+	});
+	systemTypes = systemTypes.merge(sysModule.system);
+}
 
 /**
- * Calls die rolling for Chronicles of Darkness
- * @param  Object options Parameter object
- * @param Boolean options.chance_die Sets whether the roll being made is a chance die
- * @param Number options.again value to use for rolling again
- * @return {[type]}         [description]
+ * Function to set up the server as a PbP server
  */
-function cod(options) {
-	if (!options) {
-		console.log('Options is required!');
-		return;
-	}
+function _init() {
+	init.start(message, systemTypes);
+}
 
-	let result = die.roll(10);
-	console.log(result);
-	results.push(result);
-	if(result >= 8)	success.push(result);
-	console.log(results);
-	console.log(success);
+function _reset() {
+	console.log('Clearing out all of our created content');
 
-	if(result == options.again && !options.chance_die) {
-		cod({});		
-	}
-
-}	
+	// remove channels
+	message.guild.channels.deleteAll();
+}
 
 client.on('message', (receivedMessage) => {
     // Prevent bot from responding to its own messages
@@ -165,7 +203,39 @@ client.on('message', (receivedMessage) => {
 		//todo: add support for naming the log file
 		log.log(receivedMessage);
 	}
+	// remove all roles
+	message.guild.roles.forEach(function (value, key) {
+		value.delete()
+			.catch(console.error);
+	});
+
+	// create a new general channel
+	message.guild.createChannel('general', { type: 'text'});
 });
 
+function _help() {
+	help.help(message.channel, systemTypes);
+}
+
+// Expose commands to Discord
+
+commandList.add('/init', function() {
+	_init();
+});
+
+commandList.add('/help', function() {
+	_help();
+});
+
+commandList.add('/reset', function() {
+	_reset();
+});
+
+commandList.add('/reload_modules', function() {
+	_loadModules();
+});
+
+
+// log in to the bot with the secret token
 let bot_secret_token = secret_token.bot_secret_token;
 client.login(bot_secret_token);

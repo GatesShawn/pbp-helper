@@ -1,0 +1,22 @@
+{
+	"no_dice":", you didn't specify a number of dice to roll. Please try again.",
+	"large_roll":", your roll was rejected because it was too large. Please roll again with a smaller dice pool.'",
+	"roll": ", you rolled: ",
+	"chance": {
+			"success": "**Success!** You rolled a **10** on a chance die!",
+			"failure": "You didn't roll a success. That's a **Failure**. Would you like to make it a Dramatic Failure for a Beat?",
+			"dramatic_failure": "You got a **Dramatic Failure**!"
+	},
+	"results": {
+		"success_1": "You rolled ",
+		"success_2": " successes. That's a **Success**!",
+		"exceptional_success_1": "You rolled ",
+		"exceptional_success_2": " successes. That's an **Exceptional Success**!",
+		"failure": "You rolled no successes. That's a **Failure**. Would you like to make it a Dramatic Failure for a Beat?"
+	},
+	"channelTopics":{
+		"ooc":"General out of character chat",
+		"character_sheets": "Contains a sheet for each character in the game"
+	},
+	"help":"To use the Chronicles of Darkness module please specify a number of dice to roll or call 'init' to use the initiative system. \n A roll of '0' or 'chance' will roll a chance die.\n You can also specify 'rote', '8-again', '9-again', or 'no-again' to modify your dice roll.\n If calling 'init', any number provided will be used as a modifier to the d10 roll."
+}
