@@ -1,0 +1,11 @@
+{
+	"no_dice":", your roll was rejected because you didn't specify any dice types to roll.",
+	"wrong_dice":", your roll was rejected because it didn't contain the correct die sizes.",
+	"roll": ", you rolled: ",
+	"value": {
+			"min": "Min: ",
+			"mid": "Mid: ",
+			"max": "Max: "
+	},
+		"help":"To use the Chronicles of Darkness module please specify a number of dice to roll or call 'init' to use the initiative system. \n A roll of '0' or 'chance' will roll a chance die.\n You can also specify 'rote', '8-again', '9-again', or 'no-again' to modify your dice roll.\n If calling 'init' any number provided will be used as a modifier to the d10 roll."
+}
