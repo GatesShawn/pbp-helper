@@ -29,6 +29,8 @@ function messageBuilder (system, content) {
 	embed.setAuthor(system);
 	embed.setDescription(content);
 
+	console.log('Sent to Discord - ' + system + ': ' + content);
+
 	return embed;
 }
 
