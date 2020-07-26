@@ -97,7 +97,7 @@ function roll(options) {
  * @return {[type]}                 [description]
  */
 function responseBuilder(receivedMessage) {
-	let author = receivedMessage.author.toString();
+	let author = receivedMessage.author;
 	let rote = false;
 	let chance_die = false;
 	let again = 10;
@@ -109,7 +109,7 @@ function responseBuilder(receivedMessage) {
 	receivedMessage.channel.startTyping();
 
 	//check for help command and rout to that instead	
-	if(help.check(receivedMessage.content)) {
+	if(receivedMessage.help) {
 		helpBuilder(receivedMessage);
 		return;
 	}

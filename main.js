@@ -23,6 +23,7 @@ const secret_token = require('./secret_token.js');
 const init = require('./init.js');
 const help = require('./help.js');
 const commandList = require('./utils/psuedo-switch.js');
+const splitter = require('./utils/command-splitter.js');
 require('./utils/js-extensions.js');
 
 // global constants
@@ -55,15 +56,16 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
-// if (receivedMessage.guild != 'pbp-helper-test') {
-// 	return;
-//}
-	let cmd = receivedMessage.content.match(/\/[a-z]+/);
+if (receivedMessage.guild != 'pbp-helper-test') {
+	return;
+}
 
-	console.log('Command Received: ' + cmd);
+	let cmd = splitter.parse(receivedMessage);
+
+	console.log('Command Received: ' + cmd.cmd);
 	
-	message = receivedMessage;
-	commandList.pseudoSwitch(cmd);
+	message = cmd;
+	commandList.pseudoSwitch(cmd.cmd);
 
 });
 

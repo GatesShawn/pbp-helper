@@ -16,38 +16,73 @@
 //	@author Shawn Gates
 */
 
-// setup libs
-const Discord = require('discord.js');
-
 /**
- * @param  {Message} message The Discord message to parse
- * @return {[type]}
+ * Reads through the sent message and splits up the components
+ * @param  {Object} message Message object from Discord
+ * @return {Object} command Object containing the parsed command
+ * @return {String} command.cmd Command denote with a slash
+ * @return {String} command.author Author string of the message
+ * @return {String} command.gameName Quoted name of the new game (only applicable for /init calls)
+ * @return {Object} command.channel Channel object from Discord
+ * @return {String} command.help Help string, null if help wasn't called
+ * @return {Array} command.dice Any numbers passed are treated as dice
+ * @return {Array} command.options Anything else is treated as an option
  */
 function parse(message) {
-	// check that message is a valid message object
-	if(message instanceof Discord.Message != true) {
-		console.log('Parse requires a Discord Message object')
+	if (typeof message.content !== 'string') {
+		console.log('Error: parse requires a Message object with a content string.');
 		return;
 	}
-	// I think it would be slightly more perfomrant to only pass the content to this function in the first place
-	let command = message.content;
-	
+
 	console.log('Parsing the message');
-	let re_name = new RegExp(/\".*\"/i);
-	let name = command.match(re_name);
 
-	command = command.replace(re_name, '')
+	let author = message.author.toString();
+	let channel = message.channel;
 
-	let commandList = command.split(' ');
+	// Extract game name
+	let re_gameName = new RegExp(/[\"|\'].*[\"|\']/);
+	let gameName = message.content.match(re_gameName);
+	if (gameName === null) gameName = [''];
+	let newName = message.content.replace(gameName[0], '');
 
-	// if(name != null) {
-	// 	commandList.push(name[0]);
-	// }
-	// console.log(commandList);
+	let commandList = newName.split(' ');
 
-	return {
-		command: 
-	};
+	console.log(commandList);
+
+	// Extract command
+	let cmd = commandList[0];
+	if (cmd.charAt(0) !== '/') {
+		console.log('Not a command for PbP-Helper');
+		return;
+	}
+	commandList.shift();
+
+	// Extract Help command; null if it isn't called
+	let help = commandList.find(element => element === 'help');
+
+	let list = commandList.values();
+	let dice = [];
+	let options = [];
+
+	for (const value of list) {
+		if (isNaN(value)) {
+	  		options.push(value);
+		} else {
+	  		dice.push(parseInt(value));
+		}
+	}
+
+	let command = {
+		cmd: cmd,
+		author: author,
+		gameName: gameName,
+		channel: channel,
+		dice: dice,
+		options: options,
+		help: help
+	}
+	
+	return command; 
 }
 
 exports.parse = parse;
