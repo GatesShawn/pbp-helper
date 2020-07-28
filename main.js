@@ -56,6 +56,7 @@ client.on('message', (receivedMessage) => {
     if (receivedMessage.author == client.user) {
         return;
     }
+    
 if (receivedMessage.guild != 'pbp-helper-test') {
 	return;
 }
@@ -69,6 +70,10 @@ if (receivedMessage.guild != 'pbp-helper-test') {
 
 });
 
+/**
+ * [_loadModules description]
+ * @return {[type]} [description]
+ */
 function _loadModules() {
 	// check the module folder for modules and add them to the switch for loading
 	let files = fs.readdirSync('./modules');
@@ -78,6 +83,11 @@ function _loadModules() {
 	}
 }
 
+/**
+ * [_registerModule description]
+ * @param  {[type]} file [description]
+ * @return {[type]}      [description]
+ */
 function _registerModule(file) {
 	let sysModule = require('./modules/' + file.split('.')[0] + '/' + file);
 	commandList.add(sysModule.call, function() {
@@ -93,6 +103,10 @@ function _init() {
 	init.start(message, systemTypes);
 }
 
+/**
+ * [_reset description]
+ * @return {[type]} [description]
+ */
 function _reset() {
 
 	console.log('Clearing out all of our created content');
@@ -110,6 +124,10 @@ function _reset() {
 	message.guild.createChannel('general', { type: 'text'});
 }
 
+/**
+ * [_help description]
+ * @return {[type]} [description]
+ */
 function _help() {
 	help.help(message.channel, systemTypes);
 }
@@ -131,7 +149,6 @@ commandList.add('/reset', function() {
 commandList.add('/reload_modules', function() {
 	_loadModules();
 });
-
 
 // log in to the bot with the secret token
 let bot_secret_token = secret_token.bot_secret_token;
