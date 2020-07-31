@@ -1,20 +1,22 @@
-/*	
-//	Copyright 2020 Shawn Gates
+/*
+//  Copyright 2020 Shawn Gates
 //
-//	Licensed under the Apache License, Version 2.0 (the "License");
-//	you may not use this file except in compliance with the License.
-//	You may obtain a copy of the License at
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
 //
 //  http://www.apache.org/licenses/LICENSE-2.0
 //
-//	Unless required by applicable law or agreed to in writing, software
-// 	distributed under the License is distributed on an "AS IS" BASIS,
-//	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// 	See the License for the specific language governing permissions and
-// 	limitations under the License.
-// 
-//	@author Shawn Gates
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+//  @author Shawn Gates
 */
+
+"use strict";
 
 // setup libs
 const Discord = require('discord.js');
@@ -37,6 +39,7 @@ _loadModules();
 
 // list connected servers and channels when we connect to the Discord service
 client.on('ready', () => {
+
     console.log("Connected as " + client.user.tag);
     // List servers the bot is connected to
     console.log("Servers:");
@@ -48,26 +51,26 @@ client.on('ready', () => {
             console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`);
         });
     });
-});	
+});
 
 // listen for messages from the bot
 client.on('message', (receivedMessage) => {
+
     // Prevent bot from responding to its own messages
     if (receivedMessage.author == client.user) {
         return;
     }
-    
+
 if (receivedMessage.guild != 'pbp-helper-test') {
-	return;
+    return;
 }
 
-	let cmd = splitter.parse(receivedMessage);
+    let cmd = splitter.parse(receivedMessage);
 
-	console.log('Command Received: ' + cmd.cmd);
-	
-	message = cmd;
-	commandList.pseudoSwitch(cmd.cmd);
+    console.log('Command Received: ' + cmd.cmd);
 
+    message = cmd;
+    commandList.pseudoSwitch(cmd.cmd);
 });
 
 /**
@@ -75,12 +78,13 @@ if (receivedMessage.guild != 'pbp-helper-test') {
  * @return {[type]} [description]
  */
 function _loadModules() {
-	// check the module folder for modules and add them to the switch for loading
-	let files = fs.readdirSync('./modules');
-	console.log('Loading System Modules: ' + files);
-	for (let i = files.length - 1; i >= 0; i--) {
-		_registerModule(files[i]);
-	}
+
+    // check the module folder for modules and add them to the switch for loading
+    let files = fs.readdirSync('./modules');
+    console.log('Loading System Modules: ' + files);
+    for (let i = files.length - 1; i >= 0; i--) {
+        _registerModule(files[i]);
+    }
 }
 
 /**
@@ -89,18 +93,18 @@ function _loadModules() {
  * @return {[type]}      [description]
  */
 function _registerModule(file) {
-	let sysModule = require('./modules/' + file.split('.')[0] + '/' + file);
-	commandList.add(sysModule.call, function() {
-		sysModule.responseBuilder(message);
-	});
-	systemTypes = systemTypes.merge(sysModule.system);
+    let sysModule = require('./modules/' + file.split('.')[0] + '/' + file);
+    commandList.add(sysModule.call, function() {
+        sysModule.responseBuilder(message);
+    });
+    systemTypes = systemTypes.merge(sysModule.system);
 }
 
 /**
  * Function to set up the server as a PbP server
  */
 function _init() {
-	init.start(message, systemTypes);
+    init.start(message, systemTypes);
 }
 
 /**
@@ -109,19 +113,19 @@ function _init() {
  */
 function _reset() {
 
-	console.log('Clearing out all of our created content');
+    console.log('Clearing out all of our created content');
 
-	// remove channels
-	message.guild.channels.deleteAll();
+    // remove channels
+    message.guild.channels.deleteAll();
 
-	// remove all roles
-	message.guild.roles.forEach(function (value, key) {
-		value.delete()
-			.catch(console.error);
-	});
+    // remove all roles
+    message.guild.roles.forEach(function (value, key) {
+        value.delete()
+        .catch(console.error);
+    });
 
-	// create a new general channel
-	message.guild.createChannel('general', { type: 'text'});
+    // create a new general channel
+    message.guild.createChannel('general', { type: 'text'});
 }
 
 /**
@@ -129,25 +133,25 @@ function _reset() {
  * @return {[type]} [description]
  */
 function _help() {
-	help.help(message.channel, systemTypes);
+    help.help(message.channel, systemTypes);
 }
 
 // Expose commands to Discord
 
 commandList.add('/init', function() {
-	_init();
+    _init();
 });
 
 commandList.add('/help', function() {
-	_help();
+    _help();
 });
 
 commandList.add('/reset', function() {
-	_reset();
+    _reset();
 });
 
 commandList.add('/reload_modules', function() {
-	_loadModules();
+    _loadModules();
 });
 
 // log in to the bot with the secret token

@@ -16,6 +16,8 @@
 //	@author Shawn Gates
 */
 
+"use strict";
+
 const fs = require('fs');
 const messageBuilder = require('./utils/message-builder.js');
 const help = require('./utils/help-system.js');
