@@ -17,17 +17,3 @@
 */
 
 // if help found, pull up help strings provided by the module?
-
-/**
-* 
-**/
-function helpCheck(content) {
-	// will false positive if 'help' is in the name of the game
-	let help = content.match(/\s(help)(\s|$)/i);
-
-	if(help) {
-		return true;
-	}
-}
-
-exports.check = helpCheck;

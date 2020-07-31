@@ -16,6 +16,8 @@
 //	@author Shawn Gates
 */
 
+"use strict";
+
 const messageBuilder = require('../../utils/message-builder.js');
 const help = require('../../utils/help-system.js');
 const Die = require('../../utils/die.js');
@@ -97,45 +99,38 @@ function roll(options) {
  * @return {[type]}                 [description]
  */
 function responseBuilder(receivedMessage) {
-	let author = receivedMessage.author.toString();
+	let author = receivedMessage.author;
 	let rote = false;
 	let chance_die = false;
 	let again = 10;
-	let re_die = /[0-9]+(\s|$)/;
-	let re_chance = /chance/;
-	let re_again = /8-again|9-again|no-again/;
-	let re_rote = /rote/;
 
 	receivedMessage.channel.startTyping();
 
 	//check for help command and rout to that instead	
-	if(help.check(receivedMessage.content)) {
+	if(receivedMessage.help) {
 		helpBuilder(receivedMessage);
 		return;
 	}
 
-	let chance_match = receivedMessage.content.match(re_chance);
-	let die_match = receivedMessage.content.match(re_die);
+	let chance_match = receivedMessage.options.find(element => element === 'chance');
+	let die_match = receivedMessage.dice[0];
 
-	if (chance_match !== null) {
+	if (chance_match !== undefined) {
 		die_match = [0];
 	}
+
 	if (die_match === null) {
 		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice));
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
+
 	console.log('Number of dice to be rolled: ' + die_match);
-	let again_match = receivedMessage.content.match(re_again);
-	if (again_match === null) {again_match = '';}
-	console.log(again_match);
-	let rote_match = receivedMessage.content.match(re_rote);
-	if (rote_match === null) {rote_match = '';}
-	console.log(rote_match);
-	rote = rote_match[0] ? true : false;
-	console.log(rote);
 	
-	switch (again_match[0]) {
+	let again_match = receivedMessage.options.find(element => element.slice(-5) === 'again');
+	let rote_match = receivedMessage.options.find(element => element === 'rote');
+	
+	switch (again_match) {
 		case '9-again':
 			again = 9;
 			break;
@@ -155,7 +150,7 @@ function responseBuilder(receivedMessage) {
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
-	let die_count = die_match[0];
+	let die_count = die_match;
 
 	if(die_count == 0) {
 		die_count = 1;
@@ -253,6 +248,7 @@ function responseBuilder(receivedMessage) {
 }
 
 /**
+ * [helpBuilder description]
  * @param {Message} message
  * @return 
  */

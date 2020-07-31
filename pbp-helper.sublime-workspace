@@ -172,11 +172,37 @@
 	"buffers":
 	[
 		{
-			"contents": "const Discord = require('discord.js')\nconst client = new Discord.Client()\n\nclient.on('ready', () => {\n    console.log(\"Connected as \" + client.user.tag)\n})\n\n// Get your bot's secret token from:\n// https://discordapp.com/developers/applications/\n// Click on your application -> Bot -> Token -> \"Click to Reveal Token\"\nbot_secret_token = \"XXXXXXXXXXX\"\n\nclient.login(bot_secret_token)",
+			"file": "main.js",
 			"settings":
 			{
-				"buffer_size": 381,
-				"line_ending": "Windows"
+				"buffer_size": 4029,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "modules/sentinels/sentinels.js",
+			"settings":
+			{
+				"buffer_size": 4982,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/ESLint.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 1230,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/Default (Windows).sublime-keymap",
+			"settings":
+			{
+				"buffer_size": 64,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -188,9 +214,13 @@
 	"command_palette":
 	{
 		"height": 784.0,
-		"last_filter": "insta",
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
 			[
 				"insta",
 				"Package Control: Install Package"
@@ -250,6 +280,12 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/Shawn/Documents/Development/pbp-helper",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/sentinels"
+	],
 	"file_history":
 	[
 		"/C/Users/Shawn/Downloads/Bunny_Contract.txt",
@@ -328,7 +364,7 @@
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 28.0
 	},
 	"find_in_files":
 	{
@@ -349,6 +385,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"});\n",
+			";\n"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -359,36 +397,123 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 381,
+						"buffer_size": 4029,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								381,
-								381
+								2,
+								2
 							]
 						],
 						"settings":
 						{
-							"bracket_highlighter.busy": false,
-							"bracket_highlighter.clone": -1,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "modules/sentinels/sentinels.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4982,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3819,
+								3819
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1492.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/ESLint.sublime-settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1230,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/zzz A File Icon zzz/aliases/JSON (Sublime).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/Default (Windows).sublime-keymap",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 64,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/zzz A File Icon zzz/aliases/JSON (Sublime).sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -396,7 +521,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -431,7 +556,7 @@
 	},
 	"output.exec":
 	{
-		"height": 31.0
+		"height": 484.0
 	},
 	"output.find_results":
 	{
@@ -449,7 +574,7 @@
 	"project": "pbp-helper.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -487,7 +612,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 50.0,
+	"side_bar_width": 220.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
