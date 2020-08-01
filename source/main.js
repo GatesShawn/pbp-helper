@@ -21,7 +21,7 @@
 // setup libs
 const Discord = require('discord.js');
 const fs = require('fs');
-const secret_token = require('./secret_token.js');
+const secret_token = require('../secret_token.js');
 const init = require('./init.js');
 const help = require('./help.js');
 const commandList = require('./utils/psuedo-switch.js');
@@ -61,9 +61,9 @@ client.on('message', (receivedMessage) => {
         return;
     }
 
-if (receivedMessage.guild != 'pbp-helper-test') {
-    return;
-}
+// if (receivedMessage.guild != 'pbp-helper-test') {
+//     return;
+// }
 
     let cmd = splitter.parse(receivedMessage);
 
