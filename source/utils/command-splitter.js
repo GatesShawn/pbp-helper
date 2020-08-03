@@ -36,12 +36,22 @@ function parse(message) {
 
 	console.log('Parsing the message');
 
-	let author = message.author.toString();
-	let channel = message.channel;
+	let command = {
+		cmd: '',
+		author: '',
+		gameName: '',
+		channel: {},
+		dice: [],
+		options: [],
+		help: ''
+	}
+
+	command.author = message.author.toString();
+	command.channel = message.channel;
 
 	// Extract game name
 	let re_gameName = new RegExp(/[\"|\'].*[\"|\']/);
-	let gameName = message.content.match(re_gameName);
+	gameName = message.content.match(re_gameName);
 	if (gameName === null) gameName = [''];
 	let newName = message.content.replace(gameName[0], '');
 
@@ -50,36 +60,24 @@ function parse(message) {
 	console.log(commandList);
 
 	// Extract command
-	let cmd = commandList[0];
-	if (cmd.charAt(0) !== '/') {
+	command.cmd = commandList[0];
+	if (command.cmd.charAt(0) !== '/') {
 		console.log('Not a command for PbP-Helper');
-		return;
+		return command;
 	}
 	commandList.shift();
 
 	// Extract Help command; null if it isn't called
-	let help = commandList.find(element => element === 'help');
+	command.help = commandList.find(element => element === 'help');
 
 	let list = commandList.values();
-	let dice = [];
-	let options = [];
 
 	for (const value of list) {
 		if (isNaN(value)) {
-	  		options.push(value);
+	  		command.options.push(value);
 		} else {
-	  		dice.push(parseInt(value));
+	  		command.dice.push(parseInt(value));
 		}
-	}
-
-	let command = {
-		cmd: cmd,
-		author: author,
-		gameName: gameName,
-		channel: channel,
-		dice: dice,
-		options: options,
-		help: help
 	}
 	
 	return command; 

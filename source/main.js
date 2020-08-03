@@ -61,9 +61,9 @@ client.on('message', (receivedMessage) => {
         return;
     }
 
-// if (receivedMessage.guild != 'pbp-helper-test') {
-//     return;
-// }
+if (receivedMessage.guild != 'pbp-helper-test') {
+    return;
+}
 
     let cmd = splitter.parse(receivedMessage);
 
@@ -116,16 +116,18 @@ function _reset() {
     console.log('Clearing out all of our created content');
 
     // remove channels
-    message.guild.channels.deleteAll();
+    message.channel.guild.channels.deleteAll()
+        .catch(console.error);
 
     // remove all roles
-    message.guild.roles.forEach(function (value, key) {
+    message.channel.guild.roles.forEach(function (value, key) {
         value.delete()
         .catch(console.error);
     });
 
     // create a new general channel
-    message.guild.createChannel('general', { type: 'text'});
+    message.channel.guild.createChannel('general', { type: 'text'})
+        .catch(console.error);
 }
 
 /**
