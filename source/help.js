@@ -28,7 +28,7 @@ function help(channel, systems) {
 
 	let helpMessage = strings.help;
 
-	channel.send('', new messageBuilder.message(helpMessage))
+	channel.send('', new messageBuilder.message(strings.bot_name, helpMessage))
 		.catch(console.error);
 	channel.stopTyping(true);
 }
