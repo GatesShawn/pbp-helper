@@ -19,6 +19,7 @@
 const utils = require('../../utils/utils.js');
 require('../../utils/js-extensions.js');
 const messageBuilder = require('../../utils/message-builder.js');
+const init = require('./init.js');
 const Die = require('../../utils/die.js');
 const fs = require('fs');
 
@@ -49,8 +50,6 @@ let systems = new Map([
 			[ 'nWoD', gm ],
 			[ 'New World of Darkness', gm ],
 		]);
-
-let init_current = 0;
 
 /**
  * Calls die rolling for Chronicles of Darkness
@@ -113,7 +112,7 @@ function responseBuilder(receivedMessage) {
 	let init_clear = receivedMessage.content.match(re_init_clear);
 
 	if(init_clear !== null) {
-		manageInit(receivedMessage, true);
+		init.manageInit(receivedMessage, true);
 		return;
 	}
 
@@ -121,9 +120,9 @@ function responseBuilder(receivedMessage) {
 	let die_match = receivedMessage.content.match(re_die);
 
 	// if an init call capture the results and re-direct
-	let init = receivedMessage.content.match(re_init);
+	let initValue = receivedMessage.content.match(re_init);
 
-	if (init !== null) {
+	if (initValue !== null) {
 
 		let result = Die.die.roll(10);
 		console.log('Result: ' + result);
@@ -134,7 +133,7 @@ function responseBuilder(receivedMessage) {
 		result += parseInt(die_match[0]);
 		console.log('Init response: ' + result);
 
-		manageInit(receivedMessage, false, result);
+		init.manageInit(receivedMessage, false, result);
 
 		return;
 	}
@@ -143,7 +142,7 @@ function responseBuilder(receivedMessage) {
 	}
 	if (die_match === null) {
 		
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice))
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 
@@ -282,127 +281,6 @@ function responseBuilder(receivedMessage) {
 	results = [];
 	success = [];
 	results_explosion = [];
-}
-
-function manageInit(receivedMessage, clear, result) {
-	let author = receivedMessage.author.toString();
-	let isStoryteller = utils.gmCheck(receivedMessage, GM);
-	let initList = new Map();
-
-	receivedMessage.channel.fetchPinnedMessages(true)
-  		.then(messages => currentInitCheck(messages))
-  		.catch(console.error);
-
-  	function currentInitCheck(messages) {
-
-// debug only: Clears the pinned list for when it has filled with half successful test posts
- // messages.forEach(ms => ms.delete());
-
-  		console.log('Current Init ID: ' + init_current);
-
-  		let currentPin = messages.find(val => val.id === init_current);
-  		console.log('Current ID checK: ' + currentPin);
-  		if (currentPin) {
-
-  			let  initArray = currentPin.content.split('\n');
-
-
-  			// can just pass the array into the map constructor?
-
-  			for (var i = initArray.length - 1; i >= 0; i--) {
-
-  				console.log('Init Array i: ' + initArray[i]);
-
-  				initList.set(initArray[i].split(':')[0], initArray[i]);
-  			}
-
-  			console.log('Sanitized list: ' + initList);
-
-			initList.forEach((value, key) => {
-				console.log('Inits: '+ key + " -- " + value);
-			});
-
-  			let re_author = new RegExp(receivedMessage.author.toString(), 'g');
-  			let author_match = currentPin.content.match(re_author);
-
-  			console.log('author_match: '+ author_match);
-  			if(author_match) {
-  				console.log("isStoryteller?: " + isStoryteller);
-
-  				receivedMessage.channel.send(receivedMessage.author.toString() + ", I'm sorry, you have already rolled for initiative.")
-					.catch(console.error);
-
-  				if (isStoryteller) {
-  					//initList.set(author + '(NPC 1)', initList.get(author).splice(author.indexOf(':')-2, '(NPC 1)'));
-  					//TDOD: add a check for duplicate storyteller inits, should enumarate automatically
-  					// update them as needed, iterating the number
-  				
-
-  				} else {
-  					//handle the player case
-  					//TODO: if player and already inited, replace? or reject? Multiple for familars/retainers/ etc
-  				}
-  			} else {
-  				// new addition
-  				receivedMessage.channel.send(author + ", you got a " + result + " on initiative.");
-  				initList.set(author, author + ': ' + result);
-  			}
-  			currentPin.delete();
-  		} else {
-  			receivedMessage.channel.send(author + ", you got a " + result + " on initiative.");
-  			// start a new table
-  			initList.set(author, author + ': ' + result);
-  		}
-
-  		if (clear) {
-  			if(isStoryteller) {
-  				receivedMessage.channel.send(receivedMessage.author.toString() + ', Initiative order cleared.')
-					.catch(console.error);
-			} else {
-				receivedMessage.channel.send(receivedMessage.author.toString() + ', sorry, only the ' + GM + ' can do that.')
-					.catch(console.error);
-			}
-			return;
-  		}
-
-	  	
-
-	  	console.log('Cleaning up header line if needed: ' + initList.delete(">>> Current Initiatives"));
-
-	  	let initTable = [">>> Current Initiatives"];
-
-	  	initList.forEach(value => initTable.push(value));
-
-	  	if (initTable.length > 0) {
-		  	initTable.sort(function (a, b) {
-		  		let aValue = parseInt(a.split(': ')[1]);
-		  		let bValue = parseInt(b.split(': ')[1]);
-
-		  		if(aValue < bValue) {
-		  			return 1;
-		  		} else if (aValue > bValue) {
-		  			return -1;
-		  		} else {
-		  			return 0;
-		  		}
-		  	});
-	  	}
-
-	  	initTable = initTable.join('\n');
-
-		console.log("final init table: " + initTable);
-
-		receivedMessage.channel.send(initTable)
-			.then(message => pin(message))
-			.catch(console.error);
-  	}
-
-	function pin(message) {
-		init_current = message.id;
-		console.log('Pinned message ID: ' + init_current);
-		message.pin();
-		delete initList;
-	}
 }
 
 // Set the attributes
