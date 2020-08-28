@@ -61,9 +61,9 @@ client.on('message', (receivedMessage) => {
         return;
     }
 
-if (receivedMessage.guild != 'pbp-helper-test') {
-    return;
-}
+// if (receivedMessage.guild != 'pbp-helper-test') {
+//     return;
+// }
 
     let cmd = splitter.parse(receivedMessage);
 

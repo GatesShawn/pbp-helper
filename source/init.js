@@ -64,7 +64,7 @@ function start(message, systemTypes) {
 
 	makeCategories(message);
 
-	message.channel.send('', new messageBuilder.message(initResponse))
+	message.channel.send('', new messageBuilder.message(strings.bot_name, initResponse))
 		.catch(console.error);
 
 	message.channel.stopTyping(true);
@@ -133,7 +133,7 @@ function makeChannels(category) {
 	  .then(channelString += strings.channels.character_sheets + ', ')
 	  .catch(console.error);
 	
-	// TODO: Add Channels: NPC, Rules Discussion, bot feedback, non-player chat (general?)
+	// TODO: Add Channels: NPC, Rules Discussion, bot feedback, general, dice-rolls
 
 	initResponse += channelString + '\n';
 }
@@ -155,7 +155,7 @@ function makeChannels(category) {
 function initHelp(message) {
 	let response = strings.init.help;
 	// add automatic listing of supported game systems
-	message.channel.send('', new messageBuilder.message(response))
+	message.channel.send('', new messageBuilder.message(strings.bot_name, response))
 		.catch(console.error);
 	message.channel.stopTyping(true);
 }
