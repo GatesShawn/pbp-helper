@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"di",
+				"die_match\tabc"
+			],
+			[
 				"btn-",
 				"btn-group"
 			],
@@ -171,26 +175,38 @@
 	},
 	"buffers":
 	[
-		{
-			"contents": "const Discord = require('discord.js')\nconst client = new Discord.Client()\n\nclient.on('ready', () => {\n    console.log(\"Connected as \" + client.user.tag)\n})\n\n// Get your bot's secret token from:\n// https://discordapp.com/developers/applications/\n// Click on your application -> Bot -> Token -> \"Click to Reveal Token\"\nbot_secret_token = \"XXXXXXXXXXX\"\n\nclient.login(bot_secret_token)",
-			"settings":
-			{
-				"buffer_size": 381,
-				"line_ending": "Windows"
-			}
-		}
 	],
-	"build_system": "",
+	"build_system": "Packages/ESLint/ESLint.sublime-build",
 	"build_system_choices":
 	[
+		[
+			[
+				[
+					"Packages/ESLint/ESLint.sublime-build",
+					""
+				],
+				[
+					"Packages/User/Node.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/ESLint/ESLint.sublime-build",
+				""
+			]
+		]
 	],
 	"build_varint": "",
 	"command_palette":
 	{
 		"height": 784.0,
-		"last_filter": "insta",
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
 			[
 				"insta",
 				"Package Control: Install Package"
@@ -250,8 +266,27 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/Shawn/Documents/Development/pbp-helper",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source"
+	],
 	"file_history":
 	[
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/main.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/message-builder.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/init.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/command-splitter.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/issue-branch.yml",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/create-issue-branch.yml",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/cod/cod.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/sentinels/sentinels.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/main.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/nodejs.yml",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/init.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/help.js",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/Default (Windows).sublime-keymap",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/ESLint.sublime-settings",
 		"/C/Users/Shawn/Downloads/Bunny_Contract.txt",
 		"/C/Users/Shawn/Documents/Development/CEPServer/accessability.js",
 		"/C/Users/Shawn/Documents/Development/CEPServer/node_modules/bootstrap/dist/css/bootstrap-grid.css",
@@ -328,7 +363,7 @@
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -342,6 +377,11 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			",",
+			"message.guild",
+			"creating",
+			"message.guild",
+			"null"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -349,6 +389,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"});\n",
+			";\n"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -359,44 +401,14 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 381,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								381,
-								381
-							]
-						],
-						"settings":
-						{
-							"bracket_highlighter.busy": false,
-							"bracket_highlighter.clone": -1,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -431,7 +443,7 @@
 	},
 	"output.exec":
 	{
-		"height": 31.0
+		"height": 355.0
 	},
 	"output.find_results":
 	{
@@ -445,11 +457,11 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "",
+	"pinned_build_system": "Packages/User/Node.sublime-build",
 	"project": "pbp-helper.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -487,7 +499,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 50.0,
+	"side_bar_width": 220.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

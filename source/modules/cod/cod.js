@@ -15,11 +15,13 @@
 // 
 //	@author Shawn Gates
 */
+"use strict";
 
 const utils = require('../../utils/utils.js');
 require('../../utils/js-extensions.js');
 const messageBuilder = require('../../utils/message-builder.js');
 const init = require('./init.js');
+const help = require('../../utils/help-system.js');
 const Die = require('../../utils/die.js');
 const fs = require('fs');
 
@@ -42,6 +44,7 @@ try{
 }
 
 let gm = 'Storyteller';
+let system = 'Chronicles of Darkness';
 let call = '/cod';
 let systems = new Map([
 			[ 'CofD', gm ],
@@ -98,7 +101,7 @@ function roll(options) {
  * @return {[type]}                 [description]
  */
 function responseBuilder(receivedMessage) {
-	let author = receivedMessage.author.toString();
+	let author = receivedMessage.author;
 	let rote = false;
 	let chance_die = false;
 	let again = 10;
@@ -116,8 +119,16 @@ function responseBuilder(receivedMessage) {
 		return;
 	}
 
-	let chance_match = receivedMessage.content.match(re_chance);
-	let die_match = receivedMessage.content.match(re_die);
+	receivedMessage.channel.startTyping();
+
+	//check for help command and rout to that instead	
+	if(receivedMessage.help) {
+		helpBuilder(receivedMessage);
+		return;
+	}
+
+	let chance_match = receivedMessage.options.find(element => element === 'chance');
+	let die_match = receivedMessage.dice[0];
 
 	// if an init call capture the results and re-direct
 	let initValue = receivedMessage.content.match(re_init);
@@ -137,17 +148,18 @@ function responseBuilder(receivedMessage) {
 
 		return;
 	}
-	if (chance_match !== null) {
+	if (chance_match !== undefined) {
 		die_match = [0];
 	}
+
 	if (die_match === null) {
-		
 		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 
 		return;
 	}
+
 	console.log('Number of dice to be rolled: ' + die_match);
 	let again_match = receivedMessage.content.match(re_again);
 	if (again_match === null) {again_match = '';}
@@ -158,7 +170,10 @@ function responseBuilder(receivedMessage) {
 	rote = rote_match[0] ? true : false;
 	console.log("rote: " + rote);
 	
-	switch (again_match[0]) {
+	let again_match = receivedMessage.options.find(element => element.slice(-5) === 'again');
+	let rote_match = receivedMessage.options.find(element => element === 'rote');
+	
+	switch (again_match) {
 		case '9-again':
 			again = 9;
 			break;
@@ -174,14 +189,13 @@ function responseBuilder(receivedMessage) {
 
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.large_roll))
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.large_roll))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 
 		return;
 	}
-	let die_count = die_match[0];
+	let die_count = die_match;
 
 	if(die_count == 0) {
 		die_count = 1;
@@ -274,13 +288,26 @@ function responseBuilder(receivedMessage) {
 	}
 
 	console.log('Results response to server: ' + response);
-	receivedMessage.channel.send('', new messageBuilder.message(response))
+	receivedMessage.channel.send('', new messageBuilder.message(system, response))
 		.catch(console.error);
 
 	receivedMessage.channel.stopTyping(true);
 	results = [];
 	success = [];
 	results_explosion = [];
+}
+
+/**
+ * [helpBuilder description]
+ * @param {Message} message
+ * @return 
+ */
+function helpBuilder(message) {
+	let response = strings.help;
+	// add automatic listing of supported game systems
+	message.channel.send('', new messageBuilder.message(system, response))
+		.catch(console.error);
+	message.channel.stopTyping(true);
 }
 
 // Set the attributes
