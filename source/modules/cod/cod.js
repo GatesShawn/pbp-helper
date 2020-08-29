@@ -54,6 +54,8 @@ let systems = new Map([
 			[ 'New World of Darkness', gm ],
 		]);
 
+let init_current = 0;
+
 /**
  * Calls die rolling for Chronicles of Darkness
  * @param  Object options Parameter object
@@ -115,7 +117,7 @@ function responseBuilder(receivedMessage) {
 	let init_clear = receivedMessage.content.match(re_init_clear);
 
 	if(init_clear !== null) {
-		init.manageInit(receivedMessage, true);
+		manageInit(receivedMessage, true);
 		return;
 	}
 
@@ -131,9 +133,9 @@ function responseBuilder(receivedMessage) {
 	let die_match = receivedMessage.dice[0];
 
 	// if an init call capture the results and re-direct
-	let initValue = receivedMessage.content.match(re_init);
+	let init = receivedMessage.content.match(re_init);
 
-	if (initValue !== null) {
+	if (init !== null) {
 
 		let result = Die.die.roll(10);
 		console.log('Result: ' + result);
@@ -144,7 +146,7 @@ function responseBuilder(receivedMessage) {
 		result += parseInt(die_match[0]);
 		console.log('Init response: ' + result);
 
-		init.manageInit(receivedMessage, false, result);
+		manageInit(receivedMessage, false, result);
 
 		return;
 	}
