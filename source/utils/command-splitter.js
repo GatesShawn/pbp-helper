@@ -35,18 +35,20 @@ function parse(message) {
 	}
 
 	console.log('Parsing the message');
-
 	let command = {
 		cmd: '',
 		author: '',
 		gameName: '',
 		channel: {},
+		guild: {},
 		dice: [],
 		options: [],
+		message: {},
 		help: ''
 	}
 
 	command.author = message.author.toString();
+	command.guild = message.guild;
 	command.channel = message.channel;
 
 	// Extract game name

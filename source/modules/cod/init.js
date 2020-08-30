@@ -23,6 +23,7 @@ const utils = require('../../utils/utils.js');
 const messageBuilder = require('../../utils/message-builder.js');
 
 let GM = 'Storyteller';
+let system = 'Chronicles of Darkness';
 let initList = new Map();
 let init_current = Discord.snowflake;
 let isStoryteller = false;
@@ -48,8 +49,8 @@ try{
  */
 function manageInit(receivedMessage, clear, result) {
     message = receivedMessage;
-    author = message.author.toString();
-    isStoryteller = utils.gmCheck(message, GM);
+    author = message.author;
+    isStoryteller = utils.gmCheck(receivedMessage, GM);
     result = result;
 
     message.channel.fetchPinnedMessages(true)
@@ -101,7 +102,7 @@ function setInit() {
     } else {
         // handle the player case
         // Allow Multiple for familiars/retainers/etc.? maybe with a passed flag
-        message.channel.send('', new messageBuilder.message(system, author + string.init.result_1 + result + string.init.result_2));
+        message.channel.send('', new messageBuilder.message(system, author + strings.init.result_1 + result + strings.init.result_2));
         initList.set(author, author + ': ' + result);
     }
     //  currentPin.delete();

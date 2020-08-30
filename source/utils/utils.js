@@ -15,12 +15,12 @@
 */
 
 
-function gmCheck(receivedMessage, gm) {
-	let isGM;
-	let gmRole = receivedMessage.guild.roles.find(val => val.name === gm );
+function gmCheck(command, gm) {
+	let isGM = false;
+	let gmRole = command.guild.roles.find(val => val.name === gm );
 
 	if (gmRole) {
-		isGM = gmRole.members.find(val => val.user === receivedMessage.author);
+		isGM = gmRole.members.find(val => val.user === command.author);
 	}
 	return isGM;
 
