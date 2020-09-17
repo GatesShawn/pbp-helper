@@ -106,19 +106,6 @@ function responseBuilder(receivedMessage) {
 	let rote = false;
 	let chance_die = false;
 	let again = 10;
-	// let re_die = /[0-9]+(\s|$)/;
-	// let re_chance = /chance/;
-	// let re_again = /8-again|9-again|no-again/;
-	// let re_rote = /rote/;
-	// let re_init = /\sinit(\s|$)/;
-	// let re_init_clear = /\sinit\sclear(\s|$)/;
-
-	let init_clear = receivedMessage.options.find(element => element === 'init clear');
-
-	if(init_clear !== null) {
-		init.manageInit(receivedMessage, true);
-		return;
-	}
 
 	receivedMessage.channel.startTyping();
 
@@ -128,48 +115,27 @@ function responseBuilder(receivedMessage) {
 		return;
 	}
 
-	let chance_match = receivedMessage.options.find(element => element === 'chance');
+	
 	let die_match = receivedMessage.dice[0];
 
 	// if an init call capture the results and re-direct
 	let initCheck = receivedMessage.options.find(element => element === 'init');
-
-	if (initCheck !== null) {
-
-		let result = Die.die.roll(10);
-		console.log('Result: ' + result);
-		if (die_match === null) {
-			die_match = [0];
-		}
-		console.log('Init Bonus: ' + parseInt(die_match[0]));
-		result += parseInt(die_match[0]);
-		console.log('Init response: ' + result);
-
-		init.manageInit(receivedMessage, false, result);
-
+	if (initCheck !== undefined) {
+		init.manageInit(receivedMessage, die_match);
 		return;
 	}
 
+	let chance_match = receivedMessage.options.find(element => element === 'chance');
 	if (chance_match !== undefined) {
 		die_match = [0];
 	}
 
-	if (die_match === null) {
+	if (die_match === undefined) {
 		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
-
-	// console.log('Number of dice to be rolled: ' + die_match);
-	// let again_match = receivedMessage.content.match(re_again);
-	// if (again_match === null) {again_match = '';}
-	// console.log("again_match: " + again_match);
-	// let rote_match = receivedMessage.content.match(re_rote);
-	// if (rote_match === null) {rote_match = '';}
-	// console.log("rote_match: " + rote_match);
-	// rote = rote_match[0] ? true : false;
-	// console.log("rote: " + rote);
 	
 	let again_match = receivedMessage.options.find(element => element.slice(-5) === 'again');
 	let rote_match = receivedMessage.options.find(element => element === 'rote');

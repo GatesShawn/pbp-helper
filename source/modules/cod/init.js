@@ -15,10 +15,12 @@
 // 
 //  @author Shawn Gates
 */
+"use strict";
 
 // setup libs
 const Discord = require('discord.js');
 const fs = require('fs');
+const Die = require('../../utils/die.js');
 const utils = require('../../utils/utils.js');
 const messageBuilder = require('../../utils/message-builder.js');
 
@@ -47,11 +49,19 @@ try{
  * @param  {[type]} result          [description]
  * @return {[type]}                 [description]
  */
-function manageInit(receivedMessage, clear, result) {
+function manageInit(receivedMessage, bonus) {
     message = receivedMessage;
     author = message.author;
     isStoryteller = utils.gmCheck(receivedMessage, GM);
-    result = result;
+    if (typeof bonus === 'Number') {
+        result += bonus;
+    }
+
+    let clearCheck = receivedMessage.options.find(element => element === 'clear');
+    if(clearCheck !== undefined) {
+        clear();
+        return;
+    }
 
     message.channel.fetchPinnedMessages(true)
         .then(messages => currentInitCheck(messages))
@@ -95,6 +105,9 @@ function currentInitCheck(messages) {
  * [setInit description]
  */
 function setInit() {
+
+    result = getResult();
+
     if (isStoryteller) {
         initList.set(author + '(NPC 1)', initList.get(author).splice(author.indexOf(':')-2, '(NPC 1)'));
         //TDOD: add a check for duplicate storyteller inits, should enumarate automatically
@@ -128,6 +141,8 @@ function setInit() {
     //     receivedMessage.channel.send(buildTable())
     //         .then(message => pin(message))
     //         .catch(console.error);
+    //         
+    cleanup();
 }
 
 /**
@@ -181,6 +196,28 @@ function buildTable() {
     return initTable;
 }
 
+
+/**
+ * [getResult description]
+ * @return {[type]} [description]
+ */
+function getResult() {
+
+    result += Die.die.roll(10);
+    console.log('Init Result: ' + result);
+
+    return result;
+}
+
+
+/**
+ * [clear description]
+ * @return {[type]} [description]
+ */
+function clear() {
+
+}
+
 /**
  * [pin description]
  * @param  {[type]} message [description]
@@ -190,7 +227,11 @@ function pin(message) {
     init_current = message.id;
     console.log('Pinned message ID: ' + init_current);
     message.pin();
-    delete initList;
+    // delete initList;
+}
+
+function cleanup() {
+    result = 0;
 }
 
 exports.manageInit = manageInit;
