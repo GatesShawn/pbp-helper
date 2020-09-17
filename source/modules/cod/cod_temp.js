@@ -15,12 +15,10 @@
 // 
 //	@author Shawn Gates
 */
+
 "use strict";
 
-const utils = require('../../utils/utils.js');
-require('../../utils/js-extensions.js');
 const messageBuilder = require('../../utils/message-builder.js');
-const init = require('./init.js');
 const help = require('../../utils/help-system.js');
 const Die = require('../../utils/die.js');
 const fs = require('fs');
@@ -28,7 +26,6 @@ const fs = require('fs');
 let cod_die = 10;
 let cod_tn = 8;
 let cod_ES = 5;
-let GM = 'Storyteller'
 
 let results = [];
 let results_explosion = [];
@@ -43,7 +40,6 @@ try{
 	console.log(err);
 }
 
-// have two almost identical variables; clean this up
 let gm = 'Storyteller';
 let system = 'Chronicles of Darkness';
 let call = '/cod';
@@ -94,6 +90,7 @@ function roll(options) {
 			rote: options.rote
 		});		
 	}
+
 }
 
 /**
@@ -115,27 +112,20 @@ function responseBuilder(receivedMessage) {
 		return;
 	}
 
-	
+	let chance_match = receivedMessage.options.find(element => element === 'chance');
 	let die_match = receivedMessage.dice[0];
 
-	// if an init call capture the results and re-direct
-	let initCheck = receivedMessage.options.find(element => element === 'init');
-	if (initCheck !== undefined) {
-		init.manageInit(receivedMessage, die_match);
-		return;
-	}
-
-	let chance_match = receivedMessage.options.find(element => element === 'chance');
 	if (chance_match !== undefined) {
 		die_match = [0];
 	}
 
-	if (die_match === undefined) {
-		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
-			.catch(console.error);
+	if (die_match === null) {
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice));
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
+
+	console.log('Number of dice to be rolled: ' + die_match);
 	
 	let again_match = receivedMessage.options.find(element => element.slice(-5) === 'again');
 	let rote_match = receivedMessage.options.find(element => element === 'rote');
@@ -156,12 +146,10 @@ function responseBuilder(receivedMessage) {
 
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.large_roll))
-			.catch(console.error);
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.large_roll));
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
-
 	let die_count = die_match;
 
 	if(die_count == 0) {
@@ -227,9 +215,6 @@ function responseBuilder(receivedMessage) {
 	}
 	console.log('Success response to server: ' + response);
 
-	// receivedMessage.channel.send(response)
-	// 	.catch(console.error);
-
 	response += '\n';
 
 	if (chance_die) {
@@ -253,10 +238,8 @@ function responseBuilder(receivedMessage) {
 			response += strings.results.success_1 + '**' +  success.length + '**' +  strings.results.success_2;
 		}
 	}
-
 	console.log('Results response to server: ' + response);
-	receivedMessage.channel.send('', new messageBuilder.message(system, response))
-		.catch(console.error);
+	receivedMessage.channel.send('', new messageBuilder.message(system, response));
 
 	receivedMessage.channel.stopTyping(true);
 	results = [];
