@@ -75,26 +75,30 @@ function manageInit(receivedMessage, bonus) {
  */
 function currentInitCheck(messages) {
     console.log('Current Init ID: ' + init_current);
-
-    currentPin = messages.find(val => val.id === init_current);
+    let reMap = new Map();
+    messages.forEach(msg => reMap.set(msg.id, msg.id)); // idont know why i need to do this or why it works
+    currentPin = reMap.get(init_current);
     console.log('Current ID checK: ' + currentPin);
+    currentPin = messages.get(currentPin);
         
-    if (currentPin && !authorCheck()) {
-        let  initArray = currentPin.content.split('\n');
-            
-        // can just pass the array into the map constructor?
-        for (var i = initArray.length - 1; i >= 0; i--) {
-            console.log('Init Array i: ' + initArray[i]);
-            initList.set(initArray[i].split(':')[0], initArray[i]);
+    if (currentPin != undefined) {
+        if (!authorCheck()) {
+            let  initArray = currentPin.embeds.description.split('\n');
+                
+            // can just pass the array into the map constructor?
+            for (var i = initArray.length - 1; i >= 0; i--) {
+                console.log('Init Array i: ' + initArray[i]);
+                initList.set(initArray[i].split(':')[0], initArray[i]);
+            }
+
+            console.log('Sanitized list: ' + initList);
+
+            initList.forEach((value, key) => {
+                console.log('Inits: '+ key + " -- " + value);
+            });
+
+            setInit();
         }
-
-        console.log('Sanitized list: ' + initList);
-
-        initList.forEach((value, key) => {
-            console.log('Inits: '+ key + " -- " + value);
-        });
-
-        setInit();
 
     } else {
         setInit();
@@ -118,30 +122,13 @@ function setInit() {
         message.channel.send('', new messageBuilder.message(system, author + strings.init.result_1 + result + strings.init.result_2));
         initList.set(author, author + ': ' + result);
     }
-    //  currentPin.delete();
-    //     } else {
-    //         receivedMessage.channel.send(author + ", you got a " + result + " on initiative.");
-    //         // start a new table
-    //         initList.set(author, author + ': ' + result);
-    //     }
 
-    //     if (clear) {
-    //         if(isStoryteller) {
-    //             receivedMessage.channel.send(receivedMessage.author.toString() + ', Initiative order cleared.')
-    //                 .catch(console.error);
-    //         } else {
-    //             receivedMessage.channel.send(receivedMessage.author.toString() + ', sorry, only the ' + GM + ' can do that.')
-    //                 .catch(console.error);
-    //         }
-    //         return;
-    //     }
+    //console.log('Cleaning up header line if needed: ' + initList.delete(">>> Current Initiatives"));
 
-    //     console.log('Cleaning up header line if needed: ' + initList.delete(">>> Current Initiatives"));
+    message.channel.send('', new messageBuilder.message(system, buildTable()))
+        .then(message => pin(message))
+        .catch(console.error);
 
-    //     receivedMessage.channel.send(buildTable())
-    //         .then(message => pin(message))
-    //         .catch(console.error);
-    //         
     cleanup();
 }
 
@@ -151,14 +138,14 @@ function setInit() {
  */
 function authorCheck() {
     let re_author = new RegExp(author, 'g');
-    let author_match = currentPin.content.match(re_author);
+    console.log("Current Pin: " + currentPin.embeds[0].description);
+    let author_match = currentPin.embeds[0].description.match(re_author);
 
     console.log('author_match: '+ author_match);
 
     if(author_match && !isStoryteller) {
         message.channel.send('', new messageBuilder.message(system, author + ", I'm sorry, you have already rolled for initiative."))
             .catch(console.error);
-
         return true;
     } else {
         return false;
@@ -215,7 +202,13 @@ function getResult() {
  * @return {[type]} [description]
  */
 function clear() {
-
+    if(isStoryteller) {
+        receivedMessage.channel.send('', new messageBuilder.message(system, author + ', Initiative order cleared.'))
+            .catch(console.error);
+    } else {
+        receivedMessage.channel.send('', new messageBuilder.message(system, author + ', sorry, only the ' + GM + ' can do that.'))
+            .catch(console.error);
+    }
 }
 
 /**
@@ -224,6 +217,9 @@ function clear() {
  * @return {[type]}         [description]
  */
 function pin(message) {
+    if(currentPin) {
+        currentPin.delete();
+    }
     init_current = message.id;
     console.log('Pinned message ID: ' + init_current);
     message.pin();
@@ -231,6 +227,7 @@ function pin(message) {
 }
 
 function cleanup() {
+    message.channel.stopTyping();
     result = 0;
 }
 
