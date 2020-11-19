@@ -15,7 +15,6 @@
 //
 //  @author Shawn Gates
 */
-
 "use strict";
 
 // setup libs
@@ -61,9 +60,9 @@ client.on('message', (receivedMessage) => {
         return;
     }
 
-// if (receivedMessage.guild != 'pbp-helper-test') {
-//     return;
-// }
+if (receivedMessage.guild != 'pbp-helper-test') {
+    return;
+}
 
     let cmd = splitter.parse(receivedMessage);
 
@@ -106,7 +105,7 @@ function _registerModule(file) {
 function _init() {
     init.start(message, systemTypes);
 }
-
+    
 /**
  * [_reset description]
  * @return {[type]} [description]
@@ -116,8 +115,8 @@ function _reset() {
     console.log('Clearing out all of our created content');
 
     // remove channels
-    message.channel.guild.channels.deleteAll()
-        .catch(console.error);
+    message.channel.guild.channels.deleteAll();
+        // .catch(console.error);
 
     // remove all roles
     message.channel.guild.roles.forEach(function (value, key) {

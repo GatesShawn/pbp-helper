@@ -13,15 +13,38 @@
 // 	See the License for the specific language governing permissions and
 // 	limitations under the License.
 */
-
+require('./js-extensions.js');
 
 function gmCheck(command, gm) {
 	let isGM = false;
-	let gmRole = command.guild.roles.find(val => val.name === gm );
+    
+    console.log('GM Role String: '+ gm);
+    console.log('Guild: '+ command.guild);
+    console.log('Author: '+ command.author);
+    console.log('Roles: '+ command.guild.roles);
+
+	let gmRole = command.guild.roles.find(val => val.name === gm);
+
+    console.log('Found GM Role: ' + gmRole.name);
+    gmRole.members.forEach(member => console.log('Role Members: '+ member));
+
+    console.log('Modified author: ' + command.author.toString().slice(2,-1));
+    
 
 	if (gmRole) {
-		isGM = gmRole.members.find(val => val.user === command.author);
+	// 	// isGM = gmRole.members.get(command.author.toString().splice(3, '!'));
+ //        isGM = gmRole.members.find(val => val.user === command.author.toString().splice(3, '!'));
+        let reMap = new Map();
+        gmRole.members.forEach(member => reMap.set(member.user.id, member.user.id)); // i dont know why i need to do this or why it works
+        reMap.forEach(member => console.log('Members: '+ member));
+
+        isGM = reMap.get(command.author.slice(2,-1));
+        // isGM = reMap.get(command.author.toString().splice(2, '!'));
+        console.log('Current GM checK: ' + isGM);
+        isGM = gmRole.members.get(isGM);
 	}
+
+    console.log('isGM?: ' + isGM);
 	return isGM;
 
 }

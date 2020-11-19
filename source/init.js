@@ -160,4 +160,6 @@ function initHelp(message) {
 	message.channel.stopTyping(true);
 }
 
+// TODO: add a question for sub section or full server setup; use reactions to receive an answer
+
 exports.start = start;

@@ -4,16 +4,52 @@
 		"selected_items":
 		[
 			[
-				"die",
-				"die_match\tabc"
+				"c",
+				"command\tabc"
 			],
 			[
-				"init",
-				"initCheck\tabc"
+				"is",
+				"isGM\tabc"
+			],
+			[
+				"co",
+				"console\t(main.js)"
+			],
+			[
+				"current",
+				"currentPin\tabc"
+			],
+			[
+				"test",
+				"testMap\tabc"
 			],
 			[
 				"ini",
-				"initiative\tabc"
+				"init_current\tabc"
+			],
+			[
+				"init",
+				"init_current\tabc"
+			],
+			[
+				"ID",
+				"id"
+			],
+			[
+				"for",
+				"forEach\tabc"
+			],
+			[
+				"cure",
+				"currentPin\tabc"
+			],
+			[
+				"curr",
+				"currentPin\tabc"
+			],
+			[
+				"die",
+				"die_match\tabc"
 			],
 			[
 				"iit",
@@ -195,25 +231,7 @@
 			"file": "source/main.js",
 			"settings":
 			{
-				"buffer_size": 4018,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "source/utils/utils.js",
-			"settings":
-			{
-				"buffer_size": 842,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "source/modules/cod/cod.js",
-			"settings":
-			{
-				"buffer_size": 7432,
+				"buffer_size": 4026,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -222,25 +240,25 @@
 			"file": "source/modules/cod/init.js",
 			"settings":
 			{
-				"buffer_size": 6536,
+				"buffer_size": 6695,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "source/utils/command-splitter.js",
+			"file": "source/utils/utils.js",
 			"settings":
 			{
-				"buffer_size": 2585,
+				"buffer_size": 1868,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "source/modules/cod/resources.json",
+			"file": "source/init.js",
 			"settings":
 			{
-				"buffer_size": 1404,
+				"buffer_size": 4745,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -346,11 +364,14 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod/cod.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/command-splitter.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod/resources.json",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/utils.js",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod/cod_temp.js",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/main.js",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/cod/cod.js",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/cod/init.js",
-		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod/resources.json",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/cod/resources.json",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/sentinels/resources.json",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/sentinels/resources.json",
@@ -359,7 +380,6 @@
 		"/C/Users/Shawn/Documents/Development/pbp-helper/source/help.js",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/source/init.js",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/help-system.js",
-		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/command-splitter.js",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/issue-branch.yml",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/create-issue-branch.yml",
 		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/sentinels/sentinels.js",
@@ -460,6 +480,15 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"isStoryteller",
+			"cleanup",
+			"testMap",
+			"content",
+			"match",
+			"init_current",
+			"buildTable",
+			"manageInit",
+			"Init Result",
 			"string.",
 			"receivedMessage",
 			"author",
@@ -516,15 +545,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4018,
+						"buffer_size": 4026,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2001,
-								2001
+								2947,
+								2947
 							]
 						],
 						"settings":
@@ -534,64 +563,67 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1968.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "source/utils/utils.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 842,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								712,
-								712
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 228.0,
+						"translation.y": 1904.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "source/modules/cod/cod.js",
+					"buffer": 1,
+					"file": "source/modules/cod/init.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7432,
+						"buffer_size": 6695,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3470,
-								3470
+								902,
+								902
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2191.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "source/utils/utils.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1868,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1868,
+								1868
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 327.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -599,90 +631,31 @@
 				},
 				{
 					"buffer": 3,
-					"file": "source/modules/cod/init.js",
+					"file": "source/init.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6536,
+						"buffer_size": 4745,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1678,
-								1678
+								4634,
+								4634
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 775.0,
+						"translation.y": 2493.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "source/utils/command-splitter.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2585,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1739,
-								1739
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1467.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "source/modules/cod/resources.json",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1404,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1030,
-								1030
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 147.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -781,7 +754,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 239.0,
+	"side_bar_width": 437.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

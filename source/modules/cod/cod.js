@@ -257,6 +257,7 @@ function responseBuilder(receivedMessage) {
 	console.log('Results response to server: ' + response);
 	receivedMessage.channel.send('', new messageBuilder.message(system, response))
 		.catch(console.error);
+	
 
 	receivedMessage.channel.stopTyping(true);
 	results = [];
