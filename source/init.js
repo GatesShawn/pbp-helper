@@ -16,6 +16,8 @@
 //	@author Shawn Gates
 */
 
+"use strict";
+
 const fs = require('fs');
 const messageBuilder = require('./utils/message-builder.js');
 const help = require('./utils/help-system.js');
@@ -33,7 +35,7 @@ function start(message, systemTypes) {
 	console.log('Starting init function');
 
 	//check for help command and rout to that instead	
-	if(help.check(message.content)) {
+	if((message.help)) {
 		initHelp(message);
 		return;
 	}
@@ -42,14 +44,15 @@ function start(message, systemTypes) {
 	initResponse += strings.init.setup + '\n';
 
 	// Find what Game System to init
-	// TDOO: this doesnt work with multiple word games, i.e. World of Darkness
-	system = message.content.match(/\s([a-z0-9]*)(\s|$)/i);
-	if(system) system = system[1];
+	// TODO: This doesn't work with multiple word games, i.e. World of Darkness
+	system = message.options.find(value => value.match(/\s([a-z0-9]*)(\s|$)/i));
+	// if(system) system = system[1];
 	console.log('Game system:' + system);
 
 	//TODO: Doesnt handle if the init function is called with the game name missing the quotes
-	gameName = message.content.match(/\s\"|\'([a-z0-9]*)\"|\'(\s|$)/i);
-	if(gameName) gameName = gameName[1];
+	gameName = message.gameName;
+	// gameName = message.content.match(/\s\"|\'([a-z0-9]*)\"|\'(\s|$)/i);
+	// if(gameName) gameName = gameName[1];
 	console.log('Name of the new game:' + gameName);
 
 	let gmType = systemTypes.get(system);
@@ -61,7 +64,7 @@ function start(message, systemTypes) {
 
 	makeCategories(message);
 
-	message.channel.send('', new messageBuilder.message(initResponse))
+	message.channel.send('', new messageBuilder.message(strings.bot_name, initResponse))
 		.catch(console.error);
 
 	message.channel.stopTyping(true);
@@ -84,9 +87,9 @@ function createRole(role) {
 
 	if (role === 'bots') {admin=Discord.Permissions.ADMINISTRATOR}; 
 
-	if(!message.guild.roles.find(val => val.name === role)) {
+	if(!message.channel.guild.roles.find(val => val.name === role)) {
 		console.log('Creating a '+ role +' role');
-		message.guild.createRole({
+		message.channel.guild.createRole({
 		  name: role,
 		  color: roleColors[role],
 		  permissions: admin
@@ -102,13 +105,13 @@ function makeCategories(message) {
 	initResponse += strings.setupChannels + '\n';
 
 	// Make category
-	if(!message.guild.channels.find(val => val.name === gameName)) {
+	if(!message.channel.guild.channels.find(val => val.name === gameName)) {
 		console.log(strings.channelString + gameName);
 
 		// Create channel category for game on server
 		initResponse += strings.categoryString + gameName + '\n';
 
-		message.guild.createChannel(gameName, { type: 'category' })
+		message.channel.guild.createChannel(gameName, { type: 'category' })
 		  .then(makeChannels)
 		  .catch(console.error);
 	}
@@ -130,7 +133,7 @@ function makeChannels(category) {
 	  .then(channelString += strings.channels.character_sheets + ', ')
 	  .catch(console.error);
 	
-	// TODO: Add Channels: NPC, Rules Discussion, bot feedback, non-player chat (general?)
+	// TODO: Add Channels: NPC, Rules Discussion, bot feedback, general, dice-rolls
 
 	initResponse += channelString + '\n';
 }
@@ -142,7 +145,7 @@ function makeChannels(category) {
 
 // function addRole(role) {
 	
-// 	message.guild.member(client.user).addRole(role);
+// 	message.channel.guild.member(client.user).addRole(role);
 // }
 
 /**
@@ -152,7 +155,7 @@ function makeChannels(category) {
 function initHelp(message) {
 	let response = strings.init.help;
 	// add automatic listing of supported game systems
-	message.channel.send('', new messageBuilder.message(response))
+	message.channel.send('', new messageBuilder.message(strings.bot_name, response))
 		.catch(console.error);
 	message.channel.stopTyping(true);
 }

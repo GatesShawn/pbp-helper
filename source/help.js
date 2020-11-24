@@ -16,18 +16,21 @@
 //	@author Shawn Gates
 */
 
-// if help found, pull up help strings provided by the module?
+"use strict";
 
-/**
-* 
-**/
-function helpCheck(content) {
-	// will false positive if 'help' is in the name of the game
-	let help = content.match(/\s(help)(\s|$)/i);
+const fs = require('fs');
+const messageBuilder = require('./utils/message-builder.js');
 
-	if(help) {
-		return true;
-	}
+// load and parse the string file
+let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
+
+function help(channel, systems) {
+
+	let helpMessage = strings.help;
+
+	channel.send('', new messageBuilder.message(strings.bot_name, helpMessage))
+		.catch(console.error);
+	channel.stopTyping(true);
 }
 
-exports.check = helpCheck;
+exports.help = help;

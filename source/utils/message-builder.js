@@ -29,6 +29,10 @@ function messageBuilder (system, content) {
 	embed.setAuthor(system);
 	embed.setDescription(content);
 
+    // look into using fields instead of description
+
+	console.log('Sent to Discord - ' + system + ': ' + content);
+
 	return embed;
 }
 
