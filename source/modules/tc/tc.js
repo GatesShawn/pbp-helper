@@ -21,8 +21,8 @@ const Die = require('../../utils/die.js');
 const messageBuilder = require('../../utils/message-builder.js');
 const fs = require('fs');
 
-let storypath_die = 10; 
-let storypath_tn = 8; // this changes more than I hoped. Skill Tricks in TC can change this as well (maybe other things too) TC will need a way to change it per roll
+let trinity_die = 10; 
+let trinity_tn = 8; // this changes more than I hoped. Skill Tricks in TC can change this as well (maybe other things too) TC will need a way to change it per roll
 let GM = 'Storyguide';
 let strings;
 
@@ -38,13 +38,30 @@ let results = [];
 let success = [];
 
 let gm = 'Storyguide';
-let call = '/sp';
+let system = 'Trinity Continuum';
+let call = '/tc';
 let systems = new Map([
-			[ 'StoryPath', gm ]
+			['Trinity', gm],
+			['TC', gm],
+			['Trinity Continuum', gm],
+			['Trinity Continuum: Core', gm],
+			['Trinity Continuum: Aeon', gm],
+			['Trinity Continuum: Abberant', gm],
+			['Trinity Continuum: Adventure', gm],
+			['Trinity Continuum: Anima', gm],
+			['Trinity Continuum: Aegis', gm],
+			['Trinity Continuum: Assassin', gm],
+			['TC: Core', gm],
+			['TC: Aeon', gm],
+			['TC: Abberant', gm],
+			['TC: Adventure', gm],
+			['TC: Anima', gm],
+			['TC: Aegis', gm],
+			['TC: Assassin', gm]
 		]);
 
 /**
- * Calls die rolling for StoryPath
+ * Calls die rolling for Trinity
  * @param  Object options Parameter object
  * @param Boolean options.chance_die Sets whether the roll being made is a chance die
  * @param Number options.double value to use for double successes
@@ -58,7 +75,7 @@ function roll(options) {
 
 	let result = Die.die.roll(10);
 	results.push(result);
-	if(result >= storypath_tn) success.push(result);
+	if(result >= trinity_tn) success.push(result);
 	
 	// 10s are two successes in they came from (they re-roll in Scion?!)
 	if(result >= options.double) {
@@ -66,14 +83,19 @@ function roll(options) {
 	}
 }
 
+/**
+ * [responseBuilder description]
+ * @param  {[type]} receivedMessage [description]
+ * @return {[type]}                 [description]
+ */
 function responseBuilder(receivedMessage) {
 	let author = receivedMessage.author.toString();
 	let double = 10;
 	let re_die = /[0-9]+/;
 	let re_double = /double (8|9)/;
-	let die_match = receivedMessage.content.match(re_die);
+	let die_match = receivedMessage.dice[0];
 	if (die_match===null) {
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.no_dice))
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 		return;
@@ -81,21 +103,20 @@ function responseBuilder(receivedMessage) {
 	
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send('', new messageBuilder.message(author + strings.too_large))
+		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.too_large))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
 	
 	console.log('Number of dice to be rolled: ' + die_match);
-	let die_count = die_match[0];
 
 	//change back to -again...
-	let double_match = receivedMessage.content.match(re_double);
+	let double_match = receivedMessage.options.find(element => element.slice(-5) === 'double');
 	if (double_match === null) {double_match = '';}
 	console.log('Double Match results: ' + double_match);
 
-	switch (double_match[0]) {
+	switch (double_match) {
 		case 'double 9':
 			double = 9;
 			break;
@@ -109,7 +130,7 @@ function responseBuilder(receivedMessage) {
 	}
 	console.log('Double value: ' + double);
 
-	for (var i = die_count-1; i >= 0; i--) {
+	for (var i = die_match-1; i >= 0; i--) {
 		roll({
 			double: double,
 		});
@@ -125,7 +146,7 @@ function responseBuilder(receivedMessage) {
 
 	for (let i = results.length - 1; i >= 0; i--) {
 		let result_print = ''
-		if (results[i] >= storypath_tn) {
+		if (results[i] >= trinity_tn) {
 			result_print = '**' + results[i] + '**';
 		} else {
 			result_print = results[i];
@@ -141,7 +162,7 @@ function responseBuilder(receivedMessage) {
 	response += strings.response_1 + success.length + strings.response_2;
 
 	console.log('Results response to server: ' + response);
-	receivedMessage.channel.send('', new messageBuilder.message(response))
+	receivedMessage.channel.send('', new messageBuilder.message(system, response))
 		.catch(console.error);
 
 	receivedMessage.channel.stopTyping(true);
@@ -155,7 +176,7 @@ function responseBuilder(receivedMessage) {
 // 1. Roll init
 // 2. gives ticks
 // 3. Storyguide or players choose who goes on a given tick, that uses their focus
-// 4. New round, same tickets, but focuses can be different, Dr:e, scion:  doesn't say to re-choose, its set
+// 4. New round, same ticks, but focuses can be different, Dr:e, scion:  doesn't say to re-choose, its set
 
 exports.call = call;
 exports.system = systems;
