@@ -57,31 +57,37 @@ function manageInit(receivedMessage, bonus) {
         result += bonus;
     }
 
+    // if the command includes clear, call the clear() function and exit
     let clearCheck = receivedMessage.options.find(element => element === 'clear');
     if(clearCheck !== undefined) {
         clear();
         return;
     }
 
+    // fetch the current pin list
     message.channel.fetchPinnedMessages(true)
         .then(messages => currentInitCheck(messages))
         .catch(console.error);
 }
 
 /**
- * [currentInitCheck description]
+ * Looks at the current pins to see if one of them is a list of inits already
  * @param  {[type]} messages [description]
  * @return {[type]}          [description]
  */
 function currentInitCheck(messages) {
     console.log('Current Init ID: ' + init_current);
+    // i don't know why i need to do this or why it works
     let reMap = new Map();
-    messages.forEach(msg => reMap.set(msg.id, msg.id)); // idont know why i need to do this or why it works
+    messages.forEach(msg => reMap.set(msg.id, msg.id)); 
     currentPin = reMap.get(init_current);
+
     console.log('Current ID checK: ' + currentPin);
     currentPin = messages.get(currentPin);
         
+    // if a current pin has the id of the 
     if (currentPin != undefined) {
+        console.log("does this get called?");
         if (!authorCheck()) {
             let  initArray = currentPin.embeds.description.split('\n');
                 
@@ -97,25 +103,31 @@ function currentInitCheck(messages) {
                 console.log('Inits: '+ key + " -- " + value);
             });
 
-            setInit();
+            setInit(true);
         }
 
     } else {
-        setInit();
+        setInit(false);
     }
 }
 
 /**
  * [setInit description]
+ * @param {boolean} repeat whether this call to setInit has been done by the same Author or not
  */
-function setInit() {
+function setInit(repeat) {
 
     result = getResult();
 
     if (isStoryteller) {
-        initList.set(author + '(NPC 1)', initList.get(author).splice(author.indexOf(':')-2, '(NPC 1)'));
-        //TDOD: add a check for duplicate storyteller inits, should enumarate automatically
-        // update them as needed, iterating the number
+        console.log('Handling the Storyteller multi case');
+        if(repeat){
+            initList.set(author + '(NPC 1)', initList.get(author).splice(author.indexOf(':')-2, '(NPC 1)'));
+            //TDOD: add a check for duplicate storyteller inits, should enumarate automatically
+            // update them as needed, iterating the number
+        } else {
+            initList.set(author + '(NPC 1)', '(NPC 1)');
+        }
     } else {
         // handle the player case
         // Allow Multiple for familiars/retainers/etc.? maybe with a passed flag
@@ -143,9 +155,11 @@ function authorCheck() {
 
     console.log('author_match: '+ author_match);
 
-    if(author_match && !isStoryteller) {
-        message.channel.send('', new messageBuilder.message(system, author + ", I'm sorry, you have already rolled for initiative."))
-            .catch(console.error);
+    if(author_match) {
+        if(!isStoryteller) {
+            message.channel.send('', new messageBuilder.message(system, author + ", I'm sorry, you have already rolled for initiative."))
+                .catch(console.error);
+        }
         return true;
     } else {
         return false;
