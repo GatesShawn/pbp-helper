@@ -16,18 +16,4 @@
 //	@author Shawn Gates
 */
 
-
-/**
-*
-**/
-Map.prototype.merge = function(map) {
-	let mapTest = map instanceof Map
-	if(!mapTest) {
-		console.log('Merge requires a Map object be supplied.');
-		return;
-	}
-
-	let newMap = new Map([...map, ...this]);
-
-	return newMap;
-};
+// if help found, pull up help strings provided by the module?

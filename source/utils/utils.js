@@ -12,23 +12,18 @@
 //	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // 	See the License for the specific language governing permissions and
 // 	limitations under the License.
-// 
-//	@author Shawn Gates
 */
 
-const fs = require('fs');
-const messageBuilder = require('./utils/message-builder.js');
 
-// load and parse the string file
-let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
+function gmCheck(command, gm) {
+	let isGM = false;
+	let gmRole = command.guild.roles.find(val => val.name === gm );
 
-function help(channel, systems) {
+	if (gmRole) {
+		isGM = gmRole.members.find(val => val.user === command.author);
+	}
+	return isGM;
 
-	let helpMessage = strings.help;
-
-	channel.send('', new messageBuilder.message(helpMessage))
-		.catch(console.error);
-	channel.stopTyping(true);
 }
 
-exports.help = help;
+exports.gmCheck = gmCheck;

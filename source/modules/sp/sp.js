@@ -59,7 +59,7 @@ function roll(options) {
 	results.push(result);
 	if(result >= storypath_tn) success.push(result);
 	
-	// 10s are two succsses in they came from (they re-roll in Scion?!)
+	// 10s are two successes in they came from (they re-roll in Scion?!)
 	if(result >= options.double) {
 		success.push(result);
 	}
@@ -149,12 +149,12 @@ function responseBuilder(receivedMessage) {
 	success = [];
 }
 
-// initiaitcve system
+// initiative system
 // TC (maybe all?)
 // 1. Roll init
 // 2. gives ticks
-// 3. Storyguide or players choose who goes on a given tick, that uses thier focus
-// 4. New round, same tickes, but focuses can be different, Dr:e, scion:  doesnt say to rechoose, its set
+// 3. Storyguide or players choose who goes on a given tick, that uses their focus
+// 4. New round, same tickets, but focuses can be different, Dr:e, scion:  doesn't say to re-choose, its set
 
 exports.call = call;
 exports.system = systems;

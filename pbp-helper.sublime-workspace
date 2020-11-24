@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"die",
+				"die_match\tabc"
+			],
+			[
+				"init",
+				"initCheck\tabc"
+			],
+			[
+				"ini",
+				"initiative\tabc"
+			],
+			[
+				"iit",
+				"init\t(main.js)"
+			],
+			[
+				"di",
+				"die_match\tabc"
+			],
+			[
 				"btn-",
 				"btn-group"
 			],
@@ -172,25 +192,91 @@
 	"buffers":
 	[
 		{
-			"contents": "const Discord = require('discord.js')\nconst client = new Discord.Client()\n\nclient.on('ready', () => {\n    console.log(\"Connected as \" + client.user.tag)\n})\n\n// Get your bot's secret token from:\n// https://discordapp.com/developers/applications/\n// Click on your application -> Bot -> Token -> \"Click to Reveal Token\"\nbot_secret_token = \"XXXXXXXXXXX\"\n\nclient.login(bot_secret_token)",
+			"file": "source/main.js",
 			"settings":
 			{
-				"buffer_size": 381,
-				"line_ending": "Windows"
+				"buffer_size": 4018,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "source/utils/utils.js",
+			"settings":
+			{
+				"buffer_size": 842,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "source/modules/cod/cod.js",
+			"settings":
+			{
+				"buffer_size": 7432,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "source/modules/cod/init.js",
+			"settings":
+			{
+				"buffer_size": 6536,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "source/utils/command-splitter.js",
+			"settings":
+			{
+				"buffer_size": 2585,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "source/modules/cod/resources.json",
+			"settings":
+			{
+				"buffer_size": 1404,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		}
 	],
-	"build_system": "",
+	"build_system": "Packages/ESLint/ESLint.sublime-build",
 	"build_system_choices":
 	[
+		[
+			[
+				[
+					"Packages/ESLint/ESLint.sublime-build",
+					""
+				],
+				[
+					"Packages/User/Node.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/ESLint/ESLint.sublime-build",
+				""
+			]
+		]
 	],
 	"build_varint": "",
 	"command_palette":
 	{
 		"height": 784.0,
-		"last_filter": "insta",
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
 			[
 				"insta",
 				"Package Control: Install Package"
@@ -250,8 +336,38 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/Shawn/Documents/Development/pbp-helper",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils"
+	],
 	"file_history":
 	[
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod/cod_temp.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/main.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/cod/cod.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/cod/init.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod/resources.json",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/cod/resources.json",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/sentinels/resources.json",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/sentinels/resources.json",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/main.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/message-builder.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/help.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/init.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/help-system.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/source/utils/command-splitter.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/issue-branch.yml",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/create-issue-branch.yml",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/modules/sentinels/sentinels.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/.github/workflows/nodejs.yml",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/init.js",
+		"/C/Users/Shawn/Documents/Development/pbp-helper/help.js",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/Default (Windows).sublime-keymap",
+		"/C/Users/Shawn/AppData/Roaming/Sublime Text 3/Packages/ESLint/ESLint.sublime-settings",
 		"/C/Users/Shawn/Downloads/Bunny_Contract.txt",
 		"/C/Users/Shawn/Documents/Development/CEPServer/accessability.js",
 		"/C/Users/Shawn/Documents/Development/CEPServer/node_modules/bootstrap/dist/css/bootstrap-grid.css",
@@ -328,13 +444,15 @@
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
 		"height": 176.0,
 		"where_history":
 		[
+			"C:\\Users\\Shawn\\Documents\\Development\\pbp-helper",
+			""
 		]
 	},
 	"find_state":
@@ -342,6 +460,34 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"string.",
+			"receivedMessage",
+			"author",
+			"string.",
+			"string",
+			"result",
+			"                    ",
+			"                   ",
+			"                  ",
+			"                 ",
+			"                ",
+			"               ",
+			"              ",
+			"             ",
+			"            ",
+			"initMore",
+			"Bonus",
+			"bonus",
+			"init bonus",
+			"init_current",
+			"let GM = 'Storyteller'",
+			"init",
+			"init ",
+			",",
+			"message.guild",
+			"creating",
+			"message.guild",
+			"null"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -349,6 +495,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"});\n",
+			";\n"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -359,36 +507,182 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
+					"file": "source/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 381,
+						"buffer_size": 4018,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								381,
-								381
+								2001,
+								2001
 							]
 						],
 						"settings":
 						{
-							"bracket_highlighter.busy": false,
-							"bracket_highlighter.clone": -1,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1968.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "source/utils/utils.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 842,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								712,
+								712
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 228.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "source/modules/cod/cod.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7432,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3470,
+								3470
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2191.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "source/modules/cod/init.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6536,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1678,
+								1678
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 775.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "source/utils/command-splitter.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2585,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1739,
+								1739
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1467.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "source/modules/cod/resources.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1404,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1030,
+								1030
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 147.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
@@ -396,7 +690,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -431,7 +725,7 @@
 	},
 	"output.exec":
 	{
-		"height": 31.0
+		"height": 289.0
 	},
 	"output.find_results":
 	{
@@ -445,11 +739,11 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "",
+	"pinned_build_system": "Packages/User/Node.sublime-build",
 	"project": "pbp-helper.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -487,7 +781,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 50.0,
+	"side_bar_width": 239.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
