@@ -97,6 +97,12 @@ function responseBuilder(receivedMessage) {
 	let die_match = receivedMessage.dice[0];
 	let difficulty = 0;
 
+	// if an init call capture the results and re-direct
+	let initCheck = receivedMessage.options.find(element => element === 'init');
+	if (initCheck !== undefined) {
+		return;
+	}
+
 	if (die_match === undefined) {
 		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
 			.catch(console.error);
@@ -135,17 +141,21 @@ function responseBuilder(receivedMessage) {
 
 	// skill tricks let Talents adjust target numbers
 	let target_number_match = receivedMessage.options.find(element => element.slice(0,6) === 'target');
-	// Add an alisa for 'T'
 	if (target_number_match !== undefined) {
-		target_number = target_number_match.slice(-1);
+		let target_number_match = receivedMessage.options.find(element => element.slice(0,1) === 't');
+		if (target_number_match !== undefined) {
+			target_number = target_number_match.slice(-1);
+		}
 	}
 	console.log('target number: ' + target_number);
 
 	// check for the difficulty
 	let difficulty_match = receivedMessage.options.find(element => element.slice(0,4) === 'diff');
-	// Add an alisa for 'd'
 	if (difficulty_match !== undefined) {
-		difficulty = difficulty_match.slice(-1);
+		let difficulty_match = receivedMessage.options.find(element => element.slice(0,1) === 'd');
+		if (difficulty_match !== undefined) {
+			difficulty = difficulty_match.slice(-1);
+		}
 	}
 	console.log('difficulty: ' + difficulty);
 
