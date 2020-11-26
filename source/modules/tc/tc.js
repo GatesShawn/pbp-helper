@@ -1,4 +1,4 @@
-/*	
+/*
 //	Copyright 2020 Shawn Gates
 //
 //	Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,36 @@
 //	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // 	See the License for the specific language governing permissions and
 // 	limitations under the License.
-// 
+//
 //	@author Shawn Gates
 */
 "use strict";
-
+// includes
 const Die = require('../../utils/die.js');
 const messageBuilder = require('../../utils/message-builder.js');
 const fs = require('fs');
 
-let trinity_die = 10; 
-let trinity_tn = 8; // this changes more than I hoped. Skill Tricks in TC can change this as well (maybe other things too) TC will need a way to change it per roll
-let GM = 'Storyguide';
-let strings;
 
+// load external data
+let strings;
 // load and parse the string file
-try{
+try {
 	strings = JSON.parse(fs.readFileSync(__dirname + '/resources.json', 'utf8'));
+} catch (err) {
+	console.log(err);
+}
+
+let config;
+// load and parse the config file
+try {
+	config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
+} catch (err) {
+	console.log(err);
+}
+let target_number = config.target_number;
+let systems;
+try {
+	systems = new Map(config.systems);
 } catch (err) {
 	console.log(err);
 }
@@ -36,29 +49,6 @@ try{
 // might be able to make this one Map (key: [value, success or not])
 let results = [];
 let success = [];
-
-let gm = 'Storyguide';
-let system = 'Trinity Continuum';
-let call = '/tc';
-let systems = new Map([
-			['Trinity', gm],
-			['TC', gm],
-			['Trinity Continuum', gm],
-			['Trinity Continuum: Core', gm],
-			['Trinity Continuum: Aeon', gm],
-			['Trinity Continuum: Abberant', gm],
-			['Trinity Continuum: Adventure', gm],
-			['Trinity Continuum: Anima', gm],
-			['Trinity Continuum: Aegis', gm],
-			['Trinity Continuum: Assassin', gm],
-			['TC: Core', gm],
-			['TC: Aeon', gm],
-			['TC: Abberant', gm],
-			['TC: Adventure', gm],
-			['TC: Anima', gm],
-			['TC: Aegis', gm],
-			['TC: Assassin', gm]
-		]);
 
 /**
  * Calls die rolling for Trinity
@@ -76,7 +66,7 @@ function roll(options) {
 	let result = Die.die.roll(10);
 	results.push(result);
 	if(result >= target_number) success.push(result);
-	
+
 	// 10s are two successes in they came from (they re-roll in Scion?!)
 	if(result >= options.double) {
 		success.push(result);
@@ -92,32 +82,26 @@ function responseBuilder(receivedMessage) {
 	let author = receivedMessage.author.toString();
 	let double = 10;
 	let re_die = /[0-9]+/;
-	let target_number = trinity_tn;
 	let re_double = /double (8|9)/;
 	let die_match = receivedMessage.dice[0];
 	let difficulty = 0;
-
-	// if an init call capture the results and re-direct
-	let initCheck = receivedMessage.options.find(element => element === 'init');
-	if (initCheck !== undefined) {
-		return;
-	}
+	let botch_potential = false;
 
 	if (die_match === undefined) {
-		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
+		receivedMessage.channel.send('', new messageBuilder.message(config.system, author + strings.no_dice))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
-	
+
 	// Reject die pools over 100, large die pools cause server slow down and 100 is plenty of buffer space
 	if (die_match > 100) {
-		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.too_large))
+		receivedMessage.channel.send('', new messageBuilder.message(config.system, author + strings.too_large))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
 		return;
 	}
-	
+
 	console.log('Number of dice to be rolled: ' + die_match);
 
 	//change back to -again...
@@ -175,9 +159,12 @@ function responseBuilder(receivedMessage) {
 			result_print = '**' + results[i] + '**';
 		} else {
 			result_print = results[i];
+			if (results[i] === 1) {
+				botch_potential = true;
+			}
 		}
 		//add a comma between results
-		if(i > 0) { 
+		if(i > 0) {
 			response += result_print + ', ';
 		} else {
 			response += result_print;
@@ -186,17 +173,28 @@ function responseBuilder(receivedMessage) {
 
 	response += strings.response_1 + success.length + strings.response_2;
 
+	// if an init call capture the results and re-direct
+	let init_match = receivedMessage.options.find(element => element === 'init');
+	if (init_match !== undefined) {
+		initiative();
+	}
+
 	if(success.length < difficulty) {
-		response += strings.response_consolation_1 + difficulty + strings.response_consolation_2;
+		//check for botch
+		if (botch_potential) {
+			response += strings.response_botch_1;
+		} else {
+			response += strings.response_consolation_1 + difficulty + strings.response_consolation_2;
+		}
 	}
 	// and handle botches, consolation = two momentum (is this different for different games?)
 	// dr:e, scion : botch gives 2 extra momentum, for total of 3
 	// dr:e, scion has voluntary botches on failur, for 2 momentum
 	// scions; faild specialty gives +1 momentum
-	 
-	
+
+
 	console.log('Results response to server: ' + response);
-	receivedMessage.channel.send('', new messageBuilder.message(system, response))
+	receivedMessage.channel.send('', new messageBuilder.message(config.system, response))
 		.catch(console.error);
 
 	receivedMessage.channel.stopTyping(true);
@@ -205,6 +203,9 @@ function responseBuilder(receivedMessage) {
 	success = [];
 }
 
+function initiative() {
+
+}
 // initiative system
 // TC (maybe all?)
 // 1. Roll init
@@ -212,6 +213,19 @@ function responseBuilder(receivedMessage) {
 // 3. Storyguide or players choose who goes on a given tick, that uses their focus
 // 4. New round, same ticks, but focuses can be different, Dr:e, scion:  doesn't say to re-choose, its set
 
-exports.call = call;
+/**
+ * [helpBuilder description]
+ * @param {Message} message
+ * @return
+ */
+function helpBuilder(message) {
+	let response = strings.help;
+	// add automatic listing of supported game systems
+	message.channel.send('', new messageBuilder.message(system, response))
+		.catch(console.error);
+	message.channel.stopTyping(true);
+}
+
+exports.call = config.call;
 exports.system = systems;
 exports.responseBuilder = responseBuilder;

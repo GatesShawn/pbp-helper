@@ -1,0 +1,26 @@
+{
+      "gm": "Storyguide",
+      "system": "Trinity Continuum",
+      "call": "/tc",
+      "systems":
+            [["Trinity", "gm"],
+            ["TC", "gm"],
+            ["Trinity Continuum", "gm"],
+            ["Trinity Continuum: Core", "gm"],
+            ["Trinity Continuum: Aeon", "gm"],
+            ["Trinity Continuum: Abberant", "gm"],
+            ["Trinity Continuum: Adventure", "gm"],
+            ["Trinity Continuum: Anima", "gm"],
+            ["Trinity Continuum: Aegis", "gm"],
+            ["Trinity Continuum: Assassin", "gm"],
+            ["TC: Core", "gm"],
+            ["TC: Aeon", "gm"],
+            ["TC: Abberant", "gm"],
+            ["TC: Adventure", "gm"],
+            ["TC: Anima", "gm"],
+            ["TC: Aegis", "gm"],
+            ["TC: Assassin", "gm"]
+        ],
+      "die_size": 10,
+      "target_number": 8
+}
