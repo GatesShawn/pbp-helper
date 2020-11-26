@@ -75,7 +75,7 @@ function roll(options) {
 
 	let result = Die.die.roll(10);
 	results.push(result);
-	if(result >= trinity_tn) success.push(result);
+	if(result >= target_number) success.push(result);
 	
 	// 10s are two successes in they came from (they re-roll in Scion?!)
 	if(result >= options.double) {
@@ -92,9 +92,12 @@ function responseBuilder(receivedMessage) {
 	let author = receivedMessage.author.toString();
 	let double = 10;
 	let re_die = /[0-9]+/;
+	let target_number = trinity_tn;
 	let re_double = /double (8|9)/;
 	let die_match = receivedMessage.dice[0];
-	if (die_match===null) {
+	let difficulty = 0;
+
+	if (die_match === undefined) {
 		receivedMessage.channel.send('', new messageBuilder.message(system, author + strings.no_dice))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
@@ -130,23 +133,35 @@ function responseBuilder(receivedMessage) {
 	}
 	console.log('Double value: ' + double);
 
+	// skill tricks let Talents adjust target numbers
+	let target_number_match = receivedMessage.options.find(element => element.slice(0,6) === 'target');
+	// Add an alisa for 'T'
+	if (target_number_match !== undefined) {
+		target_number = target_number_match.slice(-1);
+	}
+	console.log('target number: ' + target_number);
+
+	// check for the difficulty
+	let difficulty_match = receivedMessage.options.find(element => element.slice(0,4) === 'diff');
+	// Add an alisa for 'd'
+	if (difficulty_match !== undefined) {
+		difficulty = difficulty_match.slice(-1);
+	}
+	console.log('difficulty: ' + difficulty);
+
+	// Roll the pool
 	for (var i = die_match-1; i >= 0; i--) {
 		roll({
 			double: double,
 		});
 	}
 
+	// start building the response
 	let response = author + strings.roll;
-
-	// add failure line in 'gets consolation'
-	// and handle botches, consolation = two momentum (is this different for different games?)
-	// dr:e, scion : botch gives 2 extra momentum, for total of 3
-	// dr:e, scion has voluntary botches on failur, for 2 momentum
-	// scions; faild specialty gives +1 momentum
 
 	for (let i = results.length - 1; i >= 0; i--) {
 		let result_print = ''
-		if (results[i] >= trinity_tn) {
+		if (results[i] >= target_number) {
 			result_print = '**' + results[i] + '**';
 		} else {
 			result_print = results[i];
@@ -161,6 +176,15 @@ function responseBuilder(receivedMessage) {
 
 	response += strings.response_1 + success.length + strings.response_2;
 
+	if(success.length < difficulty) {
+		response += strings.response_consolation_1 + difficulty + strings.response_consolation_2;
+	}
+	// and handle botches, consolation = two momentum (is this different for different games?)
+	// dr:e, scion : botch gives 2 extra momentum, for total of 3
+	// dr:e, scion has voluntary botches on failur, for 2 momentum
+	// scions; faild specialty gives +1 momentum
+	 
+	
 	console.log('Results response to server: ' + response);
 	receivedMessage.channel.send('', new messageBuilder.message(system, response))
 		.catch(console.error);

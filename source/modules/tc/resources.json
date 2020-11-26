@@ -3,5 +3,8 @@
 	"too_large":", your roll was rejected because it was too large. Please roll again with a smaller dice pool.",
 	"roll": ", you rolled: ",
 	"response_1":"\nYou rolled: ",
-	"response_2":" successes."
+	"response_2":" successes.",
+    "response_consolation_1":"\nThat is below the difficulty of ",
+    "response_consolation_2":", so you get one consolation."
+
 }
