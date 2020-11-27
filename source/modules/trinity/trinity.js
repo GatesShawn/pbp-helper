@@ -20,6 +20,7 @@
 // includes
 const Die = require('../../utils/die.js');
 const messageBuilder = require('../../utils/message-builder.js');
+const help = require('../../utils/help-system.js');
 const fs = require('fs');
 
 // load external data
@@ -86,6 +87,12 @@ function responseBuilder(receivedMessage) {
 	let die_match = receivedMessage.dice[0];
 	let difficulty = 0;
 	let botch_potential = false;
+
+	//check for help command and rout to that instead
+	if(receivedMessage.help) {
+		helpBuilder(receivedMessage);
+		return;
+	}
 
 	if (die_match === undefined) {
 		receivedMessage.channel.send('', new messageBuilder.message(config.system, author + strings.no_dice))
@@ -213,7 +220,7 @@ function initiative() {
 function helpBuilder(message) {
 	let response = strings.help;
 	// add automatic listing of supported game systems
-	message.channel.send('', new messageBuilder.message(system, response))
+	message.channel.send('', new messageBuilder.message(config.system, response))
 		.catch(console.error);
 	message.channel.stopTyping(true);
 }
