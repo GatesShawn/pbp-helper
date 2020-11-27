@@ -16,11 +16,11 @@
 //	@author Shawn Gates
 */
 "use strict";
+
 // includes
 const Die = require('../../utils/die.js');
 const messageBuilder = require('../../utils/message-builder.js');
 const fs = require('fs');
-
 
 // load external data
 let strings;
@@ -54,7 +54,7 @@ let success = [];
  * Calls die rolling for Trinity
  * @param  Object options Parameter object
  * @param Boolean options.chance_die Sets whether the roll being made is a chance die
- * @param Number options.double value to use for double successes
+ * @param Number options.again value to use for again successes
  * @return {[type]}         [description]
  */
 function roll(options) {
@@ -67,8 +67,8 @@ function roll(options) {
 	results.push(result);
 	if(result >= target_number) success.push(result);
 
-	// 10s are two successes in they came from (they re-roll in Scion?!)
-	if(result >= options.double) {
+	// exploding dice
+	if(result >= options.again) {
 		success.push(result);
 	}
 }
@@ -80,9 +80,9 @@ function roll(options) {
  */
 function responseBuilder(receivedMessage) {
 	let author = receivedMessage.author.toString();
-	let double = 10;
+	let again = 10;
 	let re_die = /[0-9]+/;
-	let re_double = /double (8|9)/;
+	let re_again = /(8|9)-again /;
 	let die_match = receivedMessage.dice[0];
 	let difficulty = 0;
 	let botch_potential = false;
@@ -104,24 +104,23 @@ function responseBuilder(receivedMessage) {
 
 	console.log('Number of dice to be rolled: ' + die_match);
 
-	//change back to -again...
-	let double_match = receivedMessage.options.find(element => element.slice(-5) === 'double');
-	if (double_match === null) {double_match = '';}
-	console.log('Double Match results: ' + double_match);
+	// check for a changed explosion value
+	let again_match = receivedMessage.options.find(element => element.slice(-5) === 'again');
+	if (again_match === null) {again_match = '';}
 
-	switch (double_match) {
-		case 'double 9':
-			double = 9;
+	switch (again_match) {
+		case '9-again':
+			again = 9;
 			break;
-		case 'double 8':
-			double = 8;
+		case '8-again':
+			again = 8;
 			break;
-		case 'double 7':
-			double = 7;
-		break;
+		case 'no-again':
+			again = 11;
+			break;
 		default:
 	}
-	console.log('Double value: ' + double);
+	console.log('Again type: ' + again);
 
 	// skill tricks let Talents adjust target numbers
 	let target_number_match = receivedMessage.options.find(element => element.slice(0,6) === 'target');
@@ -148,7 +147,7 @@ function responseBuilder(receivedMessage) {
 	// Roll the pool
 	for (var i = die_match-1; i >= 0; i--) {
 		roll({
-			double: double,
+			again: again,
 		});
 	}
 
