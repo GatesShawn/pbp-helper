@@ -125,21 +125,23 @@ function responseBuilder(receivedMessage) {
 
 	// skill tricks let Talents adjust target numbers
 	let target_number_match = receivedMessage.options.find(element => element.slice(0,6) === 'target');
+	let target_number_match_alternate = receivedMessage.options.find(element => element.slice(0,1) === 't');
 	if (target_number_match !== undefined) {
-		let target_number_match = receivedMessage.options.find(element => element.slice(0,1) === 't');
-		if (target_number_match !== undefined) {
-			target_number = target_number_match.slice(-1);
-		}
+		target_number = target_number_match.slice(-1);
+	}
+	if (target_number_match_alternate !== undefined) {
+		target_number = target_number_match_alternate.slice(-1);
 	}
 	console.log('target number: ' + target_number);
 
 	// check for the difficulty
 	let difficulty_match = receivedMessage.options.find(element => element.slice(0,4) === 'diff');
+	let difficulty_match_alternate = receivedMessage.options.find(element => element.slice(0,1) === 'd');
 	if (difficulty_match !== undefined) {
-		let difficulty_match = receivedMessage.options.find(element => element.slice(0,1) === 'd');
-		if (difficulty_match !== undefined) {
-			difficulty = difficulty_match.slice(-1);
-		}
+		difficulty = difficulty_match.slice(-1);
+	}
+	if (difficulty_match_alternate !== undefined) {
+		difficulty = difficulty_match_alternate.slice(-1);
 	}
 	console.log('difficulty: ' + difficulty);
 
