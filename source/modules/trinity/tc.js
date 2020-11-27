@@ -188,11 +188,6 @@ function responseBuilder(receivedMessage) {
 			response += strings.response_consolation_1 + difficulty + strings.response_consolation_2;
 		}
 	}
-	// and handle botches, consolation = two momentum (is this different for different games?)
-	// dr:e, scion : botch gives 2 extra momentum, for total of 3
-	// dr:e, scion has voluntary botches on failur, for 2 momentum
-	// scions; faild specialty gives +1 momentum
-
 
 	console.log('Results response to server: ' + response);
 	receivedMessage.channel.send('', new messageBuilder.message(config.system, response))
@@ -205,14 +200,10 @@ function responseBuilder(receivedMessage) {
 }
 
 function initiative() {
-
-}
-// initiative system
-// TC (maybe all?)
-// 1. Roll init
 // 2. gives ticks
 // 3. Storyguide or players choose who goes on a given tick, that uses their focus
 // 4. New round, same ticks, but focuses can be different, Dr:e, scion:  doesn't say to re-choose, its set
+}
 
 /**
  * [helpBuilder description]
