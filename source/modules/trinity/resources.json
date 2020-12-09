@@ -1,0 +1,11 @@
+{
+    "no_dice":", your roll was rejected because you didn't specify any dice to roll.",
+    "too_large":", your roll was rejected because it was too large. Please roll again with a smaller dice pool.",
+    "roll": ", you rolled: ",
+    "response_1":"\nYou rolled: ",
+    "response_2":" successes.",
+    "response_consolation_1":"\nThat is below the difficulty of ",
+    "response_consolation_2":", so you get a Consolation.",
+    "response_botch_1":"\n And you rolled a 1, which is a Botch so you gain 2 Momentum as a Consolation.",
+    "help": "To use the Trinity Continuum module please specify a number of dice to roll. In addition you can specify a difficulty for the roll with \"diffN\" (or \"dN\") where N is the difficulty of the roll.\n You can also change the Target Number (default: 8) with \"TargetN\" (or \"tN\").\n You can also specify '8-again', '9-again', or 'no-again' to modify exploding on your die roll."
+}

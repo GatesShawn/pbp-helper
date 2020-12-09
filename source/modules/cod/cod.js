@@ -48,11 +48,11 @@ let gm = 'Storyteller';
 let system = 'Chronicles of Darkness';
 let call = '/cod';
 let systems = new Map([
-			[ 'CofD', gm ],
-			[ 'CoD', gm ],
-			[ 'Chronicles of Darkness', gm ],
-			[ 'nWoD', gm ],
-			[ 'New World of Darkness', gm ],
+			['CofD', gm ],
+			['CoD', gm ],
+			['Chronicles of Darkness', gm ],
+			['nWoD', gm ],
+			['New World of Darkness', gm ],
 		]);
 
 /**

@@ -1,0 +1,11 @@
+{
+    "gm": "Storyguide",
+    "system": "StoryPath",
+    "call": "/sp",
+    "systems": [
+        ["StoryPath", "gm"]
+    ],
+    "die_size": 10,
+    "target_number": 8,
+    "explodes_on": 10
+}
