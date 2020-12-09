@@ -1,4 +1,4 @@
-/*	
+/*
 //	Copyright 2020 Shawn Gates
 //
 //	Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +12,7 @@
 //	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // 	See the License for the specific language governing permissions and
 // 	limitations under the License.
-// 
+//
 //	@author Shawn Gates
 */
 
@@ -59,7 +59,7 @@ function parse(message) {
 
 	let commandList = newName.split(' ');
 
-	console.log(commandList);
+	console.log(commandList); // This shows as an array of strings
 
 	// Extract command
 	command.cmd = commandList[0];
@@ -72,17 +72,19 @@ function parse(message) {
 	// Extract Help command; null if it isn't called
 	command.help = commandList.find(element => element === 'help');
 
-	let list = commandList.values();
+	if(commandList !== undefined){
+		let list = commandList.values();
 
-	for (const value of list) {
-		if (isNaN(value)) {
-	  		command.options.push(value);
-		} else {
-	  		command.dice.push(parseInt(value));
+		for (const value of list) {
+			if (isNaN(value)) {
+		  		command.options.push(value);
+			} else {
+		  		command.dice.push(parseInt(value));
+			}
 		}
 	}
-	
-	return command; 
+
+	return command;
 }
 
 exports.parse = parse;
