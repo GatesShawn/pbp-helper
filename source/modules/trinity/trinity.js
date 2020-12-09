@@ -70,7 +70,9 @@ function roll(options) {
 
 	// exploding dice
 	if(result >= options.again) {
-		success.push(result);
+		roll({
+			again: options.again,
+		});
 	}
 }
 
