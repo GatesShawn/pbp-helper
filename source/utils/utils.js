@@ -1,4 +1,4 @@
-/*	
+/*
 //	Copyright 2020 Shawn Gates
 //
 //	Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,12 @@
 // 	limitations under the License.
 */
 
-
+/**
+ * [gmCheck description]
+ * @param  {[type]} command [description]
+ * @param  {[type]} gm      [description]
+ * @return {[type]}         [description]
+ */
 function gmCheck(command, gm) {
 	let isGM = false;
 	let gmRole = command.guild.roles.find(val => val.name === gm );
@@ -26,4 +31,37 @@ function gmCheck(command, gm) {
 
 }
 
+/**
+ * Returns which range with an a object  of ranges
+ * @param  {Object} ranges [description]
+ * @param  {Number} value [description]
+ * @return {String}        [description]
+ */
+function checkRange(ranges, value) {
+
+    // range should be an object with ranges
+    if (typeof ranges !== 'object') {
+        console.log("checkRange requires an object parameter.");
+        return;
+    }
+    // value should be a number
+    if (typeof value !== 'number') {
+        console.log("checkRange requires a number parameter.");
+        return;
+    }
+
+    let rangeStart_ex = '[0-9]+\-';
+    let rangeEnd_ex = '\-[0-9]+';
+
+    for (const property in ranges) {
+
+        if (property.match(rangeStart_ex)[0].slice(0, -1) <= value && value <= property.match(rangeEnd_ex)[0].slice(1)) {
+
+            //return range identifier
+            return property;
+        }
+    }
+}
+
 exports.gmCheck = gmCheck;
+exports.checkRange = checkRange;
