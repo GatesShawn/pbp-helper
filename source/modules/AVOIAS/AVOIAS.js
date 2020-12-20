@@ -57,11 +57,37 @@ class Character {
         this.associate = Table.Associate[rolls.associateNum];
         this.class = Table.Class[rolls.classNum].name;
         this.background = Table.Class[rolls.classNum].backgrounds[Util.checkRange(Table.Class[rolls.classNum].backgrounds, rolls.backgroundNum)];
-        this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight, Table.Races[rolls.raceNum].heightMod);
-        this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight, Table.Races[rolls.raceNum].weightMod);
+
+        switch (this.subrace) {
+            case 'Air Genasi':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_air, Table.Races[rolls.raceNum].heightMod_air);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_air, Table.Races[rolls.raceNum].weightMod_air);
+                break;
+            case 'Earth Genasi':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_earth, Table.Races[rolls.raceNum].heightMod_earth);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_earth, Table.Races[rolls.raceNum].weightMod_earth);
+                break;
+            case 'Fire Genasi':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_fire, Table.Races[rolls.raceNum].heightMod_fire);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_fire, Table.Races[rolls.raceNum].weightMod_fire);
+                break;
+            case 'Water Genasi':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_water, Table.Races[rolls.raceNum].heightMod_water);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_water, Table.Races[rolls.raceNum].weightMod_water);
+                break;
+            case 'Skill Forged':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_skill, Table.Races[rolls.raceNum].heightMod_skill);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_skill, Table.Races[rolls.raceNum].weightMod_skill);
+                break;
+            case 'War Forged':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_war, Table.Races[rolls.raceNum].heightMod_war);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_war, Table.Races[rolls.raceNum].weightMod_war);
+                break;
+            default:
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight, Table.Races[rolls.raceNum].heightMod);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight, Table.Races[rolls.raceNum].weightMod);
+        }
     }
-
-
 }
 
 let heightResult = 0; // this needs to reset after use
@@ -74,8 +100,6 @@ let heightResult = 0; // this needs to reset after use
  */
 function determineHeight(baseHeight, heightMod) {
     let height = baseHeight;
-
-    // need to handle forged and genasi having different values for subraces
 
     while (heightMod[0]) {
         heightResult += Die.die.roll(heightMod[1]);
@@ -96,8 +120,6 @@ function determineHeight(baseHeight, heightMod) {
 function determineWeight(baseWeight, weightMod) {
     let weight = baseWeight;
     let weightTemp = 0;
-    // need to handle Halfling not rolling for weight mod
-    // need to handle forged and genasi having different values for subraces
 
     while (weightMod[0]) {
         weightTemp += Die.die.roll(weightMod[1]);
@@ -153,16 +175,16 @@ function rollAbilityScores(race, subrace) {
         case  'Genasi':
             if (scores.Constitution < 8) {scores.Constitution = 8};
             switch(subrace) {
-                case 'Air':
+                case 'Air Genasi':
                     if (scores.Dexterity < 12) {scores.Dexterity = 12};
                     break;
-                case 'Earth':
+                case 'Earth Genasi':
                     if (scores.Strength < 12) {scores.Strength = 12};
                     break;
-                case 'Fire':
+                case 'Fire Genasi':
                     if (scores.Charisma < 12) {scores.Charisma = 12};
                     break;
-                case 'Water':
+                case 'Water Genasi':
                     if (scores.Wisdom < 12) {scores.Wisdom = 12};
                     break;
             }

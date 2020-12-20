@@ -145,10 +145,14 @@ let Races =  {
                 '1-8': 'Lycori',
                 '9-20': 'Styxish'
             },
-            baseHeight: 57, // in inches
-            heightMod: [2,8], // [die count, die size]
-            baseWeight: 110, // in lbs
-            weightMod: [2,4] // [die count, die size]
+            baseHeight_skill: 52, // in inches
+            heightMod_skill: [2,8], // [die count, die size]
+            baseWeight_skill: 100, // in lbs
+            weightMod_skill: [2,6], // [die count, die size]
+            baseHeight_war: 64, // in inches
+            heightMod_war: [2,8], // [die count, die size]
+            baseWeight_war: 100, // in lbs
+            weightMod_war: [3,6] // [die count, die size]
         },
     8:  {
             name: 'Genasi',
@@ -163,10 +167,22 @@ let Races =  {
                 '8-13': 'Lycori',
                 '14-20': 'Persean'
             },
-            baseHeight: 57, // in inches
-            heightMod: [2,8], // [die count, die size]
-            baseWeight: 110, // in lbs
-            weightMod: [2,4] // [die count, die size]
+            baseHeight_air: 53, // in inches
+            heightMod_air: [2,8], // [die count, die size]
+            baseWeight_air: 80, // in lbs
+            weightMod_air: [1,4], // [die count, die size]
+            baseHeight_earth: 62, // in inches
+            heightMod_earth: [2,8], // [die count, die size]
+            baseWeight_earth: 140, // in lbs
+            weightMod_earth: [3,4], // [die count, die size]
+            baseHeight_fire: 59, // in inches
+            heightMod_fire: [2,8], // [die count, die size]
+            baseWeight_fire: 100, // in lbs
+            weightMod_fire: [2,4], // [die count, die size]
+            baseHeight_water: 56, // in inches
+            heightMod_water: [2,8], // [die count, die size]
+            baseWeight_water: 120, // in lbs
+            weightMod_water: [2,4] // [die count, die size]
         },
     9:  {
             name: 'Goliath',
