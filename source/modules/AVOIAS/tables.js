@@ -29,7 +29,11 @@ let Races =  {
                 '1-7': 'Eurydicean',
                 '8-13': 'Persean',
                 '14-20': 'Rhodean'
-            }
+            },
+            baseHeight: 57, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     2:  {
             name: 'Dragonborn',
@@ -45,7 +49,11 @@ let Races =  {
                 '5-7': 'Persean',
                 '8-14': 'Rhodean',
                 '15-20': 'Styxish'
-            }
+            },
+            baseHeight: 66, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 175, // in lbs
+            weightMod: [2,6] // [die count, die size]
         },
     3:  {
             name: 'Dwarf',
@@ -61,7 +69,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '17-20': 'Styxish'
-            }
+            },
+            baseHeight: 44, // in inches
+            heightMod: [2,6], // [die count, die size]
+            baseWeight: 120, // in lbs
+            weightMod: [2,6] // [die count, die size]
         },
     4:  {
             name: 'Dwarf',
@@ -77,7 +89,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '17-20': 'Styxish'
-            }
+            },
+            baseHeight: 44, // in inches
+            heightMod: [2,6], // [die count, die size]
+            baseWeight: 120, // in lbs
+            weightMod: [2,6] // [die count, die size]
         },
     5:  {
             name: 'Elf',
@@ -93,7 +109,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '17-20': 'Styxish'
-            }
+            },
+            baseHeight: 65, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 100, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     6:  {
             name: 'Elf',
@@ -109,7 +129,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '17-20': 'Styxish'
-            }
+            },
+            baseHeight: 65, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 100, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     7:  {
             name: 'Forged',
@@ -120,7 +144,11 @@ let Races =  {
             cultures: {
                 '1-8': 'Lycori',
                 '9-20': 'Styxish'
-            }
+            },
+            baseHeight: 57, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     8:  {
             name: 'Genasi',
@@ -134,7 +162,11 @@ let Races =  {
                 '1-7': 'Eurydicean',
                 '8-13': 'Lycori',
                 '14-20': 'Persean'
-            }
+            },
+            baseHeight: 57, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     9:  {
             name: 'Goliath',
@@ -149,7 +181,11 @@ let Races =  {
                 '7-10': 'Lycori',
                 '11-14': 'Rhodean',
                 '15-20': 'Styxish'
-            }
+            },
+            baseHeight: 83, // in inches
+            heightMod: [2,6], // [die count, die size]
+            baseWeight: 250, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     10: {
             name: 'Halfling',
@@ -165,7 +201,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
-            }
+            },
+            baseHeight: 35, // in inches
+            heightMod: [2,6], // [die count, die size]
+            baseWeight: 35, // in lbs
+            weightMod: [1,1] // [die count, die size]
         },
     11: {
             name: 'Halfling',
@@ -181,7 +221,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
-            }
+            },
+            baseHeight: 35, // in inches
+            heightMod: [2,6], // [die count, die size]
+            baseWeight: 35, // in lbs
+            weightMod: [1,1] // [die count, die size]
         },
     12: {
             name: 'Half-Human',
@@ -197,7 +241,12 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
-            }
+            },
+            // How to handle Half-types?
+            baseHeight: 57, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     13: {
             name: 'Human',
@@ -211,7 +260,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
-            }
+            },
+            baseHeight: 56, // in inches
+            heightMod: [2,10], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     14: {
             name: 'Human',
@@ -225,7 +278,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
-            }
+            },
+            baseHeight: 56, // in inches
+            heightMod: [2,10], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     15: {
             name: 'Human',
@@ -239,7 +296,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
-            }
+            },
+            baseHeight: 56, // in inches
+            heightMod: [2,10], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     16: {
             name: 'Human',
@@ -253,7 +314,11 @@ let Races =  {
                 '11-13': 'Persean',
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
-            }
+            },
+            baseHeight: 56, // in inches
+            heightMod: [2,10], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     17: {
             name: 'Kith',
@@ -268,7 +333,11 @@ let Races =  {
                 '9-12': 'Eurydicean',
                 '13-16': 'Persean',
                 '17-20': 'Rhodean'
-            }
+            },
+            baseHeight: 54, // in inches
+            heightMod: [2,6], // [die count, die size]
+            baseWeight: 80, // in lbs
+            weightMod: [1,6] // [die count, die size]
         },
     18: {
             name: 'Shade',
@@ -281,7 +350,11 @@ let Races =  {
                 '7-10': 'Eurydicean',
                 '11-14': 'Lycori',
                 '15-20': 'Styxish'
-            }
+            },
+            baseHeight: 56, // in inches
+            heightMod: [2,10], // [die count, die size]
+            baseWeight: 100, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     19: {
             name: 'Tabaxi',
@@ -292,7 +365,11 @@ let Races =  {
             cultures: {
                 '1-10': 'Eurydicean',
                 '11-20': 'Lycori'
-            }
+            },
+            baseHeight: 55, // in inches
+            heightMod: [2,12], // [die count, die size]
+            baseWeight: 80, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
     20: {
             name: 'Tiefling',
@@ -307,7 +384,11 @@ let Races =  {
                 '5-10': 'Faenar',
                 '11-16': 'Gorgan',
                 '17-20': 'Shaitani'
-            }
+            },
+            baseHeight: 57, // in inches
+            heightMod: [2,8], // [die count, die size]
+            baseWeight: 110, // in lbs
+            weightMod: [2,4] // [die count, die size]
         },
 }
 

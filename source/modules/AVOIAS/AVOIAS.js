@@ -57,14 +57,56 @@ class Character {
         this.associate = Table.Associate[rolls.associateNum];
         this.class = Table.Class[rolls.classNum].name;
         this.background = Table.Class[rolls.classNum].backgrounds[Util.checkRange(Table.Class[rolls.classNum].backgrounds, rolls.backgroundNum)];
-        // this.height = race.baseHeight + (Die.die.roll(heightMod) * 2);
-        // this.weight = race.baseWeight + * Die.die.roll(weightMod);
+        this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight, Table.Races[rolls.raceNum].heightMod);
+        this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight, Table.Races[rolls.raceNum].weightMod);
     }
 
-    // baseHeight:0,
-    // heightMod:0,
-    // baseWeight:0,
-    // weightMod:0,
+
+}
+
+let heightResult = 0; // this needs to reset after use
+
+/**
+ * [determineHeight description]
+ * @param  {[type]} baseHeight [description]
+ * @param  {[type]} heightMod  [description]
+ * @return {[type]}            [description]
+ */
+function determineHeight(baseHeight, heightMod) {
+    let height = baseHeight;
+
+    // need to handle forged and genasi having different values for subraces
+
+    while (heightMod[0]) {
+        heightResult += Die.die.roll(heightMod[1]);
+        heightMod[0]--;
+    }
+
+    height += heightResult;
+
+    return (height/12).toFixed(0) + '\'' + height % 12 + '\"';
+}
+
+/**
+ * [determineHeight description]
+ * @param  {[type]} baseHeight [description]
+ * @param  {[type]} heightMod  [description]
+ * @return {[type]}            [description]
+ */
+function determineWeight(baseWeight, weightMod) {
+    let weight = baseWeight;
+    let weightTemp = 0;
+    // need to handle Halfling not rolling for weight mod
+    // need to handle forged and genasi having different values for subraces
+
+    while (weightMod[0]) {
+        weightTemp += Die.die.roll(weightMod[1]);
+        weightMod[0]--;
+    }
+
+    weight += heightResult * (weightTemp);
+    heightResult = 0;
+    return weight + ' lbs.';
 }
 
 /**
@@ -226,6 +268,10 @@ function responseBuilder(message) {
     response += strings.class_1 + char.class + strings.class_2;
         // add sub race
     response += strings.background_1 + char.background + strings.background_2;
+
+    response += strings.height_1 + char.height + strings.height_2;
+
+    response += strings.weight_1 + char.weight + strings.weight_2;
 
     message.channel.send('', new messageBuilder.message('AVOIAS', response))
         .catch(console.error);
