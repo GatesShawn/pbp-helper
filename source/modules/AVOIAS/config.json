@@ -1,0 +1,8 @@
+{
+    "gm": "Dungeon Master",
+    "system": "A Veil of Ice and Shadow",
+    "call": "/gen",
+    "systems": [
+        ["A Veil of Ice and Shadow", "gm"]
+    ]
+}

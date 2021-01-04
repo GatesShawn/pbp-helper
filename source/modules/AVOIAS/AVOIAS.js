@@ -33,13 +33,13 @@ try {
     console.log(err);
 }
 
-// let config;
-// // load and parse the config file
-// try {
-//     config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
-// } catch (err) {
-//     console.log(err);
-// }
+let config;
+// load and parse the config file
+try {
+    config = JSON.parse(fs.readFileSync(__dirname + '/config.json', 'utf8'));
+} catch (err) {
+    console.log(err);
+}
 
 /**
  *
@@ -295,16 +295,12 @@ function responseBuilder(message) {
 
     response += strings.weight_1 + char.weight + strings.weight_2;
 
-    message.channel.send('', new messageBuilder.message('AVOIAS', response))
+    message.channel.send('', new messageBuilder.message(config.system, response))
         .catch(console.error);
 
     message.channel.stopTyping(true);
 }
 
-let system = new Map();
-system.set('AVOIAS','AVOIAS');
-
-
-exports.call = '/gen';
-exports.system = system;
+exports.call = config.call;
+exports.system = config.systems;
 exports.responseBuilder = responseBuilder;
