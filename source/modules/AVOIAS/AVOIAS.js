@@ -83,6 +83,18 @@ class Character {
                 this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_war, Table.Races[rolls.raceNum].heightMod_war);
                 this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_war, Table.Races[rolls.raceNum].weightMod_war);
                 break;
+            case 'Half-Dwarven Human':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_dwarf, Table.Races[rolls.raceNum].heightMod_dwarf);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_dwarf, Table.Races[rolls.raceNum].weightMod_dwarf);
+                break;
+            case 'Half-Elven Human':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_elf, Table.Races[rolls.raceNum].heightMod_elf);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_elf, Table.Races[rolls.raceNum].weightMod_elf);
+                break;
+            case 'Half-Orcish Human':
+                this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight_orc, Table.Races[rolls.raceNum].heightMod_orc);
+                this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight_orc, Table.Races[rolls.raceNum].weightMod_orc);
+                break;
             default:
                 this.height = determineHeight(Table.Races[rolls.raceNum].baseHeight, Table.Races[rolls.raceNum].heightMod);
                 this.weight = determineWeight(Table.Races[rolls.raceNum].baseWeight, Table.Races[rolls.raceNum].weightMod);

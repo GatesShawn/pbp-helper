@@ -258,11 +258,18 @@ let Races =  {
                 '14-16': 'Rhodean',
                 '14-20': 'Styxish'
             },
-            // How to handle Half-types?
-            baseHeight: 57, // in inches
-            heightMod: [2,8], // [die count, die size]
-            baseWeight: 110, // in lbs
-            weightMod: [2,4] // [die count, die size]
+            baseHeight_dwarf: 50, // in inches
+            heightMod_dwarf: [2,8], // [die count, die size]
+            baseWeight_dwarf: 110, // in lbs
+            weightMod_dwarf: [2,6], // [die count, die size]
+            baseHeight_elf: 62, // in inches
+            heightMod_elf: [2,8], // [die count, die size]
+            baseWeight_elf: 105, // in lbs
+            weightMod_elf: [2,4], // [die count, die size]
+            baseHeight_orc: 62, // in inches
+            heightMod_orc: [2,10], // [die count, die size]
+            baseWeight_orc: 120, // in lbs
+            weightMod_orc: [2,6] // [die count, die size]
         },
     13: {
             name: 'Human',
