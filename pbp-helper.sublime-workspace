@@ -255,6 +255,34 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "source/main.js",
+			"settings":
+			{
+				"buffer_size": 4029,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 93,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/User/AppData/Roaming/Sublime Text 3/Packages/User/node.sublime-build",
+			"settings":
+			{
+				"buffer_size": 33,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "untitled.sublime-build"
+			}
+		}
 	],
 	"build_system": "Packages/ESLint/ESLint.sublime-build",
 	"build_system_choices":
@@ -332,7 +360,7 @@
 	},
 	"console":
 	{
-		"height": 120.0,
+		"height": 506.0,
 		"history":
 		[
 		]
@@ -348,12 +376,8 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Shawn/Documents/Development/pbp-helper",
-		"/C/Users/Shawn/Documents/Development/pbp-helper/source",
-		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules",
-		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/cod",
-		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/sp",
-		"/C/Users/Shawn/Documents/Development/pbp-helper/source/modules/tc"
+		"/C/Users/User/Documents/Development/pbp-helper",
+		"/C/Users/User/Documents/Development/pbp-helper/source"
 	],
 	"file_history":
 	[
@@ -464,7 +488,7 @@
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 27.0
 	},
 	"find_in_files":
 	{
@@ -563,14 +587,101 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "source/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4029,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1245,
+								1245
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 93,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								93,
+								93
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/User/AppData/Roaming/Sublime Text 3/Packages/User/node.sublime-build",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 33,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								29,
+								29
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 28.0
+		"height": 27.0
 	},
 	"input":
 	{
@@ -619,11 +730,11 @@
 	{
 		"height": 0.0
 	},
-	"pinned_build_system": "Packages/User/Node.sublime-build",
+	"pinned_build_system": "Packages/User/node.sublime-build",
 	"project": "pbp-helper.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 50.0
 	},
 	"save_all_on_build": true,
 	"select_file":
