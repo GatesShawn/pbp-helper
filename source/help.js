@@ -21,8 +21,14 @@
 const fs = require('fs');
 const messageBuilder = require('./utils/message-builder.js');
 
+let strings = {};
+
 // load and parse the string file
-let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
+try{
+	strings = JSON.parse(fs.readFileSync(__dirname + './resources/resources.json', 'utf8'));
+} catch (err) {
+	console.log(err);
+}
 
 function help(channel, systems) {
 

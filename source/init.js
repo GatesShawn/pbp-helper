@@ -28,8 +28,14 @@ let category = '';
 let system;
 let gameName;
 
+let strings = {};
+
 // load and parse the string file
-let strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
+try{
+	strings = JSON.parse(fs.readFileSync(__dirname + './resources/resources.json', 'utf8'));
+} catch (err) {
+	console.log(err);
+}
 
 function start(message, systemTypes) {
 	console.log('Starting init function');
