@@ -21,7 +21,11 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 // load and parse the string file
-var strings = JSON.parse(fs.readFileSync('./resources/resources.json', 'utf8'));
+try{
+	strings = JSON.parse(fs.readFileSync(__dirname + '/../resources/resources.json', 'utf8'));
+} catch (err) {
+	console.log(err);
+}
 
 function messageBuilder (system, content) {
 	let embed = new Discord.RichEmbed();
