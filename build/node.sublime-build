@@ -1,0 +1,3 @@
+{
+	"cmd": ["node", "$project_path/source/main.js"]
+}
