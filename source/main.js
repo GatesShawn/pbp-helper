@@ -80,7 +80,7 @@ client.on('message', (receivedMessage) => {
 function _loadModules() {
 
     // check the module folder for modules and add them to the switch for loading
-    let files = fs.readdirSync('./modules');
+    let files = fs.readdirSync(__dirname + '/modules');
     console.log('Loading System Modules: ' + files);
     for (let i = files.length - 1; i >= 0; i--) {
         _registerModule(files[i]);
@@ -93,7 +93,7 @@ function _loadModules() {
  * @return {[type]}      [description]
  */
 function _registerModule(file) {
-    let sysModule = require('./modules/' + file.split('.')[0] + '/' + file);
+    let sysModule = require(__dirname + '/modules/' + file.split('.')[0] + '/' + file);
     commandList.add(sysModule.call, function() {
         sysModule.responseBuilder(message);
     });

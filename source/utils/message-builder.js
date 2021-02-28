@@ -25,7 +25,7 @@ let strings = {};
 
 // load and parse the string file
 try{
-	strings = JSON.parse(fs.readFileSync(__dirname + '../resources/resources.json', 'utf8'));
+	strings = JSON.parse(fs.readFileSync(__dirname + '/../resources/resources.json', 'utf8'));
 } catch (err) {
 	console.log(err);
 }
