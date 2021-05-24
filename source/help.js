@@ -24,15 +24,29 @@ const messageBuilder = require('./utils/message-builder.js');
 let strings = {};
 
 // load and parse the string file
-try{
+try {
 	strings = JSON.parse(fs.readFileSync(__dirname + '/resources/resources.json', 'utf8'));
 } catch (err) {
 	console.log(err);
 }
 
 function help(channel, systems) {
+	if (!channel) {
+		console.log('You must provide a Discord Channel Object');
+		return
+	}
 
 	let helpMessage = strings.help;
+
+	if(systems) {
+		let systemList = '';
+
+		for (const system of systems) {
+			systemList += ' - ' + system[0] + '\n';
+		}
+
+		helpMessage += systemList;
+	}
 
 	channel.send('', new messageBuilder.message(strings.bot_name, helpMessage))
 		.catch(console.error);

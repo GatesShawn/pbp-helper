@@ -314,5 +314,6 @@ function responseBuilder(message) {
 }
 
 exports.call = config.call;
-exports.system = config.systems;
+exports.systems = config.systems;
+exports.system = config.system;
 exports.responseBuilder = responseBuilder;

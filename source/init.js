@@ -40,7 +40,7 @@ try{
 function start(message, systemTypes) {
 	console.log('Starting init function');
 
-	//check for help command and rout to that instead	
+	//check for help command and route to that instead	
 	if((message.help)) {
 		initHelp(message);
 		return;

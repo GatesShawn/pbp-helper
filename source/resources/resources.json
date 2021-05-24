@@ -28,5 +28,5 @@
 		"ooc":"General out of character chat",
 		"character_sheets": "Contains a sheet for each character in the game"
 	},
-	"help": "Welcome to Play By Post Helper! To start a game use the /init command.\n For more details on /init please use '/init help'."
+	"help": "Welcome to Play By Post Helper! To start a game use the /init command.\n For more details on /init please use '/init help'. \n Supported systems: \n"
 }
