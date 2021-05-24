@@ -279,5 +279,6 @@ function helpBuilder(message) {
 
 // Set the attributes
 exports.call = call;
-exports.system = systems;
+exports.system = system;
+exports.systems = systems;
 exports.responseBuilder = responseBuilder;

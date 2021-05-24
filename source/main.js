@@ -33,7 +33,8 @@ const client = new Discord.Client();
 
 // global variables
 let message = {};
-let systemTypes = new Map();
+let systemAliases = new Map();
+let systems = new Map();
 
 _loadModules();
 
@@ -61,9 +62,9 @@ client.on('message', (receivedMessage) => {
         return;
     }
 
-// if (receivedMessage.guild != 'pbp-helper-test') {
-//     return;
-// }
+if (receivedMessage.guild != 'pbp-helper-test') {
+    return;
+}
 
     let cmd = splitter.parse(receivedMessage);
 
@@ -97,14 +98,23 @@ function _registerModule(file) {
     commandList.add(sysModule.call, function() {
         sysModule.responseBuilder(message);
     });
-    systemTypes = systemTypes.merge(sysModule.system);
+    systemAliases = systemAliases.merge(new Map(sysModule.systems));
+    systems.set(sysModule.system, '');
 }
 
 /**
  * Function to set up the server as a PbP server
  */
 function _init() {
-    init.start(message, systemTypes);
+    init.start(message, systemAliases);
+}
+
+/**
+ * [_help description]
+ * @return {[type]} [description]
+ */
+function _help() {
+    help.help(message.channel, systems);
 }
 
 /**
@@ -128,14 +138,6 @@ function _reset() {
     // create a new general channel
     message.channel.guild.createChannel('general', { type: 'text'})
         .catch(console.error);
-}
-
-/**
- * [_help description]
- * @return {[type]} [description]
- */
-function _help() {
-    help.help(message.channel, systemTypes);
 }
 
 // Expose commands to Discord

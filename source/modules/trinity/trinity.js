@@ -228,5 +228,6 @@ function helpBuilder(message) {
 }
 
 exports.call = config.call;
-exports.system = systems;
+exports.systems = config.systems;
+exports.system = config.system;
 exports.responseBuilder = responseBuilder;

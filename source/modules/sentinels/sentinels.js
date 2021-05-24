@@ -150,7 +150,8 @@ function helpBuilder(message) {
 }
 
 exports.call = call;
-exports.system = systems;
+exports.systems = systems;
+exports.system = system;
 exports.responseBuilder = responseBuilder;
 
 // sentinels init is a nomination system, maybe a tracker that just ticks off who has gone and then resets once all do
