@@ -1,0 +1,21 @@
+{
+    "gm": "Director",
+    "system": "They Came From...",
+    "call": "/they",
+    "systems": [
+        ["They Came From...", "gm"],
+        ["They Came From", "gm"],
+        ["TCF!", "gm"],
+        ["They Came From Beneath the Sea!", "gm"],
+        ["TCFS!", "gm"],
+        ["They Came From Beyond the Grave!", "gm"],
+        ["TCFG!", "gm"],
+        ["They Came From Camp Murder Lake!", "gm"],
+        ["TCFML!", "gm"],
+        ["They Came From [Classified]", "gm"],
+        ["TCFC!", "gm"]
+    ],
+    "die_size": 10,
+    "target_number": 8,
+    "explodes_on": 10
+}

@@ -34,7 +34,7 @@ function parse(message) {
 		return;
 	}
 
-	console.log('Parsing the message');
+	console.log('Parsing the message from ' + message.channel.guild);
 	let command = {
 		cmd: '',
 		author: '',
