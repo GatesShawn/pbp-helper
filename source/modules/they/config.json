@@ -1,0 +1,12 @@
+{
+    "gm": "Director",
+    "system": "They Came From...",
+    "call": "/they",
+    "systems": [
+        ["They Came From...", "gm"],
+        ["They Came From", "gm"]
+    ],
+    "die_size": 10,
+    "target_number": 8,
+    "explodes_on": 10
+}
