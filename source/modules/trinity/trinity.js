@@ -39,7 +39,7 @@ try {
 } catch (err) {
 	console.log(err);
 }
-let target_number = config.target_number;
+
 let systems;
 try {
 	systems = new Map(config.systems);
@@ -50,6 +50,8 @@ try {
 // might be able to make this one Map (key: [value, success or not])
 let results = [];
 let success = [];
+
+let target_number;
 
 /**
  * Calls die rolling for Trinity
@@ -90,9 +92,12 @@ function responseBuilder(receivedMessage) {
 	let difficulty = 0;
 	let botch_potential = false;
 
+	target_number = config.target_number;
+
 	//check for help command and rout to that instead
 	if(receivedMessage.help) {
 		helpBuilder(receivedMessage);
+		target_number = null;
 		return;
 	}
 
@@ -100,6 +105,7 @@ function responseBuilder(receivedMessage) {
 		receivedMessage.channel.send('', new messageBuilder.message(config.system, author + strings.no_dice))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
+		target_number = null;
 		return;
 	}
 
@@ -108,6 +114,7 @@ function responseBuilder(receivedMessage) {
 		receivedMessage.channel.send('', new messageBuilder.message(config.system, author + strings.too_large))
 			.catch(console.error);
 		receivedMessage.channel.stopTyping(true);
+		target_number = null;
 		return;
 	}
 
@@ -204,8 +211,10 @@ function responseBuilder(receivedMessage) {
 
 	receivedMessage.channel.stopTyping(true);
 
+	// clean up variables
 	results = [];
 	success = [];
+	target_number = null;
 }
 
 function initiative() {
