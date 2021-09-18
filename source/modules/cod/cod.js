@@ -73,9 +73,9 @@ function roll(options) {
 	let result = Die.die.roll(cod_die);
 	console.log('Roll Result: ' + result);
 	if(!options.explosion) {
-		results.push(result);
+		results.unshift(result);
 	} else {
-		results_explosion.push(result);
+		results_explosion.unshift(result);
 	}
 	if(result >= cod_tn) {success.push(result);}
 

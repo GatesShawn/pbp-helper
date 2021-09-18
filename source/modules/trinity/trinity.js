@@ -67,7 +67,7 @@ function roll(options) {
 	}
 
 	let result = Die.die.roll(10);
-	results.push(result);
+	results.unshift(result);
 	if(result >= target_number) success.push(result);
 
 	// exploding dice

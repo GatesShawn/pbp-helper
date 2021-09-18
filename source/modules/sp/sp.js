@@ -66,7 +66,7 @@ function roll(options) {
 	}
 
 	let result = Die.die.roll(10);
-	results.push(result);
+	results.unshift(result);
 	if(result >= target_number) success.push(result);
 
 	// 10s are two successes in they came from (they re-roll in Scion?!)
