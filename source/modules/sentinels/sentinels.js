@@ -60,7 +60,7 @@ function roll(options) {
 
     let result = Die.die.roll(options.type);
 
-    results.push({result:result, type:options.type});
+    results.unshift({result:result, type:options.type});
     console.log('Results Array: ' + results);
 }
 

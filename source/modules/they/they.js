@@ -67,13 +67,13 @@ function roll(options) {
 	}
 
 	let result = Die.die.roll(10);
-	results.push(result);
+	results.unshift(result);
 	if(result >= target_number) success.push(result);
 
 	// double success on 10
 	if(result >= options.double) {
 		success.push('Double');
-		results.push('**Double**');
+		results.unshift('**Double**');
 	}
 }
 
