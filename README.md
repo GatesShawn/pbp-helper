@@ -1,17 +1,21 @@
 # pbp-helper
-Discord helper bot for play-by-post servers/channels
+Discord helper bot for chat and play-by-post RPG servers/channels
 
 ## Requirements
 * node.js
 
 ## Setup
 
-1. Run setup.sh to copy the corect files around (assumes the default Windows direcotry for Sublime Text 3 User packages).
+1. Run setup.sh to copy the correct files around (assumes the default Windows direcotry for Sublime Text 3 User packages).
 
-2. Uses a Node Module named secret-token.js (not included in this repo) to contian the client secret.
+2. Uses a file named config.json (not included in this repo) to contian the client secret.
 
 Contents: 
 `
-exports.bot_secret_token = "hex_string";
+{
+	"clientId": "client-id-goes-here",
+	"guildId": "guild-id-goes-here",
+	"token": "your-token-goes-here"
+}
 `
 

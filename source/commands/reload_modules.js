@@ -1,5 +1,5 @@
 /*	
-//	Copyright 2020 Shawn Gates
+//	Copyright 2021 Shawn Gates
 //
 //	Licensed under the Apache License, Version 2.0 (the "License");
 //	you may not use this file except in compliance with the License.
@@ -19,38 +19,26 @@
 "use strict";
 
 const fs = require('fs');
-const messageBuilder = require('./utils/message-builder.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+// const messageBuilder = require('./utils/message-builder.js');
 
 let strings = {};
 
 // load and parse the string file
 try {
-	strings = JSON.parse(fs.readFileSync(__dirname + '/resources/resources.json', 'utf8'));
+	strings = JSON.parse(fs.readFileSync(__dirname + '/../resources/resources.json', 'utf8'));
 } catch (err) {
 	console.log(err);
 }
 
-function help(channel, systems) {
-	if (!channel) {
-		console.log('You must provide a Discord Channel Object');
-		return
-	}
 
-	let helpMessage = strings.help;
 
-	if(systems) {
-		let systemList = '';
-
-		for (const system of systems) {
-			systemList += ' - ' + system[0] + '\n';
-		}
-
-		helpMessage += systemList;
-	}
-
-	channel.send('', new messageBuilder.message(strings.bot_name, helpMessage))
-		.catch(console.error);
-	channel.stopTyping(true);
-}
-
-exports.help = help;
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName('help')
+		.setDescription(strings.commands.help),
+	async execute(interaction) {
+		// help();
+		await interaction.reply(strings.help);
+	},
+};
