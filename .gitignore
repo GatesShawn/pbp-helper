@@ -1,3 +1,3 @@
 hosting/
 node_modules/
-secret_token.js
+source/config.json
